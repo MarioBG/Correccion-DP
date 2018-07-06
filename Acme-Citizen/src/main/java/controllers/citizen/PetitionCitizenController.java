@@ -92,7 +92,10 @@ public class PetitionCitizenController extends AbstractController {
 				this.petitionService.save(petition);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(petitionForm, "petition.commit.error");
+				String msg = oops.getMessage();
+				if (msg == null)
+					msg = "petition.commit.error";
+				result = this.createEditModelAndView(petitionForm, msg);
 			}
 		return result;
 	}

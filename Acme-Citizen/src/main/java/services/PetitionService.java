@@ -89,6 +89,8 @@ public class PetitionService {
 		Assert.isTrue(petition.getDescription() != null && petition.getDescription() != "");
 		Assert.notNull(petition.getCreationMoment());
 
+		Assert.isTrue(!petition.getFinalVersion() || petition.getGovernmentAgents().size() > 0, "petition.error.needsGovernmentAgents");
+
 		if (petition.getId() == 0)
 			petition.setCreationMoment(new Date(System.currentTimeMillis() - 1000));
 
