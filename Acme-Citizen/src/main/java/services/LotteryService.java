@@ -1,6 +1,6 @@
+
 package services;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -26,12 +26,13 @@ public class LotteryService {
 	// Managed repository
 
 	@Autowired
-	private LotteryRepository lotteryRepository;
+	private LotteryRepository	lotteryRepository;
 
 	// Supporting services
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
+
 
 	// Constructors
 
@@ -60,12 +61,9 @@ public class LotteryService {
 		Assert.notNull(lottery);
 		Lottery result;
 
-		Date date = new Date();
-		if (lottery.getCelebrationDate().before(date)) {
-			Assert.isTrue(lottery.getCelebrationDate().after(date),
-					"commit.error.date");
-
-		}
+		final Date date = new Date();
+		if (lottery.getCelebrationDate().before(date))
+			Assert.isTrue(lottery.getCelebrationDate().after(date), "commit.error.date");
 		result = this.lotteryRepository.save(lottery);
 		return result;
 	}
@@ -88,67 +86,54 @@ public class LotteryService {
 		return this.lotteryRepository.findAllAfterToday();
 	}
 
-	public Collection<Lottery> getLotteryByGovernmentAgentId(int id) {
+	public Collection<Lottery> getLotteryByGovernmentAgentId(final int id) {
 		return this.lotteryRepository.getLotteryByGovernmentAgentId(id);
 	}
 
-	public Collection<Lottery> getLotteryWinner(int id) {
+	public Collection<Lottery> getLotteryWinner(final int id) {
 		return this.lotteryRepository.getLotteryWinner(id);
 	}
 
-	public void delete(Lottery lottery) {
+	public void delete(final Lottery lottery) {
 		Assert.notNull(lottery);
-		delete(lottery);
+		this.delete(lottery);
 
 	}
 
-	public void lotteryWinner(int lotteryId) {
-		Lottery lottery = this.findOne(lotteryId);
-		Collection<Lottery> lottos = this.getLotteryByGovernmentAgentId(lottery
-				.getGovernmentAgent().getId());
-		List<LotteryTicket> lista = new ArrayList<LotteryTicket>(
-				lottery.getLotteryTickets());
+	public void lotteryWinner(final int lotteryId) {
+		final Lottery lottery = this.findOne(lotteryId);
+		final Collection<Lottery> lottos = this.getLotteryByGovernmentAgentId(lottery.getGovernmentAgent().getId());
+		final List<LotteryTicket> lista = new ArrayList<LotteryTicket>(lottery.getLotteryTickets());
 
-		if (lottos.size() > 0) {
+		if (lottos.size() > 0)
 			if (lottery.getWinnerTicket() == null && lottos.contains(lottery)) {
-				Integer num1 = (int) (Math.random() * lista.size());
+				final Integer num1 = (int) (Math.random() * lista.size());
 
-				LotteryTicket winner = lista.get(num1);
+				final LotteryTicket winner = lista.get(num1);
 				lottery.setWinnerTicket(winner);
-				moneyWon(lottery, winner);
+				this.moneyWon(lottery, winner);
 
 			}
-		}
 
 	}
 
-	public void moneyWon(Lottery lotto, LotteryTicket lt) {
+	public void moneyWon(final Lottery lotto, final LotteryTicket lt) {
 		double winCitizen = 0.0;
 		double winAgent = 0.0;
-		int tam = lotto.getLotteryTickets().size();
-		double precio = lotto.getTicketCost();
-		double cantidad = precio * tam;
-		double percentage = lotto.getPercentageForPrizes();
+		final int tam = lotto.getLotteryTickets().size();
+		final double precio = lotto.getTicketCost();
+		final double cantidad = precio * tam;
+		final double percentage = lotto.getPercentageForPrizes();
 
 		winCitizen = (cantidad * percentage) / 100;
 		winAgent = cantidad - winCitizen;
 
-		Citizen citizen = (Citizen) this.actorService.findOne(lt.getCitizen()
-				.getId());
-		GovernmentAgent ga = (GovernmentAgent) this.actorService.findOne(lotto
-				.getGovernmentAgent().getId());
+		final Citizen citizen = (Citizen) this.actorService.findOne(lt.getCitizen().getId());
+		final GovernmentAgent ga = (GovernmentAgent) this.actorService.findOne(lotto.getGovernmentAgent().getId());
 
 		// this.lotteryRepository.flush();
-		Double newMoneyCitizen = citizen.getBankAccount().getMoney()
-				+ winCitizen;
-		Double newMoneyGa = ga.getBankAccount().getMoney() + winAgent;
-
-		DecimalFormat de = new DecimalFormat("0.00");
-		String citi = de.format(newMoneyCitizen);
-		String gAgent = de.format(newMoneyGa);
-
-		newMoneyCitizen = Double.parseDouble(citi);
-		newMoneyGa = Double.parseDouble(gAgent);
+		final Double newMoneyCitizen = citizen.getBankAccount().getMoney() + winCitizen;
+		final Double newMoneyGa = ga.getBankAccount().getMoney() + winAgent;
 
 		citizen.getBankAccount().setMoney(newMoneyCitizen);
 		ga.getBankAccount().setMoney(newMoneyGa);

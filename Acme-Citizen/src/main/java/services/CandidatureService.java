@@ -139,7 +139,7 @@ public class CandidatureService {
 		candidature.setVoteNumber(candidature.getVoteNumber() + 1);
 		principal.getElections().add(election);
 		election.getCitizens().add(principal);
-		this.save(candidature);
+		this.candidatureRepository.save(candidature);
 	}
 	public CandidatureForm construct(final Candidature candidature) {
 
