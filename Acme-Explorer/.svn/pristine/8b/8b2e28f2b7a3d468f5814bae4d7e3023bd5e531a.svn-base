@@ -1,0 +1,45 @@
+<%-- list.jsp de ProfessionalRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="professionalRecords" id="row" requestURI="curriculum/list-professionalRecord.do" pagesize="5" class="displaytag">
+
+	<div>
+		<security:authorize access="hasRole('RANGER')">		
+			<display:column>
+					<spring:message var="professionalRecordEdit" code="professionalRecord.edit"/> 
+					<a href="curriculum/ranger/edit-professionalRecord.do?professionalRecordId=${row.id}"> ${professionalRecordEdit} </a>
+			</display:column>
+		</security:authorize>
+		
+		<display:column>
+			<spring:message var="professionalRecordDisplay" code="professionalRecord.display"/> 
+			<a href="curriculum/display-professionalRecord.do?professionalRecordId=${row.id}"> ${professionalRecordDisplay} </a>
+		</display:column>
+			
+		<spring:message var="professionalRecordCompany" code="professionalRecord.company"/>
+		<display:column property="company" title="${professionalRecordCompany}"/>
+
+		<spring:message var="professionalRecordStartDate" code="professionalRecord.startDate"/>
+		<display:column property="startDate" title="${professionalRecordStartDate}"/>
+		
+		<spring:message var="professionalRecordEndDate" code="professionalRecord.endDate"/>
+		<display:column property="endDate" title="${professionalRecordEndDate}"/>
+		
+		<spring:message var="professionalRecordRole" code="professionalRecord.role"/>
+		<display:column property="role" title="${professionalRecordRole}"/>
+	</div>
+</display:table>
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="professionalRecordCreate" code="professionalRecord.create"/> 
+	<a href="curriculum/ranger/create-professionalRecord.do"> ${professionalRecordCreate}</a>
+</security:authorize>

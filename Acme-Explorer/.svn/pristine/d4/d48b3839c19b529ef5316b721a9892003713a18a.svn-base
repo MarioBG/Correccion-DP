@@ -1,0 +1,27 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+ranger.name 				= Nombre
+ranger.surname				= Apellidos
+ranger.email				= Correo electronico
+ranger.address				= Dirección
+ranger.phone				= Numero teléfono
+ranger.username				= Nombre cuenta de usuario
+ranger.password				= Contraseña cuenta de usuario
+
+ranger.userAccount.username = Nombre cuenta de usuario
+ranger.userAccount.password = Contraseña cuenta de usuario
+
+ranger.save 				= Guardar
+ranger.cancel				= Cancelar
+
+ranger.phone.ask			= Patrón incorrecto, ¿estás seguro de que quieres guardar este teléfono?
+ranger.curriculum       	= Curriculum
+
+admin.commit.error			= No se puede completar su operación
+admin.commit.ok				= Acción realizada con éxito

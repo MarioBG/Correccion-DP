@@ -1,0 +1,136 @@
+
+package services;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.AuditRecordRepository;
+import domain.AuditRecord;
+import domain.Auditor;
+import domain.Trip;
+
+@Service
+@Transactional
+public class AuditRecordService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private AuditRecordRepository	auditRecordRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private AuditorService			auditorService;
+
+	@Autowired
+	private TripService				tripService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public AuditRecordService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public AuditRecord create() {
+		Auditor auditor;
+		final AuditRecord auditRecord = new AuditRecord();
+		auditRecord.setMoment(new Date(System.currentTimeMillis() - 1000));
+		auditor = this.auditorService.findByPrincipal();
+		auditRecord.setAuditor(auditor);
+		return auditRecord;
+	}
+
+	public Collection<AuditRecord> findAll() {
+		return this.auditRecordRepository.findAll();
+	}
+
+	public AuditRecord findOne(final int id) {
+		return this.auditRecordRepository.findOne(id);
+	}
+
+	public AuditRecord save(final AuditRecord auditRecord) {
+		Assert.notNull(auditRecord);
+
+		this.checkByPrincipal(auditRecord);
+
+		return this.auditRecordRepository.save(auditRecord);
+	}
+
+	public void delete(final AuditRecord auditRecord) {
+		this.checkByPrincipal(auditRecord);
+		Assert.isTrue(!auditRecord.getFinalVersion());
+		this.auditRecordRepository.delete(auditRecord);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public void deleteAuditRecords(final Trip trip) {
+
+		final Collection<AuditRecord> auditRecords = trip.getAuditRecords();
+		this.auditRecordRepository.delete(auditRecords);
+
+	}
+
+	public void deleteByAuditor(final Auditor auditor) {
+
+		final Collection<AuditRecord> auditRecords = this.findByAuditor(auditor);
+		this.checkByPrincipal(auditRecords);
+		this.auditRecordRepository.delete(auditRecords);
+	}
+
+	public Collection<AuditRecord> findByAuditor(final Auditor auditor) {
+		this.checkByPrincipal(auditor.getAuditRecords());
+		Collection<AuditRecord> result = null;
+		result = this.auditRecordRepository.findByAuditor(auditor);
+		return result;
+	}
+
+	public AuditRecord findOneToEdit(final int auditRecordId) {
+		final AuditRecord auditRecord = this.auditRecordRepository.findOne(auditRecordId);
+		Assert.isTrue(!auditRecord.getFinalVersion());
+
+		this.checkByPrincipal(auditRecord);
+
+		return auditRecord;
+
+	}
+
+	public void checkByPrincipal(final Collection<AuditRecord> auditRecords) {
+		for (final AuditRecord auditRecord : auditRecords)
+			this.checkByPrincipal(auditRecord);
+	}
+
+	public void checkByPrincipal(final AuditRecord auditRecord) {
+		final Auditor principal = this.auditorService.findByPrincipal();
+		Assert.isTrue(auditRecord.getAuditor().equals(principal));
+
+	}
+
+	public AuditRecord assignAuditRecordToTrip(final AuditRecord auditRecord, final Trip trip) {
+
+		Assert.notNull(trip);
+		Assert.notNull(auditRecord);
+
+		this.checkByPrincipal(auditRecord);
+
+		auditRecord.setTrip(trip);
+		trip.getAuditRecords().add(auditRecord);
+
+		this.tripService.save(trip);
+		this.save(auditRecord);
+		auditRecord.getAuditor().getAuditRecords().add(auditRecord);
+		this.auditorService.save(auditRecord.getAuditor());
+		return auditRecord;
+
+	}
+
+}

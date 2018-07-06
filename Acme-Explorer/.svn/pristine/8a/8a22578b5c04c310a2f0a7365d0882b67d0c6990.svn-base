@@ -1,0 +1,247 @@
+<%-- edit.jsp de Application --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<form:form action="${actionURI}" modelAttribute="application">
+	
+	<!-- Atributos ocultos -->
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	<form:hidden path="moment"/>
+	
+	<!-- Atributos ocultas de las relaciones -->
+	<form:hidden path="applicant"/>
+	
+	<security:authorize access="hasRole('EXPLORER')">
+		<jstl:choose>
+			<jstl:when test="${application.id eq 0}">
+				<spring:message var="applicationTripLabel" code="application.tripLabel"/>
+				<b><form:label path="trip"/>${applicationTripLabel}:&nbsp;</b>
+				<form:select path="trip">
+					<%-- <form:option label="----" value="0"/> --%>
+					<form:options items="${trips}" itemLabel="ticker" itemValue="id"/>
+				</form:select>
+				<form:errors path="trip" cssClass="error"/>
+			</jstl:when>
+			<jstl:otherwise>
+				<spring:message var="applicationTrip" code="application.trip"/>
+				<b><form:label path="trip"/>${applicationTrip}:&nbsp;</b>
+				<form:hidden path="trip"/> <jstl:out value="${application.trip.title}"/>
+			</jstl:otherwise>
+		</jstl:choose>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<spring:message var="applicationTrip" code="application.trip"/>
+		<b><form:label path="trip"/>${applicationTrip}:&nbsp;</b>
+		<form:hidden path="trip"/> <jstl:out value="${application.trip.title}"/>
+	</security:authorize>
+	<br/>
+	
+	
+	<spring:message var="applicationComments" code="application.comments"/>
+	<spring:message var="applicationCommentsAnnotation" code="application.comments.annotation"/>
+	<security:authorize access="hasRole('EXPLORER')">
+		<jstl:choose>
+			<jstl:when test="${application.status eq 'PENDING' or application.id eq 0}">
+				<b><form:label path="comments"/>${applicationComments}:&nbsp;</b>
+				<form:textarea path="comments"/>
+				<form:errors path="comments" cssClass="error"/>
+				<div id="commentsExplanation">
+					${applicationCommentsAnnotation}
+				</div>
+				<br/>
+			</jstl:when>
+			<jstl:when test="${(not empty application.comments)}">
+				<b><form:label path="comments"/>${applicationComments}:&nbsp;</b>
+				<form:hidden path="comments"/> <jstl:out value="${application.comments}"/>
+				<form:errors path="comments" cssClass="error"/>
+				<br/>
+			</jstl:when>
+		</jstl:choose>
+	</security:authorize>
+
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<jstl:if test="${not empty application.comments}">
+			<b><form:label path="comments"/>${applicationComments}:&nbsp;</b>
+			<form:hidden path="comments"/> <jstl:out value="${application.comments}"/>
+			<form:errors path="comments" cssClass="error"/>
+			<br/>
+		</jstl:if>
+	</security:authorize>
+	
+	<spring:message var="applicationStatus" code="application.status"/>
+	<b><form:label path="status"/>${applicationStatus}:&nbsp;</b>
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<!-- Comprobar que el elemento no sea nuevo -->
+		<form:select path="status" disabled="false">
+			<form:option label="----" value="0"/>
+			<form:options items="${status}" /> 
+		</form:select>
+	</security:authorize>
+	<security:authorize access="hasRole('EXPLORER')">
+		<!-- Si está cancelado -->
+		<form:hidden path="status"/> <jstl:out value="${application.status}"/>
+	<br/>
+	</security:authorize>
+	<form:errors path="status" cssClass="error"/>
+	<br/>
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<jstl:choose>
+			<jstl:when test="${application.status eq 'PENDING' and application.id ne 0 }">
+				<spring:message var="applicationRejectReason" code="application.rejectReason"/>
+				<b><form:label path="rejectReason"/>${applicationRejectReason}:&nbsp;</b>
+				<form:input path="rejectReason"/>
+				<form:errors path="rejectReason" cssClass="error"/>
+				<br/>
+			</jstl:when>
+		</jstl:choose>
+	</security:authorize>
+	
+	<!-- Tarjeta de crédito -->
+	
+	<spring:message var="applicationCreditCardLegend" code="application.creditCard.legend"/>
+	<spring:message var="applicationCreditCardHolder" code="application.creditCard.holder"/>
+	<spring:message var="applicationCreditCardBrand" code="application.creditCard.brand"/>
+	<spring:message var="applicationCreditCardNumber" code="application.creditCard.number"/>
+	<spring:message var="applicationCreditCardExpirationMonth" code="application.creditCard.expirationMonth"/>
+	<spring:message var="applicationCreditCardExpirationYear" code="application.creditCard.expirationYear"/>
+	<spring:message var="applicationCreditCardCvv" code="application.creditCard.cvv"/>
+	
+	<security:authorize access="hasRole('EXPLORER')">
+		<jstl:choose>
+			<jstl:when test="${application.status eq 'DUE'}">
+				<fieldset>
+					<legend><b><jstl:out value="${applicationCreditCardLegend}"/>:&nbsp;</b></legend>
+					
+					<b><form:label path="creditCard.holder"/>${applicationCreditCardHolder}:&nbsp;</b>
+					<form:input path="creditCard.holder"/>
+					<form:errors path="creditCard.holder" cssClass="error"/>
+					<br/>
+
+					<b><form:label path="creditCard.brand"/>${applicationCreditCardBrand}:&nbsp;</b>
+					<form:input path="creditCard.brand"/>
+					<form:errors path="creditCard.brand" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.number"/>${applicationCreditCardNumber}:&nbsp;</b>
+					<form:input path="creditCard.number" maxlength="16"/>
+					<form:errors path="creditCard.number" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationMonth"/>${applicationCreditCardExpirationMonth}:&nbsp;</b>
+					<form:input path="creditCard.expirationMonth" maxlength="2" placeholder="XX" />
+					<form:errors path="creditCard.expirationMonth" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationYear"/>${applicationCreditCardExpirationYear}:&nbsp;</b>
+					<form:input path="creditCard.expirationYear" maxlength="4" placeholder="XXXX"/>
+					<form:errors path="creditCard.expirationYear" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.cvv"/>${applicationCreditCardCvv}:&nbsp;</b>
+					<form:input path="creditCard.cvv" maxlength="3" placeholder="XXX"/>
+					<form:errors path="creditCard.cvv" cssClass="error"/>
+					<br/>
+				</fieldset>
+			</jstl:when>
+			<jstl:when test="${application.status eq 'ACCEPTED' or application.status eq 'CANCELLED'}">
+				<fieldset>
+					<legend><b><jstl:out value="${applicationCreditCardLegend}"/>:&nbsp;</b></legend>
+				
+					<b><form:label path="creditCard.holder"/>${applicationCreditCardHolder}:&nbsp;</b>
+					<form:hidden path="creditCard.holder"/> <jstl:out value="${application.creditCard.holder}"/>
+					<form:errors path="creditCard.holder" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.brand"/>${applicationCreditCardBrand}:&nbsp;</b>
+					<form:hidden path="creditCard.brand"/> <jstl:out value="${application.creditCard.brand}"/>
+					<form:errors path="creditCard.brand" cssClass="error"/>
+					<br/>	
+					
+					<b><form:label path="creditCard.number"/>${applicationCreditCardBrand}:&nbsp;</b>
+					<form:hidden path="creditCard.number"/> <jstl:out value="${application.creditCard.number}"/>
+					<form:errors path="creditCard.number" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationMonth"/>${applicationCreditCardExpirationMonth}:&nbsp;</b>
+					<form:hidden path="creditCard.expirationMonth"/> <jstl:out value="${application.creditCard.expirationMonth}"/>
+					<form:errors path="creditCard.expirationMonth" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationYear"/>${applicationCreditCardExpirationYear}:&nbsp;</b>
+					<form:hidden path="creditCard.expirationYear"/> <jstl:out value="${application.creditCard.expirationYear}"/>
+					<form:errors path="creditCard.expirationYear" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.cvv"/>${applicationCreditCardCvv}:&nbsp;</b>
+					<form:hidden path="creditCard.cvv"/> <jstl:out value="${application.creditCard.cvv}"/>
+					<form:errors path="creditCard.cvv" cssClass="error"/>
+					<br/>
+				</fieldset>
+			</jstl:when>
+			<jstl:otherwise>
+				<!-- Pasar la creditCard como campo oculto -->
+				<form:hidden path="creditCard"/>
+			</jstl:otherwise>
+		</jstl:choose>
+	</security:authorize>
+	<security:authorize access="hasRole('MANAGER')">
+		<jstl:choose>
+			<jstl:when test="${(application.status eq 'DUE' and not empty application.creditCard) or application.status eq 'ACCEPTED' or application.status eq 'CANCELLED'}">
+				<fieldset>
+					<legend><b><jstl:out value="${applicationCreditCardLegend}"/>:&nbsp;</b></legend>
+				
+					<b><form:label path="creditCard.holder"/>${applicationCreditCardHolder}:&nbsp;</b>
+					<form:hidden path="creditCard.holder"/> <jstl:out value="${application.creditCard.holder}"/>
+					<form:errors path="creditCard.holder" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.brand"/>${applicationCreditCardBrand}:&nbsp;</b>
+					<form:hidden path="creditCard.brand"/> <jstl:out value="${application.creditCard.brand}"/>
+					<form:errors path="creditCard.brand" cssClass="error"/>
+					<br/>	
+					
+					<b><form:label path="creditCard.number"/>${applicationCreditCardBrand}:&nbsp;</b>
+					<form:hidden path="creditCard.number"/> <jstl:out value="${application.creditCard.number}"/>
+					<form:errors path="creditCard.number" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationMonth"/>${applicationCreditCardExpirationMonth}:&nbsp;</b>
+					<form:hidden path="creditCard.expirationMonth"/> <jstl:out value="${application.creditCard.expirationMonth}"/>
+					<form:errors path="creditCard.expirationMonth" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.expirationYear"/>${applicationCreditCardExpirationYear}:&nbsp;</b>
+					<form:hidden path="creditCard.expirationYear"/> <jstl:out value="${application.creditCard.expirationYear}"/>
+					<form:errors path="creditCard.expirationYear" cssClass="error"/>
+					<br/>
+					
+					<b><form:label path="creditCard.cvv"/>${applicationCreditCardCvv}:&nbsp;</b>
+					<form:hidden path="creditCard.cvv"/> <jstl:out value="${application.creditCard.cvv}"/>
+					<form:errors path="creditCard.cvv" cssClass="error"/>
+					<br/>
+				</fieldset>
+			</jstl:when>
+		</jstl:choose>
+	</security:authorize>
+
+	<!-- La colección de Status que reciba dependerá de lo que devuelva el controlador -->
+	
+	<spring:message var="applicationSave" code="application.save"/>
+	<input type="submit" name="save" value="${applicationSave}" onclick="javascript: relativeRedir('${actionURI}');"/>
+	
+	<spring:message var="applicationCancel" code="application.cancel"/> 
+	<input type="button" name="cancel" value="${applicationCancel}" onclick="javascript: relativeRedir('${cancelURI}');"/>
+</form:form>

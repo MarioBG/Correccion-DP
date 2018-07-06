@@ -1,0 +1,55 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+trip.edit					= Editar
+trip.editTrip				= Editar viaje
+trip.create					= Crear nuevo viaje
+
+trip.ticker					= Ticker
+trip.title					= Título
+trip.category				= Categoría
+trip.publicationDate		= Fecha de publicación
+trip.startDate				= Fecha de inicio
+trip.endDate				= Fecha de finalización
+trip.description			= Descripción
+trip.price		   			= Precio
+trip.requirements			= Requisitos
+trip.tags					= Etiquetas
+trip.auditRecords			= Documentos de auditoria
+trip.survivalClasses		= Clases de supervivencia
+trip.stories				= Historias
+trip.manager				= Gerente
+trip.ranger					= Guia
+trip.legalText				= Texto legal
+trip.cancelledReason		= Motivo de cancelación
+
+trip.createApplication		= Crear una nueva aplicación
+trip.createNote				= Crear una nueva nota
+trip.listTags				= Listas las etiquetas
+trip.listAuditRecords		= Listar los registros de auditoria
+trip.listSurvivalClasses	= Listar las clases de supervivencia
+trip.listStories			= Listar las historias
+trip.listStages				= Listar las etapas
+trip.listApplications		= Listar las aplicaciones
+trip.listNotes				= Listar las notas
+trip.eachRequirement		= Cada requisito separados por un punto (".")
+
+trip.save					= Guardar
+trip.delete					= Borrar
+trip.cancel					= Cancelar
+trip.search					= Buscar
+trip.display				= Mostrar
+trip.cancelTrip				= Cancelar viaje
+
+event.format.price			= {0,number,0.##'&euro;'}
+event.pattern.price			= 0.##'&euro;'
+event.format.date			= {0,date,dd/MM/yyyy HH:mm}
+event.pattern.date			= dd/MM/yyyy HH:mm
+
+trip.confirm.delete 		= ¿Quiere borrar este viaje?  
+

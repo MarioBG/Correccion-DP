@@ -1,0 +1,94 @@
+
+package services;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Actor;
+import domain.Admin;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class AdminServiceTest extends AbstractTest {
+
+	// Service under test ---------------------------------
+
+	@Autowired
+	private AdminService	adminService;
+
+	@Autowired
+	private ActorService	actorService;
+
+
+	// Tests ----------------------------------------------
+
+	@Test
+	public void testCreate() {
+
+		Admin admin = null;
+
+		admin = this.adminService.create();
+
+		Assert.notNull(admin.getFolders());
+		//		Assert.notNull(admin.getRecipientMessages());
+		//		Assert.notNull(admin.getSentMessages());
+		Assert.notNull(admin.getSocialIdentities());
+		Assert.notNull(admin.getUserAccount());
+		Assert.isNull(admin.getName());
+		Assert.isNull(admin.getSurname());
+		Assert.isNull(admin.getEmail());
+		Assert.isNull(admin.getAddress());
+		Assert.isNull(admin.getPhone());
+	}
+
+	@Test
+	public void testSave() {
+
+		super.authenticate("admin1");
+
+		Admin admin = null;
+		Admin saved = null;
+
+		admin = this.adminService.create();
+		admin.setName("Admin 1");
+		admin.setSurname("Admin 1");
+		admin.setEmail("admin1@acmeexplorer.com");
+		admin.setAddress("Admin 1 Street");
+		admin.setPhone("111111111");
+		admin.getUserAccount().setUsername("admin11");
+		admin.getUserAccount().setPassword("admin11");
+
+		saved = this.adminService.save(admin);
+
+		final Actor actor = this.actorService.findOne(saved.getId());
+
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getFolders().size() == 5);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testFindByPrincipal() {
+
+		super.authenticate("admin1");
+
+		Admin admin;
+
+		admin = this.adminService.findByPrincipal();
+		Assert.isTrue(admin.getUserAccount().getUsername().equals("admin1"));
+
+		super.unauthenticate();
+	}
+
+}

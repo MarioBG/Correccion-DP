@@ -1,0 +1,134 @@
+
+package controllers.ranger;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CurriculumService;
+import services.ProfessionalRecordService;
+import controllers.AbstractController;
+import domain.Curriculum;
+import domain.ProfessionalRecord;
+
+@Controller
+@RequestMapping("/professionalRecord/ranger")
+public class ProfessionalRecordRangerController extends AbstractController {
+
+	// Services ------------------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+	@Autowired
+	private ProfessionalRecordService	professionalRecordService;
+
+
+	// Constructors --------------------------------------------------------
+
+	public ProfessionalRecordRangerController() {
+		super();
+	}
+
+	// Listing --------------------------------------------------------------
+
+	// Display --------------------------------------------------------------
+
+	// Creation  --------------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView createProfessionalRecord() {
+		ModelAndView result = null;
+		ProfessionalRecord professionalRecord = null;
+
+		professionalRecord = this.professionalRecordService.create();
+		result = this.createEditModelAndView(professionalRecord);
+
+		return result;
+	}
+
+	// Edition    --------------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int professionalRecordId) {
+		ModelAndView result = null;
+		ProfessionalRecord professionalRecord = null;
+
+		professionalRecord = this.professionalRecordService.findOne(professionalRecordId);
+		Assert.notNull(professionalRecord);
+		result = this.createEditModelAndView(professionalRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveProfessionalRecord(@Valid final ProfessionalRecord professionalRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(professionalRecord);
+		else
+			try {
+				this.professionalRecordService.save(professionalRecord);
+				result = new ModelAndView("redirect:../../curriculum/display.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(professionalRecord, "professionalRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(final ProfessionalRecord professionalRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		try {
+			this.professionalRecordService.delete(professionalRecord);
+			result = new ModelAndView("redirect:../../curriculum/display.do?curriculumId=" + curriculumId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(professionalRecord, "professionalRecord.commit.error");
+		}
+
+		return result;
+	}
+
+	// Ancillary methods ----------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final ProfessionalRecord professionalRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(professionalRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final ProfessionalRecord professionalRecord, final String messageCode) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		String cancelURI = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		cancelURI = "curriculum/display.do?curriculumId=" + curriculum.getId();
+
+		result = new ModelAndView("professionalRecord/edit");
+		result.addObject("professionalRecord", professionalRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+}

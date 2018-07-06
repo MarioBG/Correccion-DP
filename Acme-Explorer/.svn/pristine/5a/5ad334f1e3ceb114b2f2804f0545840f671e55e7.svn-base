@@ -1,0 +1,86 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.SponsorshipRepository;
+import domain.Sponsor;
+import domain.Sponsorship;
+import domain.Trip;
+
+@Service
+@Transactional
+public class SponsorshipService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private SponsorshipRepository	sponsorshipRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private SponsorService			sponsorService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public SponsorshipService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Sponsorship create() {
+		final Sponsorship sponsorship = new Sponsorship();
+
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		sponsorship.setSponsor(sponsor);
+		return sponsorship;
+	}
+
+	public Collection<Sponsorship> findAll() {
+		return this.sponsorshipRepository.findAll();
+	}
+
+	public Sponsorship findOne(final int id) {
+		return this.sponsorshipRepository.findOne(id);
+	}
+
+	public Sponsorship save(final Sponsorship sponsorship) {
+		Assert.notNull(sponsorship);
+		Sponsorship result = null;
+		result = this.sponsorshipRepository.save(sponsorship);
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		if (sponsorship.getId() == 0) {
+			sponsor.getSponsorships().add(result);
+			this.sponsorService.save(sponsor);
+		}
+		return result;
+	}
+
+	public void delete(final Sponsorship sponsorship) {
+		this.sponsorshipRepository.delete(sponsorship);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public void deleteSponsorShips(final Trip trip) {
+		final Collection<Sponsorship> sponsorShips = trip.getSponsorships();
+		this.sponsorshipRepository.delete(sponsorShips);
+
+	}
+
+	public Collection<Sponsorship> findBySponsor(final Sponsor sponsor) {
+
+		Collection<Sponsorship> result = null;
+		result = this.sponsorshipRepository.findBySponsor(sponsor);
+		return result;
+	}
+
+}

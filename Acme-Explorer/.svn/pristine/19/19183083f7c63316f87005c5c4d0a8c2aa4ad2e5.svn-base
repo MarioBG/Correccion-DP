@@ -1,0 +1,282 @@
+
+package services;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Explorer;
+import domain.GPSCoordinates;
+import domain.Manager;
+import domain.SurvivalClass;
+import domain.Trip;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class SurvivalClassServiceTest extends AbstractTest {
+
+	// Service under Test ------------------------------------------
+	@Autowired
+	private SurvivalClassService	survivalClassService;
+
+	@Autowired
+	private ExplorerService			explorerService;
+
+	@Autowired
+	private ManagerService			managerService;
+
+	@Autowired
+	private TripService				tripService;
+
+
+	// Tests -------------------------------------------------------
+
+	@Test
+	public void testCreate() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass survivalClass = null;
+
+		survivalClass = this.survivalClassService.create();
+
+		Assert.isNull(survivalClass.getDescription());
+		Assert.isNull(survivalClass.getLocation());
+		Assert.isNull(survivalClass.getMoment());
+		Assert.isNull(survivalClass.getTitle());
+		Assert.isNull(survivalClass.getTrip());
+		Assert.notNull(survivalClass.getExplorers());
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testSaveNewSurvivalClassByManager() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass saved = null;
+		GPSCoordinates location = null;
+		Trip trip = null;
+		SurvivalClass result = null;
+
+		location = new GPSCoordinates();
+		location.setLatitude(58.4);
+		location.setLongitude(64.15);
+		location.setName("ValenciaCoordinates");
+
+		survivalClass = this.survivalClassService.create();
+		survivalClass.setDescription("Description SurvivalClass1");
+		survivalClass.setLocation(location);
+		survivalClass.setTitle("SurvivalClass1");
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		survivalClass.setTrip(trip);
+
+		saved = this.survivalClassService.save(survivalClass);
+		result = this.survivalClassService.findOne(saved.getId());
+
+		Assert.notNull(result);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testSaveEditSurvivalClassByManager() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass saved = null;
+		SurvivalClass result = null;
+
+		survivalClass = this.survivalClassService.findAll().iterator().next();
+		survivalClass.setDescription("Modified Description");
+
+		saved = this.survivalClassService.save(survivalClass);
+		result = this.survivalClassService.findOne(saved.getId());
+
+		Assert.notNull(result);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testSaveExplorer() {
+
+		super.authenticate("explorer1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass saved = null;
+		GPSCoordinates location = null;
+		Explorer explorer = null;
+		SurvivalClass result = null;
+
+		location = new GPSCoordinates();
+		location.setLatitude(58.4);
+		location.setLongitude(64.15);
+		location.setName("ValenciaCoordinates");
+
+		survivalClass = this.survivalClassService.findAll().iterator().next();
+
+		explorer = this.explorerService.findByPrincipal();
+
+		saved = this.survivalClassService.save(survivalClass);
+		survivalClass.getExplorers().add(explorer);
+
+		result = this.survivalClassService.findOne(saved.getId());
+
+		Assert.notNull(result);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testDelete() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass saved = null;
+		GPSCoordinates location = null;
+		Trip trip = null;
+		SurvivalClass result = null;
+
+		location = new GPSCoordinates();
+		location.setLatitude(58.4);
+		location.setLongitude(64.15);
+		location.setName("ValenciaCoordinates");
+
+		survivalClass = this.survivalClassService.create();
+		survivalClass.setMoment(new Date(System.currentTimeMillis() - 1000));
+		survivalClass.setLocation(location);
+		survivalClass.setDescription("Description SurvivalClass1");
+		survivalClass.setTitle("SurvivalClass1");
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		survivalClass.setTrip(trip);
+
+		saved = this.survivalClassService.save(survivalClass);
+		this.survivalClassService.delete(saved);
+		result = this.survivalClassService.findOne(saved.getId());
+
+		Assert.isNull(result);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testFindByTrip() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass result = null;
+		Trip trip = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		result = this.survivalClassService.findByTrip(trip.getId());
+
+		Assert.notNull(result);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testFindByManager() {
+
+		super.authenticate("manager1");
+
+		Manager manager = null;
+		Collection<SurvivalClass> survivalClasses = null;
+		manager = this.managerService.findByPrincipal();
+		survivalClasses = this.survivalClassService.findByManager(manager);
+		Assert.notNull(survivalClasses);
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testFindOneToEdit() {
+
+		super.authenticate("manager1");
+
+		SurvivalClass survivalClass = null;
+		GPSCoordinates location = null;
+		Trip trip = null;
+		SurvivalClass saved = null;
+		SurvivalClass result = null;
+
+		location = new GPSCoordinates();
+		location.setLatitude(58.4);
+		location.setLongitude(64.15);
+		location.setName("ValenciaCoordinates");
+
+		survivalClass = this.survivalClassService.create();
+		survivalClass.setMoment(new Date(System.currentTimeMillis() - 1000));
+		survivalClass.setLocation(location);
+		survivalClass.setDescription("Description SurvivalClass1");
+		survivalClass.setTitle("SurvivalClass1");
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		survivalClass.setTrip(trip);
+
+		saved = this.survivalClassService.save(survivalClass);
+		result = this.survivalClassService.findOneToEdit(saved.getId());
+
+		Assert.isTrue(saved.equals(result));
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testCheckEnrolAnExplorerToSurvivalClass() {
+		super.authenticate("explorer1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass result = null;
+		Explorer explorer = null;
+
+		explorer = this.explorerService.findByPrincipal();
+		survivalClass = this.explorerService.findAvailableSurvivalClasses(explorer.getId()).iterator().next();
+
+		result = this.survivalClassService.enrolAnExplorerToSurvivalClass(explorer, survivalClass);
+
+		Assert.isTrue(result.getExplorers().contains(explorer));
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testCheckDisenrolAnExplorerToSurvivalClass() {
+		super.authenticate("explorer1");
+
+		SurvivalClass survivalClass = null;
+		SurvivalClass result = null;
+		Explorer explorer = null;
+
+		explorer = this.explorerService.findByPrincipal();
+		survivalClass = explorer.getSurvivalClasses().iterator().next();
+
+		result = this.survivalClassService.disenrolAnExplorerToSurvivalClass(explorer, survivalClass);
+
+		Assert.isTrue(!result.getExplorers().contains(explorer));
+		Assert.isTrue(!explorer.getSurvivalClasses().contains(result));
+
+		super.unauthenticate();
+	}
+
+}

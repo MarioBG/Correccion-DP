@@ -1,0 +1,26 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+stage.edit					= Edit
+stage.create				= Create a new stage
+
+stage.title					= Title
+stage.description			= Description
+stage.price					= Price
+stage.trip					= Trip
+
+stage.save					= Save
+stage.delete				= Delete
+stage.cancel				= Cancel
+stage.display				= Display
+
+event.format.price			= {0,number,'&dollar;'0.##}
+event.pattern.price			= '&dollar;'0.##
+
+legalText.commit.error		= Can't complete your action
+legalText.commit.ok			= Action sucessfully completed

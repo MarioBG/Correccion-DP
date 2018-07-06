@@ -1,0 +1,132 @@
+<%--
+ * header.jsp
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+
+<div>
+	<img src="images/logo.png" alt="Acme-Explorer Co., Inc." />
+</div>
+
+<div>
+	<ul id="jMenu">
+		<!-- Do not forget the "fNiv" class for the first level links !! -->
+		<security:authorize access="hasRole('ADMIN')">
+			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
+				<ul>
+					<li class="arrow"></li>	
+					<li><a href="configuration/admin/edit.do"><spring:message code="master.page.administrator.configuration" /></a></li>	
+					<li><a href="manager/admin/create.do"><spring:message code="master.page.register.manager" /></a></li>
+					<li><a href="sponsor/admin/create.do"><spring:message code="master.page.register.sponsor" /></a></li>
+					<li><a href="auditor/admin/create.do"><spring:message code="master.page.register.auditor" /></a></li>
+					<li><a href="admin/listSuspicious.do"><spring:message code="master.page.suspicious" /></a></li>
+					<li><a href="dashboard/admin/list.do"><spring:message code="master.page.dashboard" /></a></li>
+				</ul>
+			</li>
+			<li><a class="fNiv" href="legalText/admin/list.do"><spring:message code="master.page.admin.legalTexts" /></a></li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('AUDITOR')">
+			<li><a class="fNiv"><spring:message	code="master.page.auditor" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="auditRecord/auditor/list.do"><spring:message code="master.page.auditor.list" /></a></li>
+					<li><a href="note/auditor/list.do"><spring:message code="master.page.auditor.note.list" /></a></li>	
+					<li><a href="auditor/edit.do"><spring:message code="master.page.auditor.edit" /></a></li>	
+				</ul>
+			</li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('EXPLORER')">
+			<li><a class="fNiv"><spring:message	code="master.page.explorer" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="explorer/edit.do"><spring:message code="master.page.explorer.edit" /></a></li>
+					<li><a href="finder/explorer/edit.do"><spring:message code="master.page.explorer.finder" /></a></li>
+					<li><a href="trip/explorer/list.do"><spring:message code="master.page.explorer.list" /></a></li>
+					<li><a href="story/explorer/list.do"><spring:message code="master.page.explorer.stories" /></a></li>
+					<li><a href="survivalClass/explorer/list-enrolled.do"><spring:message code="master.page.explorer.enrolledClasses" /></a></li>
+					<li><a href="survivalClass/explorer/list-notenrolled.do"><spring:message code="master.page.explorer.survivalClasses" /></a></li>
+					<li><a href="application/explorer/list.do"><spring:message code="master.page.application.list" /></a></li>
+					
+				</ul>
+			</li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('MANAGER')">
+			<li><a class="fNiv"><spring:message	code="master.page.manager" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="trip/manager/list.do"><spring:message code="master.page.manager.list" /></a></li>
+					<li><a href="survivalClass/manager/list.do"><spring:message code="master.page.manager.survivalClasses" /></a></li>
+					<li><a href="manager/edit.do"><spring:message code="master.page.manager.edit" /></a></li>
+					<li><a href="note/manager/list-notes.do"><spring:message code="master.page.manager.note.list" /></a></li>
+					<li><a href="application/manager/list.do"><spring:message code="master.page.application.list" /></a></li>
+				</ul>
+			</li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('SPONSOR')">
+			<li><a class="fNiv"><spring:message	code="master.page.sponsor" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/sponsor/list.do"><spring:message code="master.page.sponsor.sponsorship.list" /></a></li>
+					<li><a href="sponsor/edit.do"><spring:message code="master.page.sponsor.edit" /></a></li>
+				</ul>
+			</li>
+		</security:authorize>
+		
+			<security:authorize access="hasRole('RANGER')">
+			<li><a class="fNiv"><spring:message	code="master.page.ranger" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="ranger/edit.do"><spring:message code="master.page.ranger.edit" /></a></li>
+					<li><a href="curriculum/ranger/display.do"><spring:message code="master.page.curriculum.showMyCurriculum" /></a><li/>
+				</ul>
+		</security:authorize>
+		
+		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv"><spring:message	code="master.page.trip" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="trip/list.do"><spring:message code="master.page.anonymous.list" /></a></li>
+				</ul>
+			</li>
+			
+		</security:authorize>
+		
+		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+			<li><a class="fNiv" href="explorer/create.do"><spring:message code="master.page.register.explorer" /></a></li>
+			<li><a class="fNiv" href="ranger/create.do"><spring:message code="master.page.register.ranger" /></a></li> 
+		</security:authorize>
+		
+		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv" href="trip/list.do"><spring:message code="master.page.anonymous.list" /></a></li>
+			<li><a class="fNiv" href="folder/list.do"><spring:message code="master.page.authenticated.folders" /></a></li>
+			
+			<li><a class="fNiv"><spring:message code="master.page.profile" />(<security:authentication property="principal.username" />)</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="socialIdentity/list.do"><spring:message code="master.page.profile.socialIdentity" /></a></li>				
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
+				</ul>
+			</li>
+			<li><a class="fNiv" href="category/list.do"><spring:message code="master.page.category" /></a><li/> 
+		</security:authorize>
+	</ul>
+</div>
+
+<div>
+	<a href="?language=en">en</a> | <a href="?language=es">es</a>
+</div>
+

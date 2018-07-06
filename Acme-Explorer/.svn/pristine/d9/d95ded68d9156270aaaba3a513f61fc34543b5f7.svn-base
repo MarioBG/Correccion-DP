@@ -1,0 +1,45 @@
+<%-- list.jsp de EndorserRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="endorserRecords" id="row" requestURI="curriculum/list-endorserRecord.do" pagesize="5" class="displaytag">
+
+	<div>
+		<security:authorize access="hasRole('RANGER')">		
+			<display:column>
+					<spring:message var="endorserRecordEdit" code="endorserRecord.edit"/> 
+					<a href="curriculum/ranger/edit-endorserRecord.do?endorserRecordId=${row.id}"> ${endorserRecordEdit} </a>
+			</display:column>
+		</security:authorize>
+		
+		<display:column>
+			<spring:message var="endorserRecordDisplay" code="endorserRecord.display"/> 
+			<a href="curriculum/display-endorserRecord.do?endorserRecordId=${row.id}"> ${endorserRecordDisplay} </a>
+		</display:column>
+		
+		<spring:message var="endorserRecordFullName" code="endorserRecord.fullName"/>
+		<display:column property="fullName" title="${endorserRecordFullName}"/>
+
+		<spring:message var="endorserRecordEmail" code="endorserRecord.email"/>
+		<display:column property="email" title="${endorserRecordEmail}"/>
+		
+		<spring:message var="endorserRecordPhone" code="endorserRecord.phone"/>
+		<display:column property="phone" title="${endorserRecordPhone}"/>
+		
+		<spring:message var="endorserRecordLink" code="endorserRecord.link"/>
+		<display:column property="link" title="${endorserRecordLink}"/>
+	</div>
+</display:table>
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="endorserRecordCreate" code="endorserRecord.create"/> 
+	<a href="curriculum/ranger/create-endorserRecord.do"> ${endorserRecordCreate}</a>
+</security:authorize>

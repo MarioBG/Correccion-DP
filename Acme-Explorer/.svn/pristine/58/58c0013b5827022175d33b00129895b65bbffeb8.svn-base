@@ -1,0 +1,206 @@
+
+package controllers;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CurriculumService;
+import services.EducationRecordService;
+import services.EndorserRecordService;
+import services.MiscellaneousRecordService;
+import services.ProfessionalRecordService;
+import domain.Curriculum;
+import domain.EducationRecord;
+import domain.EndorserRecord;
+import domain.MiscellaneousRecord;
+import domain.PersonalRecord;
+import domain.ProfessionalRecord;
+
+@Controller
+@RequestMapping("/curriculum")
+public class CurriculumController extends AbstractController {
+
+	// Services ------------------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+	@Autowired
+	private EducationRecordService		educationRecordService;
+
+	@Autowired
+	private EndorserRecordService		endorserRecordService;
+
+	@Autowired
+	private MiscellaneousRecordService	miscellaneousRecordService;
+
+	@Autowired
+	private ProfessionalRecordService	professionalRecordService;
+
+
+	// Constructors --------------------------------------------------------
+
+	public CurriculumController() {
+		super();
+	}
+
+	// Listing --------------------------------------------------------------
+
+	@RequestMapping(value = "/list-educationRecord", method = RequestMethod.GET)
+	public ModelAndView listEducationRecord(@RequestParam final int curriculumId) {
+		ModelAndView result = null;
+		Collection<EducationRecord> educationRecords = null;
+
+		educationRecords = this.curriculumService.findOne(curriculumId).getEducationRecords();
+
+		result = new ModelAndView("curriculum/list-educationRecord");
+		result.addObject("educationRecords", educationRecords);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list-endorserRecord", method = RequestMethod.GET)
+	public ModelAndView listEndorserRecord(@RequestParam final int curriculumId) {
+		ModelAndView result = null;
+		Collection<EndorserRecord> endorserRecords = null;
+
+		endorserRecords = this.curriculumService.findOne(curriculumId).getEndorserRecords();
+
+		result = new ModelAndView("curriculum/list-endorserRecord");
+		result.addObject("endorserRecords", endorserRecords);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list-miscellaneousRecord", method = RequestMethod.GET)
+	public ModelAndView listMiscellaneousRecord(@RequestParam final int curriculumId) {
+		ModelAndView result = null;
+		Collection<MiscellaneousRecord> miscellaneousRecords = null;
+
+		miscellaneousRecords = this.curriculumService.findOne(curriculumId).getMiscellaneousRecords();
+
+		result = new ModelAndView("curriculum/list-miscellaneousRecord");
+		result.addObject("miscellaneousRecords", miscellaneousRecords);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list-professionalRecord", method = RequestMethod.GET)
+	public ModelAndView listProfessionalRecord(@RequestParam final int curriculumId) {
+		ModelAndView result = null;
+		Collection<ProfessionalRecord> professionalRecords = null;
+
+		professionalRecords = this.curriculumService.findOne(curriculumId).getProfessionalRecords();
+
+		result = new ModelAndView("curriculum/list-professionalRecord");
+		result.addObject("professionalRecords", professionalRecords);
+
+		return result;
+	}
+
+	// Display --------------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView displayCurriculum(@RequestParam final int curriculumId) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		PersonalRecord personalRecord = null;
+
+		curriculum = this.curriculumService.findOne(curriculumId);
+		personalRecord = curriculum.getPersonalRecord();
+
+		result = new ModelAndView("curriculum/display");
+		result.addObject("curriculum", curriculum);
+		result.addObject("personalRecord", personalRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/display-educationRecord", method = RequestMethod.GET)
+	public ModelAndView displayEducationRecord(@RequestParam final int educationRecordId) {
+		ModelAndView result = null;
+		EducationRecord educationRecord = null;
+		String cancelURI = null;
+		int curriculumId;
+
+		curriculumId = this.curriculumService.findByPrincipal().getId();
+
+		educationRecord = this.educationRecordService.findOne(educationRecordId);
+		cancelURI = "/curriculum/list-educationRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/display-educationRecord");
+		result.addObject("educationRecord", educationRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/display-endorserRecord", method = RequestMethod.GET)
+	public ModelAndView displayEndorserRecord(@RequestParam final int endorserRecordId) {
+		ModelAndView result = null;
+		EndorserRecord endorserRecord = null;
+		String cancelURI = null;
+		int curriculumId;
+
+		curriculumId = this.curriculumService.findByPrincipal().getId();
+
+		endorserRecord = this.endorserRecordService.findOne(endorserRecordId);
+		cancelURI = "/curriculum/list-endorserRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/display-endorserRecord");
+		result.addObject("endorserRecord", endorserRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/display-miscellaneousRecord", method = RequestMethod.GET)
+	public ModelAndView displayMiscellaneousRecord(@RequestParam final int miscellaneousRecordId) {
+		ModelAndView result = null;
+		MiscellaneousRecord miscellaneousRecord = null;
+		String cancelURI = null;
+		int curriculumId;
+
+		curriculumId = this.curriculumService.findByPrincipal().getId();
+
+		miscellaneousRecord = this.miscellaneousRecordService.findOne(miscellaneousRecordId);
+		cancelURI = "/curriculum/list-endorserRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/display-miscellaneousRecord");
+		result.addObject("miscellaneousRecord", miscellaneousRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/display-professionalRecord", method = RequestMethod.GET)
+	public ModelAndView displayProfessionalRecord(@RequestParam final int professionalRecordId) {
+		ModelAndView result = null;
+		ProfessionalRecord professionalRecord = null;
+		String cancelURI = null;
+		int curriculumId;
+
+		curriculumId = this.curriculumService.findByPrincipal().getId();
+		cancelURI = "/curriculum/list-professionalRecord.do?curriculumId=" + curriculumId;
+
+		professionalRecord = this.professionalRecordService.findOne(professionalRecordId);
+
+		result = new ModelAndView("curriculum/display-professionalRecord");
+		result.addObject("professionalRecord", professionalRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	// Creation  --------------------------------------------------------------
+
+	// Edition    --------------------------------------------------------------
+
+	// Ancillary methods ----------------------------------------------------
+}

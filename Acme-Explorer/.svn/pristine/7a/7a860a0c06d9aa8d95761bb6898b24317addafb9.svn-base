@@ -1,0 +1,21 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+tag.edit				= Editar
+tag.create				= Crear una nueva etiqueta
+
+tag.name				= Nombre
+
+tag.save				= Guardar
+tag.delete				= Eliminar
+tag.cancel				= Cancelar
+
+tag.confirm.delete 		= ¿Quieres eliminar esta etiqueta?
+
+tag.commit.error		= No se puede completar esta accion
+tag.commit.ok			= Accion completada exitosamente

@@ -1,0 +1,49 @@
+<%-- edit.jsp de ProfessionalRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<h3>
+	<spring:message var="professionalRecordCompany" code="professionalRecord.company"/>
+	<b>${professionalRecordCompany}:&nbsp;</b> <jstl:out value="${professionalRecord.company}"/>
+</h3>
+<br/>
+
+<spring:message var="professionalRecordStartDate" code="professionalRecord.startDate"/>
+<b>${professionalRecordStartDate}:&nbsp;</b> <jstl:out value="${professionalRecord.startDate}"/>
+<br/>
+
+<spring:message var="professionalRecordEndDate" code="professionalRecord.endDate"/>
+<b>${professionalRecordEndDate}:&nbsp;</b> <jstl:out value="${professionalRecord.endDate}"/>
+<br/>
+
+<spring:message var="professionalRecordRole" code="professionalRecord.role"/>
+<b>${professionalRecordRole}:&nbsp;</b> <jstl:out value="${professionalRecord.role}"/>
+<br/>
+
+<spring:message var="professionalRecordAttachment" code="professionalRecord.attachment"/>
+<b>${professionalRecordAttachment}:&nbsp;</b> <jstl:out value="${professionalRecord.attachment}"/>
+<br/>
+
+<spring:message var="professionalRecordComments" code="professionalRecord.comments"/>
+<b>${professionalRecordComments}:&nbsp;</b> <jstl:out value="${professionalRecord.comments}"/>
+<br/>
+
+<!-- Enlace para editar el education record -->
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="professionalRecordEditDisplay" code="professionalRecord.editDisplay"/>
+	<a href="curriculum/ranger/edit-professionalRecord.do?professionalRecordId=${professionalRecord.id}">${professionalRecordEditDisplay}</a>
+</security:authorize>
+<br/>
+
+<spring:message var="professionalRecordCancel" code="professionalRecord.cancel" />
+<input type="button" name="cancel" value="${professionalRecordCancel}" onclick="javascript: relativeRedir('${cancelURI}');" />
+<br/>

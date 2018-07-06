@@ -1,0 +1,56 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+trip.edit					= Editar
+trip.editTrip				= Editar viaje
+trip.create					= Crear nuevo viaje
+
+trip.ticker					= Ticker
+trip.title					= Título
+trip.category				= Categoría
+trip.publicationDate		= Fecha de publicación
+trip.startDate				= Fecha de inicio
+trip.endDate				= Fecha de finalización
+trip.description			= Descripción
+trip.price		   			= Precio
+trip.requirements			= Requisitos
+trip.tags					= Etiquetas
+trip.auditRecords			= Documentos de auditoría
+trip.survivalClasses		= Clases de supervivencia
+trip.stories				= Historias
+trip.manager				= Manager
+trip.ranger					= Ranger
+trip.legalText				= Texto legal
+trip.cancelledReason		= Motivo de cancelación
+
+trip.addTag					= Añadir etiqueta
+trip.addRequirement			= Añadir requisito
+trip.removeRequirement		= Eliminar requisito
+trip.createAuditRecord		= Crear un nuevo documento de auditoría
+trip.createSurvivalClass	= Crear una nueva clase de supervivencia
+trip.createStory			= Crear una nueva historia
+trip.createApplication		= Crear una nueva aplicación
+trip.createNote				= Crear una nueva nota
+trip.listStages				= Listar las etapas
+trip.listApplications		= Listar las aplicaciones
+trip.listNotes				= Listar las notas
+trip.eachRequirement		= Cada requisito separados por un punto (".")
+trip.editTag				= Editar etiqueta
+trip.assignTag				= Asignar una nueva etiqueta
+
+trip.save					= Salvar
+trip.delete					= Borrar
+trip.cancel					= Cancelar
+trip.search					= Buscar
+trip.display				= Mostrar
+
+trip.confirm.delete 		= ¿Quiere borrar este viaje?  
+trip.confirm.unregister		= ¿Quiere desregistrarse?
+
+trip.commit.error			= No se puede completar su operación
+trip.commit.ok				= Operación completada con éxito

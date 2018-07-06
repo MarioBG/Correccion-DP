@@ -1,0 +1,53 @@
+<%-- list.jsp de Application --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="applications" id="row" requestURI="application/" pagesize="5" class="displaytag">
+	<div>
+		<security:authorize access="hasRole('MANAGER')">
+		
+			<display:column>
+				<a href="application/manager/edit.do?applicationId=${row.id}"> <spring:message code="application.edit"/> </a>
+			</display:column>
+			
+			<display:column>
+				<a href="application/manager/display.do?applicationId=${row.id}"><spring:message code="application.display"/></a>
+			</display:column>
+			
+			<spring:message var="applicationExplorer" code="application.explorer"/>
+			<display:column property="explorer" title="${applicationExplorer}"/>
+					
+			<spring:message var="applicationTrip" code="application.trip"/>
+			<display:column property="trip" title="${applicationTrip}"/>
+		
+		</security:authorize>
+		<security:authorize access="hasRole('EXPLORER')">
+			<display:column>
+				<a href="application/explorer/display.do?applicationId=${row.id}"><spring:message code="application.display"/></a>
+			</display:column>
+		</security:authorize>
+		
+		<spring:message var="applicationMoment" code="application.moment"/>
+		<display:column property="moment" title="${applicationMoment}"/>
+		
+		<spring:message var="applicationRejectReason" code="application.rejectReason"/>
+		<display:column property="rejectReason" title="${applicationRejectReason}"/>
+
+		<spring:message var="applicationStatus" code="application.status"/>
+		<display:column property="status" title="${applicationStatus}"/>
+		
+	</div>
+</display:table>
+
+<security:authorize access="hasRole('EXPLORER')">
+	<spring:message var="applicationCreate" code="application.create"/> 
+	<a href="application/explorer/create.do"> ${applicationCreate}</a>
+</security:authorize>

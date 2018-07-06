@@ -1,0 +1,107 @@
+<%-- edit.jsp de Application --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<form:form action="${actionURI}" modelAttribute="application">
+	
+	<!-- Atributos ocultos -->
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	
+	<!-- Atributos ocultas de las relaciones -->
+	<form:hidden path="explorer"/>
+	
+	
+	<!-- Aquí tiene que haber un if -->
+	<spring:message var="applicationTrip" code="application.trip"/>
+	<b><form:label path="trip" title="${applicationTrip}"/>:&nbsp;</b>
+	<form:select path="trip">
+		<form:option label="----" value="0"/>
+		<form:options items="${trips}" itemLabel="ticker" itemValue="id"/>
+	</form:select>
+	<form:errors path="trip" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="applicationComments" code="application.comments"/>
+	<spring:message var="applicationCommentsAnnotation" code="application.comments.annotation"/>
+	<b><form:label path="comments" title="${applicationComments}"/>:&nbsp;</b>
+	<form:textarea path="comments"/>
+	<form:errors path="comments" cssClass="error"/>
+	<div id="commentsExplanation">
+		<spring:message code="applicationCommentsAnnotation"/>
+	</div>
+	<br/>
+	<b></b>
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<jstl:param name="applicationStatusDisabled" value="false"></jstl:param>
+	</security:authorize>
+	<security:authorize access="hasRole('EXPLORER')">
+		<jstl:param name="applicationStatusDisabled" value="true"></jstl:param>
+	</security:authorize>
+	
+	<!-- La colección de Status que reciba dependerá de lo que devuelva el controlador -->
+	<spring:message var="applicationStatus" code="application.status"/>
+	<b><form:label path="status" title="${applicationStatus}"/>:&nbsp;</b>
+	<form:select path="status" disabled="${applicationStatusDisabled}">
+		<form:option label="----" value="0"/>
+		<form:options items="${status}" itemLabel="status" itemValue="id"/> 
+	</form:select>
+	<form:errors path="status" cssClass="error"/>
+	<br/>
+	
+	<!-- Tarjeta de crédito -->
+	<fieldset>
+		<legend><spring:message code="application.creditCard.legend"/></legend>
+		
+		<spring:message var="applicationHolder" code="application.holder"/>
+		<b><form:label path="application.creditCard.holder" title="${applicationHolder}"/>:&nbsp;</b>
+		<form:input path="application.creditCard.holder"/>
+		<form:errors path="application.creditCard.holder" cssClass="error"/>
+		<br/>
+		
+		<spring:message var="applicationBrand" code="application.creditCard.brand"/>
+		<b> <form:label path="application.creditCard.brand" title="${applicationBrand}"/>:&nbsp;</b>
+		<form:input path="application.creditCard.brand"/>
+		<form:errors path="application.creditCard.brand" cssClass="error"/>
+		<br/>
+		
+		<spring:message var="applicationNumber" code="application.creditCard.number"/>
+		<b> <form:label path="application.creditCard.number" title="${applicationNumber}"/>:&nbsp;</b>
+		<form:input path="application.creditCard.number"/>
+		<form:errors path="application.creditCard.number" cssClass="error"/>
+		<br/>
+		
+		<spring:message var="applicationExpirationMonth" code="application.expirationMonth"/>
+		<b> <form:label path="application.creditCard.expirationMonth" title="${applicationExpirationMonth}"/>:&nbsp;</b>
+		<input type="number" name="applicationExpirationMonth" min="1" max="12">
+		<form:errors path="application.creditCard.expirationMonth" cssClass="error"/>
+		<br/>
+		
+		<spring:message var="applicationExpirationYear" code="application.expirationYear"/>
+		<b> <form:label path="application.creditCard.expirationYear" title="${applicationExpirationYear}"/>:&nbsp;</b>
+		<input type="number" name="applicationExpirationYear" min="${date.year}" max="3000">
+		<form:errors path="application.creditCard.expirationYear" cssClass="error"/>
+		<br/>
+		
+		<spring:message var="applicationCvv" code="application.creditCard.cvv"/>
+		<b> <form:label path="application.creditCard.cvv" title="${applicationCvv}"/>:&nbsp;</b>
+		<form:input path="application.creditCard.cvv"/>
+		<form:errors path="application.creditCard.cvv" cssClass="error"/>
+		<br/>
+	</fieldset>
+	
+	<spring:message var="applicationSave" code="application.save"/>
+	<input type="submit" name="save" value="${applicationSave}" onclick="javascript: relativeRedir('${actionURI}');"/>
+	
+	<spring:message var="applicationCancel" code="application.cancel"/> 
+	<input type="button" name="cancel" value="<spring:message code="${applicationCancel}" />" onclick="javascript: relativeRedir('${cancelURI}');" />
+</form:form>

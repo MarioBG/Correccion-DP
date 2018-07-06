@@ -1,0 +1,25 @@
+
+
+
+dashboard.minMaxAvgStddevOfApplicationsPerTrip	= The minimum, the maximum, the average, and the standard deviation of the number of applications per trip
+dashboard.minMaxAvgStddevOfTripsPerManager		= The minimum, the maximum, the average, and the standard deviation of the number of trips managed per manager
+dashboard.minMaxAvgStddevOfPricePerTrip			= The minimum, the maximum, the average, and the standard deviation of the price of the trips
+dashboard.minMaxAvgOfTripsPerRanger				= The minimum, the maximum, the average, and the standard deviation of the number of trips guided per ranger
+
+dashboard.ratioApplicationsPending				= The ratio of applications with status "PENDING"
+dashboard.ratioApplicationsDue					= The ratio of applications with status "DUE"
+dashboard.ratioApplicationsAccepted				= The ratio of applications with status "ACCEPTED"
+dashboard.ratioApplicationsCancelled			= The ratio of applications with status "CANCELLED"
+dashboard.ratioTripsCancelled					= The ratio of trips that have been cancelled versus the total number of trips that have been organised
+
+#dashboard.findTrips10MoreApplications			= The listing of trips that have got at least 10% more applications than the average, ordered by number of applications
+dashboard.findLegalTextOrderByReferenced		= A table with the number of times that each legal texts been referenced
+
+trip.ticker					= Ticker
+trip.title					= Title
+trip.category				= Category
+trip.publicationDate		= Publication date
+trip.startDate				= Start date
+trip.endDate				= End date
+trip.description   			= Description
+trip.price   				= Price

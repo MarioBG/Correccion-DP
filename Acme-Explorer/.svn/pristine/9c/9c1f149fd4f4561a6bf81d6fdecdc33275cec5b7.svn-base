@@ -1,0 +1,184 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.ActorRepository;
+import security.LoginService;
+import security.UserAccount;
+import domain.Actor;
+import domain.Folder;
+import domain.Message;
+import domain.SocialIdentity;
+
+@Service
+@Transactional
+public class ActorService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private ActorRepository		actorRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private UserAccountService	userAccountService;
+
+	@Autowired
+	private FolderService		folderService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public ActorService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Actor findOne(final int actorId) {
+
+		Actor result = null;
+		result = this.actorRepository.findOne(actorId);
+		return result;
+	}
+
+	public Collection<Actor> findAll() {
+
+		Collection<Actor> result = null;
+		result = this.actorRepository.findAll();
+		return result;
+	}
+
+	public Actor save(final Actor actor) {
+
+		Actor result = null;
+		result = this.actorRepository.save(actor);
+		return result;
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public Actor findByPrincipal() {
+
+		Actor result = null;
+		final UserAccount userAccount = LoginService.getPrincipal();
+		result = this.findByUserAccountId(userAccount.getId());
+		return result;
+	}
+
+	public Actor findByUserAccountId(final int userAccountId) {
+
+		Actor result = null;
+		result = this.actorRepository.findByUserAccountId(userAccountId);
+		return result;
+	}
+
+	public Collection<Folder> findFoldersByUserAccountId(final int userAccountId) {
+		Collection<Folder> result = null;
+		result = this.actorRepository.findFoldersByUserAccountId(userAccountId);
+		return result;
+	}
+
+	public Collection<SocialIdentity> findSocialIdentitiesByUserAccountId(final int userAccountId) {
+		Collection<SocialIdentity> result = null;
+		result = this.actorRepository.findSocialIdentitiesByUserAccountId(userAccountId);
+		return result;
+	}
+
+	public Actor findActorBySocialIdentityId(final int socialIdentityId) {
+		Actor result = null;
+		result = this.actorRepository.findActorBySocialIdentityId(socialIdentityId);
+		return result;
+	}
+
+	public Actor registerAsActor(final Actor actor) {
+		Assert.notNull(actor);
+
+		Actor result = null;
+		String hash = null;
+		Md5PasswordEncoder encoder;
+		UserAccount userAccount;
+		final UserAccount user = new UserAccount();
+
+		user.addAuthority(actor.getUserAccount().getAuthorities().iterator().next());
+		user.setUsername(actor.getUserAccount().getUsername());
+		encoder = new Md5PasswordEncoder();
+		hash = encoder.encodePassword(actor.getUserAccount().getPassword(), null);
+		user.setPassword(hash);
+		userAccount = this.userAccountService.save(user);
+		actor.setUserAccount(userAccount);
+		result = this.save(actor);
+
+		return result;
+	}
+
+	public Actor saveUserAccountPass(final Actor actor) {
+		Assert.notNull(actor);
+		final Actor result = null;
+		String hash = null;
+		Md5PasswordEncoder encoder;
+		UserAccount userAccount;
+		final UserAccount user = actor.getUserAccount();
+
+		user.setUsername(actor.getUserAccount().getUsername());
+		encoder = new Md5PasswordEncoder();
+		hash = encoder.encodePassword(actor.getUserAccount().getPassword(), null);
+		user.setPassword(hash);
+		userAccount = this.userAccountService.save(user);
+		actor.setUserAccount(userAccount);
+		//result = this.save(actor);
+
+		return result;
+	}
+
+	public Collection<Folder> foldersToRegister() {
+
+		final Folder inbox = new Folder();
+		final Folder outbox = new Folder();
+		final Folder notificationBox = new Folder();
+		final Folder trashBox = new Folder();
+		final Folder spambox = new Folder();
+		final Collection<Folder> folders = new ArrayList<Folder>();
+		final Collection<Message> inBoxMessages = new ArrayList<>();
+		final Collection<Message> outBoxMessages = new ArrayList<>();
+		final Collection<Message> notificationBoxMessages = new ArrayList<>();
+		final Collection<Message> trashBoxMessages = new ArrayList<>();
+		final Collection<Message> spamBoxMessages = new ArrayList<>();
+		final Collection<Folder> children = new ArrayList<>();
+
+		inbox.setName("inbox");
+		inbox.setMessages(inBoxMessages);
+		inbox.setChildren(children);
+		outbox.setName("outbox");
+		outbox.setMessages(outBoxMessages);
+		outbox.setChildren(children);
+		trashBox.setName("trashbox");
+		trashBox.setMessages(trashBoxMessages);
+		trashBox.setChildren(children);
+		notificationBox.setName("notificationbox");
+		notificationBox.setMessages(notificationBoxMessages);
+		notificationBox.setChildren(children);
+		spambox.setName("spambox");
+		spambox.setMessages(spamBoxMessages);
+		spambox.setChildren(children);
+
+		folders.add(notificationBox);
+		folders.add(inbox);
+		folders.add(outbox);
+		folders.add(spambox);
+		folders.add(trashBox);
+
+		return this.folderService.save(folders);
+	}
+
+}

@@ -1,0 +1,74 @@
+
+package services;
+
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Money;
+import domain.Stage;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class StageServiceTest extends AbstractTest {
+
+	@Autowired
+	private StageService	stageService;
+
+
+	@Test
+	public void testCreate() {
+
+		super.authenticate("manager1");
+
+		Stage stage = null;
+
+		stage = this.stageService.create();
+
+		stage.setPrice(new Money());
+
+		Assert.isNull(stage.getDescription());
+		Assert.notNull(stage.getPrice());
+		Assert.isNull(stage.getTitle());
+
+		super.unauthenticate();
+	}
+
+	@Test
+	public void testSave() {
+
+		super.authenticate("manager1");
+
+		Stage stage = null;
+		final Money money = new Money();
+		Stage stageSaved = null;
+		Collection<Stage> stages = null;
+
+		stage = this.stageService.create();
+		money.setAmount(10.0);
+		money.setCurrency("$");
+
+		stage.setDescription("Description test 1");
+		stage.setTitle("Title test 1");
+		stage.setPrice(money);
+
+		stageSaved = this.stageService.save(stage);
+		stages = this.stageService.findAll();
+
+		Assert.isTrue(stages.contains(stageSaved));
+
+		super.unauthenticate();
+	}
+
+}

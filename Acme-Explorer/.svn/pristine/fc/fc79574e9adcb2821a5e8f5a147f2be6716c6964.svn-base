@@ -1,0 +1,74 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Enlaces 
+curriculum.editPersonalRecord             = Editar la información personal
+curriculum.createEducationRecord          = Crear un registro de formación
+curriculum.createEndorserRecord           = Crear un registro de recomendación
+curriculum.createMiscellaneousRecord      = Crear un registro variado
+curriculum.createProfessionalRecord       = Crear un registro profesional
+curriculum.edit                           = Editar
+
+# Atributos - curriculum:
+curriculum.ticker                         = Ticker
+
+# Atributos - personalRecord:
+curriculum.personalRecord.fullname        = Nombre completo
+curriculum.personalRecord.email           = Correo electrónico
+curriculum.personalRecord.photo           = Fotografía
+curriculum.personalRecord.phone           = Teléfono
+curriculum.personalRecord.link            = Enlace
+
+# Atributos - educationRecord:
+# curriculum.educationRecord.title          = Título
+curriculum.educationRecord.startDate      = Fecha de comienzo
+curriculum.educationRecord.endDate        = Fecha de fin
+curriculum.educationRecord.institution    = Institución
+curriculum.educationRecord.attachment     = Adjunto
+curriculum.educationRecord.comments       = Comentarios
+
+# Atributos - endorserRecord:
+curriculum.endorserRecord.fullName        = Nombre completo
+curriculum.endorserRecord.email           = Correo electrónico
+curriculum.endorserRecord.phone           = Teléfono
+curriculum.endorserRecord.link            = Enlace
+curriculum.endorserRecord.comments        = Comentarios
+
+# Atributos - professionalRecord:
+curriculum.professionalRecord.company     = Compañia
+curriculum.professionalRecord.startDate   = Fecha de comienzo
+curriculum.professionalRecord.endDate     = Fecha de fin
+curriculum.professionalRecord.role        = Rol
+curriculum.professionalRecord.attachment  = Adjunto
+curriculum.professionalRecord.comments    = Comentarios
+
+# Atributos - miscellaneousRecord:
+
+curriculum.miscellaneousRecord.title      = Título
+curriculum.miscellaneousRecord.attachment = Adjunto
+curriculum.miscellaneousRecord.comments   = Comentarios
+
+# Fieldset (legend)
+curriculum.personalRecord.legend          = Información personal
+curriculum.educationRecord.legend         = Registros de formación
+curriculum.endorserRecord.legend          = Registros de recomendación
+curriculum.miscellaneousRecord.legend     = Registros variados
+curriculum.professionalRecord.legend      = Registros professionales
+
+# Botones:
+curriculum.create				          = Crear
+curriculum.cancel                         = Cancelar
+curriculum.return                         = Volver a la página de inicio
+curriculum.deleteCurriculum               = Borrar curriculum
+
+# Otros
+curriculum.isEmpty                        = El curriculum no existe
+
+# Información sobre la ejecución de las acciones
+curriculum.commit.error                   = No se puede completar la acción
+curriculum.commit.ok                      = Acción completada satisfactoriamente

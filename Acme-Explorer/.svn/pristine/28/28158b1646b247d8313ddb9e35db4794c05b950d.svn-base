@@ -1,0 +1,18 @@
+note.trip				    = Viaje
+note.reply                  = Responder
+note.replied                = Respondido
+
+note.moment                 = Momento
+note.remark                 = Observación
+note.replyMoment            = Momento de respuesta
+
+
+note.save                   = Guardar
+note.create                 = Crear
+
+note.cancel				    = Cancelar
+note.auditor                = Auditor
+
+note.display                = Mostrar
+
+note.format.date            = {0,date,dd/MM/yyyy HH:mm}

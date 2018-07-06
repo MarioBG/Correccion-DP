@@ -1,0 +1,108 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.EndorserRecordRepository;
+import domain.Configuration;
+import domain.Curriculum;
+import domain.EndorserRecord;
+import domain.Ranger;
+
+@Service
+@Transactional
+public class EndorserRecordService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private EndorserRecordRepository	endorserRecordRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+	@Autowired
+	private RangerService				rangerService;
+
+	@Autowired
+	private ConfigurationService		configurationService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public EndorserRecordService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public EndorserRecord create() {
+
+		EndorserRecord endorserRecord = null;
+
+		endorserRecord = new EndorserRecord();
+
+		return endorserRecord;
+	}
+
+	public EndorserRecord save(final EndorserRecord endorserRecord) {
+
+		Ranger ranger = null;
+		Curriculum curriculum = null;
+		EndorserRecord result = null;
+
+		ranger = this.rangerService.findByPrincipal();
+		curriculum = ranger.getCurriculum();
+
+		endorserRecord.setPhone(this.addPrefixPhone(endorserRecord.getPhone()));
+
+		result = this.endorserRecordRepository.save(endorserRecord);
+		if (endorserRecord.getId() == 0) {
+			curriculum.getEndorserRecords().add(result);
+			this.curriculumService.save(curriculum);
+		}
+
+		return result;
+
+	}
+	public void delete(final EndorserRecord endorserRecord) {
+
+		Assert.notNull(endorserRecord);
+
+		Ranger ranger = null;
+		Curriculum curriculum = null;
+
+		ranger = this.rangerService.findByPrincipal();
+		curriculum = ranger.getCurriculum();
+
+		curriculum.getEndorserRecords().remove(endorserRecord);
+		this.curriculumService.save(curriculum);
+
+		this.endorserRecordRepository.delete(endorserRecord);
+	}
+
+	public EndorserRecord findOne(final int id) {
+		return this.endorserRecordRepository.findOne(id);
+	}
+
+	public Collection<EndorserRecord> findAll() {
+		return this.endorserRecordRepository.findAll();
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public String addPrefixPhone(final String phone) {
+		String result = phone;
+		final Configuration confi = this.configurationService.findAll().iterator().next();
+		if (result.matches("^[0-9]{4,25}$"))
+			result = confi.getCountryCode() + " " + phone;
+		return result;
+	}
+}

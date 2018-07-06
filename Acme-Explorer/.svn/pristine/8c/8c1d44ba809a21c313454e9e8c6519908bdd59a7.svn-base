@@ -1,0 +1,98 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.StageRepository;
+import security.Authority;
+import domain.Manager;
+import domain.Stage;
+
+@Service
+@Transactional
+public class StageService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private StageRepository	stageRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private ManagerService	managerService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public StageService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Stage create() {
+
+		final Stage res = new Stage();
+
+		return res;
+
+	}
+
+	public Stage findOne(final int stageId) {
+
+		Manager manager = null;
+
+		manager = this.managerService.findByPrincipal();
+		final Collection<Authority> authorities = manager.getUserAccount().getAuthorities();
+		final String authority = authorities.toArray()[0].toString();
+
+		Assert.isTrue((authority.equals("MANAGER")));
+
+		Assert.notNull(stageId);
+
+		final Stage res = this.stageRepository.findOne(stageId);
+		return res;
+
+	}
+
+	public Collection<Stage> findAll() {
+
+		Manager manager = null;
+
+		manager = this.managerService.findByPrincipal();
+		final Collection<Authority> authorities = manager.getUserAccount().getAuthorities();
+		final String authority = authorities.toArray()[0].toString();
+
+		Assert.isTrue((authority.equals("MANAGER")));
+
+		final Collection<Stage> res = this.stageRepository.findAll();
+		return res;
+
+	}
+
+	public Stage save(final Stage stage) {
+
+		Manager manager = null;
+
+		manager = this.managerService.findByPrincipal();
+		final Collection<Authority> authorities = manager.getUserAccount().getAuthorities();
+		final String authority = authorities.toArray()[0].toString();
+
+		Assert.isTrue((authority.equals("MANAGER")));
+
+		Assert.notNull(stage);
+
+		final Stage res = this.stageRepository.save(stage);
+		return res;
+
+	}
+
+	// Other business methods -------------------------------------------------
+
+}

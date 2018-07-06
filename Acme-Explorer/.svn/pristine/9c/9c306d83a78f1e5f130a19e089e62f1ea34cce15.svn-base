@@ -1,0 +1,190 @@
+<%-- list.jsp de Category --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<jstl:choose>
+	<jstl:when test="${not empty curriculum}">
+		<h3>
+			<spring:message var="curriculumTicker" code="curriculum.ticker"/>
+			<b>${curriculumTicker}:&nbsp;</b> <jstl:out value="${curriculum.ticker}"/>
+		</h3>
+		<br/>
+		
+		<spring:message var="curriculumEdit" code="curriculum.edit"/>
+		
+		<!-- Personal Record -->
+		<fieldset>
+			<spring:message var="curriculumPersonalRecordLegend" code="curriculum.personalRecord.legend"/>
+			<legend><h2><jstl:out value="${curriculumPersonalRecordLegend}"/>:&nbsp;</h2></legend>
+			
+			<spring:message var="curriculumPersonalRecordFullname" code="curriculum.personalRecord.fullname"/>
+			<b>${curriculumPersonalRecordFullname}:&nbsp;</b><jstl:out value="${curriculum.personalRecord.fullName}"/>
+			<br/>
+			
+			<spring:message var="curriculumPersonalRecordPhoto" code="curriculum.personalRecord.photo"/>
+			<b> ${curriculumPersonalRecordPhoto}:&nbsp;</b><jstl:out value="${curriculum.personalRecord.photo}"/>
+			<br/>
+			
+			<spring:message var="curriculumPersonalRecordEmail" code="curriculum.personalRecord.email"/>
+			<b> ${curriculumPersonalRecordEmail}:&nbsp;</b>  <jstl:out value="${curriculum.personalRecord.email}"/>
+			<br/>
+			
+			<spring:message var="curriculumPersonalRecordPhone" code="curriculum.personalRecord.phone"/>
+			<b> ${curriculumPersonalRecordPhone}:&nbsp;</b> <jstl:out value="${curriculum.personalRecord.phone}"/>
+			<br/>
+			
+			<spring:message var="curriculumPersonalRecordLink" code="curriculum.personalRecord.link"/>
+			<b> ${curriculumPersonalRecordLink}:&nbsp;</b> <jstl:out value="${curriculum.personalRecord.link}"/>
+			<br/>
+		
+		</fieldset>
+		<br/>
+		
+		<!-- TODO -->
+		<!-- Mostrando los education records  -->
+		
+		<fieldset> 
+			<spring:message var="curriculumEducationRecordLegend" code="curriculum.educationRecord.legend"/>
+			<spring:message var="curriculumEducationRecordStartDate" code="curriculum.educationRecord.startDate"/>
+			<spring:message var="curriculumEducationRecordEndDate" code="curriculum.educationRecord.endDate"/>
+			<spring:message var="curriculumEducationRecordInstitution" code="curriculum.educationRecord.institution"/>
+			<spring:message var="curriculumEducationRecordAttachment" code="curriculum.educationRecord.attachment"/>
+			<spring:message var="curriculumEducationRecordComments" code="curriculum.educationRecord.comments"/>
+			<legend><h2><jstl:out value="${curriculumEducationRecordLegend}"/>:&nbsp;</h2></legend>
+			
+			<jstl:forEach items="${educationRecords}" var="row" >
+				<fieldset>
+					<legend><b><jstl:out value="${row.title}"/>:&nbsp;</b></legend>
+					<table style="border: none">
+						<tr>
+							<td><b>${curriculumEducationRecordStartDate}</b>:&nbsp; <fmt:formatDate value="${row.startDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+							<td><b>${curriculumEducationRecordEndDate}</b>:&nbsp; <fmt:formatDate value="${row.endDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+						</tr>
+						<tr>
+							<td><b>${curriculumEducationRecordInstitution}</b>:&nbsp; ${row.institution}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumEducationRecordAttachment}</b>:&nbsp; ${row.attachment}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumEducationRecordComments}</b>:&nbsp; ${row.comments}</td>
+						</tr>
+					</table>
+				</fieldset>
+				<br/>
+			</jstl:forEach>
+		</fieldset>
+		<br/>
+		
+		<!-- Mostrando los endorser records  -->
+		
+		<fieldset> 
+			<spring:message var="curriculumEndorserRecordLegend" code="curriculum.endorserRecord.legend"/>
+			<spring:message var="curriculumEndorserRecordEmail" code="curriculum.endorserRecord.email"/>
+			<spring:message var="curriculumEndorserRecordPhone" code="curriculum.endorserRecord.phone"/>
+			<spring:message var="curriculumEndorserRecordLink" code="curriculum.endorserRecord.link"/>
+			<spring:message var="curriculumEndorserRecordComments" code="curriculum.endorserRecord.comments"/>
+			
+			<legend><h2><jstl:out value="${curriculumEndorserRecordLegend}"/>:&nbsp;</h2></legend>
+			
+			<jstl:forEach items="${endorserRecords}" var="row" >
+				
+				<fieldset>
+					<legend><b><jstl:out value="${row.fullName}"/>:&nbsp;</b></legend>
+					<table style="border: none">
+						<tr>
+							<td><b>${curriculumEndorserRecordEmail}</b>:&nbsp; ${row.email}</td>
+							<td><b>${curriculumEndorserRecordPhone}</b>:&nbsp; ${row.phone}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumEndorserRecordLink}</b>:&nbsp; ${row.link}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumEndorserRecordComments}</b>:&nbsp; ${row.comments}</td>
+						</tr>
+					</table>
+				</fieldset>
+				<br/>
+			</jstl:forEach>
+		</fieldset>
+		<br/>
+		
+		<!-- Mostrando los professional records  -->
+		
+		<fieldset> 
+			<spring:message var="curriculumProfessionalRecordLegend" code="curriculum.professionalRecord.legend"/>
+			<spring:message var="curriculumProfessionalRecordStartDate" code="curriculum.professionalRecord.startDate"/>
+			<spring:message var="curriculumProfessionalRecordEndDate" code="curriculum.professionalRecord.endDate"/>
+			<spring:message var="curriculumProfessionalRecordAttachment" code="curriculum.professionalRecord.attachment"/>
+			<spring:message var="curriculumProfessionalRecordRole" code="curriculum.professionalRecord.role"/>
+			<spring:message var="curriculumProfessionalRecordComments" code="curriculum.professionalRecord.comments"/>
+			<legend><h2><jstl:out value="${curriculumProfessionalRecordLegend}"/>:&nbsp;</h2></legend>
+			
+			<jstl:forEach items="${professionalRecords}" var="row" >
+				
+				<fieldset>
+					<legend><b><jstl:out value="${row.company}"/>:&nbsp;</b></legend>
+					<table style="border: none">
+						<tr>
+							<td><b>${curriculumProfessionalRecordStartDate}</b>:&nbsp; <fmt:formatDate value="${row.startDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+							<td><b>${curriculumProfessionalRecordEndDate}</b>:&nbsp; <fmt:formatDate value="${row.endDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+						</tr>
+						<tr>
+							<td><b>${curriculumProfessionalRecordAttachment}</b>:&nbsp; ${row.attachment}</td>
+							<td><b>${curriculumProfessionalRecordRole}</b>:&nbsp; ${row.role}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumProfessionalRecordComments}</b>:&nbsp; ${row.comments}</td>
+						</tr>
+					</table>
+
+				</fieldset>
+				<br/>
+			</jstl:forEach>
+		</fieldset>
+		<br/>
+		
+		
+		
+		<!-- Mostrando los miscellaneous records  -->
+		
+		<fieldset> 
+			<spring:message var="curriculumMiscellaneousRecordLegend" code="curriculum.miscellaneousRecord.legend"/>
+			<spring:message var="curriculumMiscellaneousRecordAttachment" code="curriculum.miscellaneousRecord.attachment"/>
+			<spring:message var="curriculumMiscellaneousRecordComments" code="curriculum.miscellaneousRecord.comments"/>
+			<legend><h2><jstl:out value="${curriculumMiscellaneousRecordLegend}"/>:&nbsp;</h2></legend>
+			
+			
+			<jstl:forEach items="${miscellaneousRecords}" var="row" >
+				
+				<fieldset>
+					<legend><b><jstl:out value="${row.title}"/>:&nbsp;</b></legend>
+					<table style="border: none">
+						<tr>
+							<td><b>${curriculumMiscellaneousRecordAttachment}</b>:&nbsp; ${row.attachment}</td>
+						</tr>
+						<tr>
+							<td><b>${curriculumMiscellaneousRecordComments}</b>:&nbsp; ${row.comments}</td>
+						</tr>
+					</table>
+				</fieldset>
+				<br/>
+			</jstl:forEach>
+		</fieldset>
+		<br/>
+			
+		<spring:message var="curriculumEdit" code="curriculum.edit" />
+		<a href="curriculum/ranger/edit.do?curriculumId=${curriculum.id}">${curriculumEdit}</a>
+		
+		<spring:message var="curriculumReturn" code="curriculum.return" />
+		<a href="welcome/index.do">${curriculumReturn}</a>
+	</jstl:when>
+</jstl:choose>

@@ -1,0 +1,41 @@
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+	
+<display:table name="stories" id="row" requestURI="${requestURI }"
+	pagesize="4" class="displaytag">
+			  
+		<security:authorize access="hasRole('EXPLORER')">
+			<display:column>
+			<a href="story/explorer/edit.do?storyId=${row.id}"><spring:message code="story.edit"/></a>
+			</display:column>
+		</security:authorize>
+		
+		<display:column>
+				<a href="story/display.do?storyId=${row.id}"><spring:message code="story.display"/></a>
+		</display:column>
+		
+		<spring:message code="story.title" var="titleHeader"/>
+		<display:column property="title" title="${titleHeader}"/>
+		
+		<spring:message code="story.text" var="textHeader"/>
+		<display:column property="text" title="${textHeader}"/>
+	
+		<spring:message code="story.trip" var="tripHeader"/>
+		<display:column property="trip.title" title="${tripHeader}" />
+		
+		<spring:message code="story.attachments" var="attachmentsHeader"/>
+		<display:column property="attachments" title="${attachmentsHeader}" />		
+	
+</display:table>
+		<security:authorize access="hasRole('EXPLORER')">
+			<a href="story/explorer/create.do"><spring:message code="story.create"></spring:message></a>
+		</security:authorize>

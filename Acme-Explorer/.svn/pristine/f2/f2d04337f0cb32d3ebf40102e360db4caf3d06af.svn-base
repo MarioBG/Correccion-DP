@@ -1,0 +1,83 @@
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+        pageEncoding="ISO-8859-1" %>
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="security"
+          uri="http://www.springframework.org/security/tags" %>
+<%@taglib prefix="display" uri="http://displaytag.sf.net" %>
+
+
+<%--
+  ~ Copyright © 2017. All information contained here included the intellectual and technical concepts are property of Null Point Software.
+  --%>
+
+<form:form action="sponsor/admin/register.do" modelAttribute="sponsor" onsubmit="return validateForm()">
+
+    <form:hidden path="id"/>
+    <form:hidden path="version"/>
+	<form:hidden path="userAccount.id" />
+	<form:hidden path="userAccount.version" />
+	<form:hidden path="userAccount.authorities" />
+	
+	<form:hidden path="sponsorships" />
+	<form:hidden path="folders" />
+	<form:hidden path="socialIdentities" />
+	
+	<form:label path="userAccount.username"><spring:message code="userAccount.username" /></form:label>
+	<form:input path="userAccount.username" />
+	<form:errors path="userAccount.username" cssClass="error"  />
+	<br />
+
+	<form:label path="userAccount.password"><spring:message code="userAccount.password" /></form:label>
+	<form:password path="userAccount.password" />
+	<form:errors path="userAccount.password" cssClass="error"  />
+	<br />
+	
+	<form:label path="name"><spring:message code="sponsor.name"/></form:label>
+	<form:input path="name"/>
+	<form:errors path="name" cssClass="error"/>
+	<br/>
+	
+	<form:label path="surname"><spring:message code="sponsor.surname"/></form:label>
+	<form:input path="surname"/>
+	<form:errors path="surname" cssClass="error"/>
+	<br/>
+	
+	<form:label path="email"><spring:message code="sponsor.email"/></form:label>
+	<form:input path="email"/>
+	<form:errors path="email" cssClass="error"/>
+	<br/>
+	
+	<form:label path="address"><spring:message code="sponsor.address"/></form:label>
+	<form:input path="address"/>
+	<form:errors path="address" cssClass="error"/>
+	<br/>
+	
+	<form:label path="phone">
+  	 <spring:message code="sponsor.phone" />
+  	</form:label>
+  	<form:input id="phoneId" path="phone" />
+  	<form:errors cssClass="error" path="phone" />
+  	<br />
+
+   	<input type="submit" name="save" value="<spring:message code="sponsor.save"/>" />
+	
+	<input type="submit" name="cancel" value="<spring:message code="sponsor.cancel" />" />
+
+</form:form>
+
+<script>
+
+function validateForm() {
+ <spring:message code="sponsor.phone.ask" var="ask"/>
+    var x = document.getElementById("phoneId").value;
+    var patt = new RegExp("^(\\+[1-9][0-9]{2}|\\+[1-9][0-9]|\\+[1-9])(\\s\\([1-9][0-9]{2}\\)|\\ \\([1-9][0-9]\\)|\\ \\([1-9]\\))?(\\ \\d{4,})|(\\d{4,})$");
+    if(x != "" && !patt.test(x)){
+        return confirm('<jstl:out value="${ask}"/>');
+    } 
+}
+
+</script>

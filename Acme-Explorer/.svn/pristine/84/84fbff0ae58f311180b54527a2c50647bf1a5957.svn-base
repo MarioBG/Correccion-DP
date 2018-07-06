@@ -1,0 +1,29 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+explorer.name 					= Name
+explorer.surname				= Surname
+explorer.email					= Email
+explorer.address				= Address
+explorer.phone					= Phone
+
+explorer.save					= Save
+explorer.cancel					= Cancel
+
+explorer.userAccount.username	= Username
+explorer.userAccount.password	= Password
+	
+explorer.contacts				= List Contacts
+explorer.phone.ask				= Incorrect pattern, are you sure to save? 
+
+explorer.commit.error			= Can't complete your action
+explorer.commit.ok				= Action sucessfully completed
+
+
+
+

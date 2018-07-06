@@ -1,0 +1,85 @@
+
+package services;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.MiscellaneousRecord;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class MiscellaneousRecordServiceTest extends AbstractTest {
+
+	// Service under test ---------------------------------
+
+	@Autowired
+	private MiscellaneousRecordService	miscellaneousRecordService;
+
+
+	// Tests -------------------------------------------
+
+	@Test
+	public void testCreate() {
+
+		MiscellaneousRecord miscellaneousRecord = null;
+
+		super.authenticate("ranger1");
+
+		miscellaneousRecord = this.miscellaneousRecordService.create();
+		Assert.isNull(miscellaneousRecord.getTitle());
+		Assert.isNull(miscellaneousRecord.getAttachment());
+		Assert.isNull(miscellaneousRecord.getComments());
+
+		super.unauthenticate();
+
+	}
+	@Test
+	public void testSave() {
+
+		MiscellaneousRecord miscellaneousRecord = null;
+		MiscellaneousRecord saved = null;
+
+		super.authenticate("ranger1");
+
+		miscellaneousRecord = this.miscellaneousRecordService.create();
+		miscellaneousRecord.setTitle("Test title");
+		miscellaneousRecord.setAttachment("http://www.attachment.com/test.html");
+		saved = this.miscellaneousRecordService.save(miscellaneousRecord);
+
+		Assert.isTrue(saved.getTitle().equals("Test title"));
+		Assert.isTrue(this.miscellaneousRecordService.findAll().contains(saved));
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testDelete() {
+
+		MiscellaneousRecord miscellaneousRecord = null;
+		MiscellaneousRecord saved = null;
+
+		super.authenticate("ranger1");
+
+		miscellaneousRecord = this.miscellaneousRecordService.create();
+		miscellaneousRecord.setTitle("Test title");
+		miscellaneousRecord.setAttachment("http://www.attachment.com/test.html");
+		saved = this.miscellaneousRecordService.save(miscellaneousRecord);
+		Assert.isTrue(this.miscellaneousRecordService.findAll().contains(saved));
+		this.miscellaneousRecordService.delete(saved);
+		Assert.isTrue(!this.miscellaneousRecordService.findAll().contains(saved));
+
+		super.unauthenticate();
+
+	}
+}

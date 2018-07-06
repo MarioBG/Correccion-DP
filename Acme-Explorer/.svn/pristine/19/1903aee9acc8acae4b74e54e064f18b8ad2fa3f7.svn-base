@@ -1,0 +1,42 @@
+<%-- list.jsp de MiscellaneousRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="miscellaneousRecords" id="row" requestURI="curriculum/list-miscellaneousRecord.do" pagesize="5" class="displaytag">
+
+	<div>
+		<security:authorize access="hasRole('RANGER')">		
+			<display:column>
+					<spring:message var="miscellaneousRecordEdit" code="miscellaneousRecord.edit"/> 
+					<a href="curriculum/ranger/edit-miscellaneousRecord.do?miscellaneousRecordId=${row.id}"> ${miscellaneousRecordEdit} </a>
+			</display:column>
+		</security:authorize>
+		
+		<display:column>
+			<spring:message var="miscellaneousRecordDisplay" code="miscellaneousRecord.display"/> 
+			<a href="curriculum/display-miscellaneousRecord.do?miscellaneousRecordId=${row.id}"> ${miscellaneousRecordDisplay} </a>
+		</display:column>
+		
+		<spring:message var="miscellaneousRecordTitle" code="miscellaneousRecord.title"/>
+		<display:column property="title" title="${miscellaneousRecordTitle}"/>
+		
+		<spring:message var="miscellaneousRecordAttachment" code="miscellaneousRecord.attachment"/>
+		<display:column property="attachment" title="${miscellaneousRecordAttachment}"/>
+		
+		<spring:message var="miscellaneousRecordComments" code="miscellaneousRecord.comments"/>
+		<display:column property="comments" title="${miscellaneousRecordComments}"/>
+	</div>
+</display:table>
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="miscellaneousRecordCreate" code="miscellaneousRecord.create"/> 
+	<a href="curriculum/ranger/create-miscellaneousRecord.do"> ${miscellaneousRecordCreate}</a>
+</security:authorize>

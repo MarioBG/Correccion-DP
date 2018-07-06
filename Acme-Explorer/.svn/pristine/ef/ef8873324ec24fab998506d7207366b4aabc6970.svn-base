@@ -1,0 +1,116 @@
+
+package controllers;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import security.Authority;
+import services.ActorService;
+import services.ExplorerService;
+import services.FinderService;
+import services.FolderService;
+import domain.Explorer;
+
+@Controller
+@RequestMapping("/explorer")
+public class ExplorerController extends AbstractController {
+
+	// Services ---------------------------------------------------------------
+	@Autowired
+	public ExplorerService	explorerService;
+
+	@Autowired
+	public FolderService	folderService;
+
+	@Autowired
+	public FinderService	finderService;
+
+	@Autowired
+	public ActorService		actorService;
+
+
+	// Constructor -------------------------------------------------------------
+	public ExplorerController() {
+		super();
+	}
+
+	// Creating  --------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		final Explorer user = this.explorerService.create();
+		result = this.createEditModelAndView(user);
+		return result;
+	}
+
+	// Register ---------------------------------------------------------
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	public ModelAndView register(@Valid final Explorer explorer, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(explorer);
+		else
+			try {
+				this.actorService.registerAsActor(explorer);
+				result = new ModelAndView("redirect:../security/login.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(explorer, "explorer.commit.error");
+			}
+		return result;
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "cancel")
+	public ModelAndView cancelRegisteration(final Explorer explorer) {
+		ModelAndView result;
+
+		try {
+			this.folderService.delete(explorer.getFolders());
+			this.finderService.delete(explorer.getFinder());
+			result = new ModelAndView("redirect:../welcome/index.do");
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(explorer, "explorer.commit.error");
+		}
+		return result;
+	}
+
+	// Ancillary methods ------------------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Explorer user) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(user, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Explorer explorer, final String message) {
+		ModelAndView result;
+		Collection<Authority> authorities;
+		Authority authorityExplorer;
+
+		authorityExplorer = new Authority();
+		authorities = new ArrayList<>();
+		authorityExplorer.setAuthority(Authority.EXPLORER);
+		authorities.add(authorityExplorer);
+
+		result = new ModelAndView("explorer/register");
+		result.addObject("explorer", explorer);
+		result.addObject("authorities", authorities);
+		result.addObject("message", message);
+
+		return result;
+	}
+}

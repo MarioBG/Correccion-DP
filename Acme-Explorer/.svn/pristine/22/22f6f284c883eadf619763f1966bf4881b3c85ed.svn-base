@@ -1,0 +1,23 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+explorer.name 					= Nombre
+explorer.surname				= Apellidos
+explorer.email					= Email
+explorer.address				= Dirección
+explorer.phone					= Número teléphono
+
+explorer.save					= Guardar
+explorer.cancel					= Cancelar
+
+userAccount.username				= Nombre cuenta de usuario
+userAccount.password				= Contraseña cuenta de usuario
+	
+explorer.commit.error			= No se puede completar su operación
+
+explorer.phone.ask				= Patrón incorrecto, ¿estas seguro de guardarlo? 

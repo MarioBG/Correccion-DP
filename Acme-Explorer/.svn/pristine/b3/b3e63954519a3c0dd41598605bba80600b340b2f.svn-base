@@ -1,0 +1,25 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+category.edit                   = Editar
+category.trip                   = Mostrar viajes
+category.name                   = Nombre
+category.parentCategory         = Categoría padre
+category.childrenCategory       = Mostrar categorías hijas
+category.create                 = Crear una categoría
+category.subcategories          = Subcategorías
+category.trips                  = Viajes por categoria
+
+# Texto de los botones
+category.save                   = Guardar
+category.delete                 = Borrar
+category.cancel                 = Cancelar
+ 
+# Información sobre la ejecución de las acciones
+category.commit.error           = No se puede completar su operación
+category.commit.ok              = Operación completada con éxito

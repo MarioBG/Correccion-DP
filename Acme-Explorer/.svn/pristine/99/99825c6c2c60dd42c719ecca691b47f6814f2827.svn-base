@@ -1,0 +1,8 @@
+finder.keyword				= keyword
+finder.minimumprice			= Minimum price
+finder.maximumprice			= Maximum price
+finder.rangeStartingDate	= Range of starting date
+
+finder.search               = Search
+
+finder.cancel				= Cancel

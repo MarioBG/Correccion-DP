@@ -1,0 +1,234 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.CategoryRepository;
+import security.Authority;
+import domain.Actor;
+import domain.Admin;
+import domain.Category;
+import domain.Trip;
+
+@Service
+@Transactional
+public class CategoryService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private CategoryRepository	categoryRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private AdminService		adminService;
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private TripService			tripService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public CategoryService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Category create() {
+
+		Collection<Trip> trips = null;
+		Collection<Category> children = null;
+		Category res = null;
+
+		children = new ArrayList<Category>();
+		trips = new ArrayList<Trip>();
+
+		res = new Category();
+
+		res.setTrips(trips);
+		res.setChildrenCategories(children);
+
+		return res;
+	}
+
+	public Category findOne(final int categoryId) {
+
+		Assert.notNull(categoryId);
+		final Category res = this.categoryRepository.findOne(categoryId);
+		return res;
+
+	}
+
+	public Collection<Category> findAll() {
+
+		final Admin admin = null;
+		final Collection<Authority> authorities = null;
+		final String authority = null;
+		Collection<Category> result = null;
+		// TODO: hay que comprobar como podemos realizar esta comprobación
+		//		admin = this.adminService.findByPrincipal();
+		//		authorities = admin.getUserA	ccount().getAuthorities();
+		//		authority = authorities.toArray()[0].toString();
+		//
+		//		Assert.isTrue((authority.equals("ADMIN")));
+
+		result = this.categoryRepository.findAll();
+		return result;
+
+	}
+	public Category save(final Category category) {
+
+		Actor actor = null;
+		Collection<Authority> test = null;
+		String authority = null;
+		Category saved = null;
+		Integer parentId = null;
+
+		Assert.notNull(category);
+		//Assert.notNull(category.getParentCategory());
+		Assert.isTrue(!category.getName().equals("CATEGORY"));
+		Assert.isTrue(!category.getName().equals(category.getParentCategory().getName()));
+
+		parentId = category.getParentCategory().getId();
+		actor = this.actorService.findByPrincipal();
+		test = actor.getUserAccount().getAuthorities();
+		authority = test.toArray()[0].toString();
+
+		Assert.isTrue(authority.equals("MANAGER") || authority.equals("ADMIN"));
+
+		// Comprobamos que el nombre del category no coincide con el nombre de los hijos del category 
+		// padre ni con el nombre del padre
+		if (category.getId() == 0) {
+			Assert.isTrue(!this.categoryRepository.existsThisCategoryName(category.getName(), parentId));
+			saved = this.categoryRepository.save(category);
+			saved.getParentCategory().getChildrenCategories().add(saved);
+		} else {
+			final String oldName = this.categoryRepository.findOne(category.getId()).getName();
+
+			if (category.getName().equals(oldName)) {		// Comprobamos si no se ha modificado el nombre
+				saved = this.categoryRepository.save(category);
+				saved.getParentCategory().getChildrenCategories().add(saved);
+			} else {
+				Assert.isTrue(!this.categoryRepository.existsThisCategoryName(category.getName(), parentId));
+				saved = this.categoryRepository.save(category);
+				saved.getParentCategory().getChildrenCategories().add(saved);
+			}
+		}
+
+		return saved;
+
+	}
+	public void delete(final Category category) {
+
+		Admin admin = null;
+		Collection<Authority> authorities = null;
+		String authority = null;
+		Category categoryToDelete = null;
+		Category parent = null;
+
+		admin = this.adminService.findByPrincipal();
+		authorities = admin.getUserAccount().getAuthorities();
+		authority = authorities.toArray()[0].toString();
+		categoryToDelete = this.categoryRepository.findOne(category.getId());
+
+		// Comprobamos que los parámetros de entrada son correctos 
+		Assert.isTrue((authority.equals("ADMIN")));
+		Assert.notNull(category);
+		Assert.isTrue(!category.getName().equals("CATEGORY"));
+
+		parent = categoryToDelete.getParentCategory();
+
+		if (!categoryToDelete.getChildrenCategories().isEmpty())
+			for (final Category c : categoryToDelete.getChildrenCategories()) {
+				c.setParentCategory(parent);
+				this.save(c);
+			}
+
+		if (!categoryToDelete.getTrips().isEmpty())
+			for (final Trip t : categoryToDelete.getTrips()) {
+				t.setCategory(parent);
+				parent.getTrips().add(t);
+				this.saveDelete(parent);
+				this.tripService.save(t);
+			}
+
+		parent.getChildrenCategories().remove(categoryToDelete);
+
+		this.saveDelete(parent);
+
+		this.categoryRepository.delete(categoryToDelete);
+
+		//		if (category.getChildrenCategories().isEmpty()) {
+		//			final Category cat = this.categoryRepository.findOne(category.getId());
+		//			this.categoryRepository.delete(cat);
+		//		} else {
+		//final Category cat = this.categoryRepository.findOne(category.getId());
+		//category.setParentCategory(null);
+		//category.getChildrenCategories().clear();
+		//this.categoryRepository.delete(category);
+		//		}
+
+	}
+	// Other business methods -------------------------------------------------
+
+	public Collection<Trip> findAllTripByCategoryId(final int categoryId) {
+
+		Admin admin = null;
+		Collection<Authority> authorities = null;
+		String authority = null;
+		Collection<Trip> result = null;
+
+		admin = this.adminService.findByPrincipal();
+		authorities = admin.getUserAccount().getAuthorities();
+		authority = authorities.toArray()[0].toString();
+
+		// Comprobamos que los parámetros de entrada son correctos.
+
+		Assert.isTrue((authority.equals("ADMIN")));
+		Assert.notNull(categoryId);
+
+		result = this.categoryRepository.findAllTripByCategoryId(categoryId);
+
+		return result;
+
+	}
+
+	public Collection<Category> findCategoryChildrenId(final int categoryId) {
+
+		//		final Admin admin = null;
+		//		final Collection<Authority> authorities = null;
+		//		final String authority = null;
+		Collection<Category> result = null;
+
+		// TODO: no hace falta autenticarse como Admin
+		//		admin = this.adminService.findByPrincipal();
+		//		authorities = admin.getUserAccount().getAuthorities();
+		//		authority = authorities.toArray()[0].toString();
+
+		// Comprobamos que los parámetros son correctos
+
+		//		Assert.isTrue((authority.equals("ADMIN")));
+		Assert.notNull(categoryId);
+
+		result = this.categoryRepository.findCategoryChildrenId(categoryId);
+		return result;
+	}
+
+	public Category saveDelete(final Category category) {
+		Assert.notNull(category);
+
+		return this.categoryRepository.save(category);
+	}
+
+}

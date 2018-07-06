@@ -1,0 +1,23 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+stage.edit					= Editar
+stage.create				= Crear una nueva etapa
+
+stage.title					= Título
+stage.description			= Descripción
+stage.price					= Precio
+stage.trip					= Viaje
+
+stage.save					= Guardar
+stage.delete				= Borrar
+stage.cancel				= Cancelar
+stage.display				= Mostrar
+
+stage.commit.error			= No se puede completar su operación
+stage.commit.ok				= Operación completada con éxito

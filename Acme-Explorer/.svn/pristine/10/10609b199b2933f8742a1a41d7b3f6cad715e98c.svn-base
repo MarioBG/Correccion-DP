@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="curriculum/list-educationRecord" extends="master.page">	
+		<put-attribute name="title" value="List education records" />
+		<put-attribute name="body" value="/views/educationRecord/list.jsp" />
+	</definition>
+	
+	<definition name="curriculum/edit-educationRecord" extends="master.page">	
+		<put-attribute name="title" value="Edit education records" />
+		<put-attribute name="body" value="/views/educationRecord/edit.jsp" />
+	</definition>
+	
+	<definition name="curriculum/display-educationRecord" extends="master.page">	
+		<put-attribute name="title" value="Display education records" />
+		<put-attribute name="body" value="/views/educationRecord/display.jsp" />
+	</definition>
+
+</tiles-definitions>

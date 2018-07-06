@@ -1,0 +1,29 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+admin.name 					= Name
+admin.surname				= Surname
+admin.email					= Email
+admin.address				= Address
+admin.phone					= Phone
+admin.username				= UserName
+admin.password				= Password
+	
+admin.commit.error			= Can't complete your action
+
+admin.desactivate			= Desactivate
+admin.activate				= Activate
+
+admin.userAccount.username	= User account
+admin.ranger.name			= Name
+admin.ranger.surname		= Surname
+admin.save                  = Save
+admin.cancel                = Cancel
+
+
+

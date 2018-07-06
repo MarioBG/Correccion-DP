@@ -1,0 +1,74 @@
+
+package controllers;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.ExplorerService;
+import services.FolderService;
+import domain.Explorer;
+
+@Controller
+@RequestMapping("/explorer")
+public class ExplorerController extends AbstractController {
+
+	// Services ---------------------------------------------------------------
+	@Autowired
+	public ExplorerService	explorerService;
+
+	@Autowired
+	public FolderService	folderService;
+
+
+	// Constructor -------------------------------------------------------------
+	public ExplorerController() {
+		super();
+	}
+
+	// edition --------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		Explorer explorer;
+
+		explorer = this.explorerService.create();
+
+		result = new ModelAndView("explorer/edit");
+
+		result.addObject("explorer", explorer);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Explorer explorer, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			System.out.println(binding.getAllErrors());
+			result = new ModelAndView("explorer/edit");
+			result.addObject("errorMessage", binding.getAllErrors());
+			result.addObject("explorer", explorer);
+		} else
+			try {
+				this.folderService.defaultFolders(explorer);
+
+				System.out.println(this.explorerService.save(explorer));
+
+				result = new ModelAndView("redirect:../../security/login.do");
+
+			} catch (final Throwable oops) {
+				System.out.println(oops);
+				result = new ModelAndView("explorer/edit");
+				result.addObject("explorer", explorer);
+				result.addObject("errorMessage", "security.explorer.commit.error");
+			}
+		return result;
+	}
+}

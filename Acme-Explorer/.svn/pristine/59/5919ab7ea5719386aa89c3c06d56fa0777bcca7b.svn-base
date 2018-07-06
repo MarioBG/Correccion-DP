@@ -1,0 +1,14 @@
+
+
+socialIdentity.edit                     = Editar
+socialIdentity.nick                     = Apodo
+socialIdentity.nameSocialNetwork        = Red Social
+socialIdentity.link                     = Enlace
+socialIdentity.photo                    = Foto
+socialIdentity.display                  = Mostrar
+socialIdentity.create                   = Crear
+socialIdentity.save                     = Guardar
+socialIdentity.cancel                   = Cancelar
+socialIdentity.delete                   = Eliminar
+
+socialIdentity.commit.error 			= No se puede completar su operacion

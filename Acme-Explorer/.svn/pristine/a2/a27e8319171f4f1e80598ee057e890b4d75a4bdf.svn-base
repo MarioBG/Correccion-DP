@@ -1,0 +1,22 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+sponsor.name 				= Name
+sponsor.surname				= Surname
+sponsor.email				= Email
+sponsor.address				= Address
+sponsor.phone				= Phone
+sponsor.username			= UserName
+sponsor.password			= Password
+	
+
+sponsor.save				= Save
+sponsor.cancel				= Cancel
+
+sponsor.phone.ask			= Incorrect pattern, are you sure to save? 
+

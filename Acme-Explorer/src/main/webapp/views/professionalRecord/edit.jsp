@@ -1,0 +1,63 @@
+<%-- edit.jsp de ProfessionalRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<form:form action="professionalRecord/ranger/edit.do" modelAttribute="professionalRecord">
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	
+	<spring:message var="professionalRecordCompany" code="professionalRecord.company"/>
+	<b><form:label path="company"/>${professionalRecordCompany}:&nbsp;</b>
+	<form:input path="company"/>
+	<form:errors path="company" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordStartDate" code="professionalRecord.startDate"/>
+	<b><form:label path="startDate"/>${professionalRecordStartDate}:&nbsp;</b>
+	<form:input path="startDate" placeholder="dd/MM/yyyy HH:mm"/>
+	<form:errors path="startDate" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordEndDate" code="professionalRecord.endDate"/>
+	<b><form:label path="endDate"/>${professionalRecordEndDate}:&nbsp;</b>
+	<form:input path="endDate" placeholder="dd/MM/yyyy HH:mm"/>
+	<form:errors path="endDate" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordRole" code="professionalRecord.role"/>
+	<b><form:label path="role"/>${professionalRecordRole}:&nbsp;</b>
+	<form:input path="role"/>
+	<form:errors path="role" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordAttachment" code="professionalRecord.attachment"/>
+	<b><form:label path="attachment"/>${professionalRecordAttachment}:&nbsp;</b>
+	<form:input path="attachment"/>
+	<form:errors path="attachment" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordComments" code="professionalRecord.comments"/>
+	<b><form:label path="comments"/>${professionalRecordComments}:&nbsp;</b>
+	<form:input path="comments"/>
+	<form:errors path="comments" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="professionalRecordSave" code="professionalRecord.save"/>
+	<input type="submit" name="save" value="${professionalRecordSave}"/>
+	
+	<jstl:if test="${professionalRecord.id != 0}"> 
+		<spring:message var="professionalRecordDelete" code="professionalRecord.delete"/>
+		<input type="submit" name="delete" value="${professionalRecordDelete}"/>
+	</jstl:if>
+	
+	<spring:message var="professionalRecordCancel" code="professionalRecord.cancel"/>
+	<input type="button" name="cancel" value="${professionalRecordCancel}" onclick="javascript:relativeRedir('${cancelURI}')"/>
+</form:form>

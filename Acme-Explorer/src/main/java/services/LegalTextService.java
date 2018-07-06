@@ -1,0 +1,116 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.LegalTextRepository;
+import domain.Admin;
+import domain.LegalText;
+import domain.Manager;
+import domain.Trip;
+
+@Service
+@Transactional
+public class LegalTextService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private LegalTextRepository	legalTextRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private AdminService		adminService;
+
+	@Autowired
+	private ManagerService		managerService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public LegalTextService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public LegalText create() {
+
+		final Collection<Trip> trips = new ArrayList<Trip>();
+		final LegalText legalText = new LegalText();
+		legalText.setMoment(new Date(System.currentTimeMillis() - 1000));
+		legalText.setTrips(trips);
+		legalText.setDraft(true);
+		return legalText;
+	}
+
+	public Collection<LegalText> findAll() {
+		return this.legalTextRepository.findAll();
+	}
+
+	public LegalText findOne(final int id) {
+		return this.legalTextRepository.findOne(id);
+	}
+
+	public LegalText save(final LegalText legalText) {
+
+		Assert.notNull(legalText);
+
+		LegalText result;
+
+		if (legalText.getId() == 0) {
+			legalText.setMoment(new Date(System.currentTimeMillis() - 1000));
+			result = this.legalTextRepository.save(legalText);
+		} else
+			result = this.legalTextRepository.save(legalText);
+
+		return result;
+	}
+
+	public void delete(final LegalText legalText) {
+		Assert.notNull(legalText);
+		Assert.isTrue(legalText.getDraft());
+		this.checkByPrincipalAdmin();
+		this.legalTextRepository.delete(legalText);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public Collection<Map<String, Integer>> findLegalTextperTrips() {
+		return this.legalTextRepository.findLegalTextperTrips();
+	}
+
+	public boolean checkByPrincipalAdmin() {
+		boolean res = false;
+		final Admin principal = this.adminService.findByPrincipal();
+		if (this.adminService.findAll().contains(principal))
+			res = true;
+		return res;
+
+	}
+	public boolean checkByPrincipalManager() {
+		boolean res = false;
+		final Manager principal = this.managerService.findByPrincipal();
+		if (this.managerService.findAll().contains(principal))
+			res = true;
+		return res;
+
+	}
+
+	public LegalText findOneToEdit(final int legalTextId) {
+		this.checkByPrincipalAdmin();
+		final LegalText legalText = this.legalTextRepository.findOne(legalTextId);
+		Assert.isTrue(legalText.getDraft());
+		return legalText;
+	}
+
+}

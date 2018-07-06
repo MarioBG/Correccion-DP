@@ -1,0 +1,57 @@
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+
+
+<form:form action="contact/explorer/edit.do" modelAttribute="contact" onsubmit="return validateForm()">
+
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	<form:hidden path="explorer"/>
+
+	<b><form:label path="name"><spring:message code="contact.name"/>:&nbsp;</form:label></b>
+	<form:input path="name"/>
+	<form:errors path="name" cssClass="error"/>
+	<br/>
+	
+	<b><form:label path="email"><spring:message code="contact.email"/>:&nbsp;</form:label></b>
+	<form:input path="email"/>
+	<form:errors path="email" cssClass="error"/>
+	<br/>
+
+	<b><form:label path="phone"> <spring:message code="contact.phone" />:&nbsp;</form:label></b>
+	
+  	<form:input id="phoneId" path="phone" />
+  	<form:errors cssClass="error" path="phone" />
+  	<br />
+
+	<input type="submit" name="save" value="<spring:message code="contact.save"/>"/>
+	&nbsp;
+	<jstl:if test="${contact.id != 0}">
+		<input type="submit" name="delete" value="<spring:message code="contact.delete"/>"/>
+		&nbsp;
+	</jstl:if>
+	<input type="button" name="cancel" value="<spring:message code="contact.cancel" />" onclick="javascript: relativeRedir('contact/explorer/list.do');" />
+	&nbsp;
+</form:form>
+
+<script>
+
+function validateForm() {
+ <spring:message code="ranger.phone.ask" var="ask"/>
+    var x = document.getElementById("phoneId").value;
+    var patt = new RegExp("^(\\+[1-9][0-9]{2}|\\+[1-9][0-9]|\\+[1-9])(\\s\\([1-9][0-9]{2}\\)|\\ \\([1-9][0-9]\\)|\\ \\([1-9]\\))?(\\ \\d{4,})|(\\d{4,})$");
+    if(x != "" && !patt.test(x)){
+        return confirm('<jstl:out value="${ask}"/>');
+    } 
+}
+
+</script>

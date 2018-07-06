@@ -1,0 +1,75 @@
+
+
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+	
+
+<display:table name="notes" id="row" requestURI="${requestURI }" pagesize="5" class="displaytag">
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<display:column>
+				<jstl:if test="${row.reply!=null}">
+				      <a ><spring:message code="note.replied"/></a>
+				</jstl:if>
+				<jstl:if test="${row.reply==null}">
+					<a href="note/manager/edit.do?noteId=${row.id}"><spring:message code="note.reply"/></a>
+				</jstl:if>
+				
+		</display:column>
+	</security:authorize>
+	
+	
+		<spring:message code="note.trip" var="tripHeader"/>
+		<display:column property="trip.title" title="${tripHeader}" sortable="false"/>
+		
+		<spring:message code="note.format.date" var="pattern"></spring:message>
+		<spring:message code="note.moment" var="momentHeader"></spring:message>
+		<display:column property="moment" title="${momentHeader}" sortable="true" format="${pattern}"/>
+		
+		<spring:message code="note.remark" var="remarkHeader"></spring:message> 
+		<display:column property="remark" title="${remarkHeader}" sortable="false"/>
+		
+		<security:authorize access="hasRole('MANAGER')">
+		<spring:message code="note.auditor" var="auditorHeader"></spring:message> 
+		<display:column property="auditor.name" title="${auditorHeader}" sortable="false"/>
+		</security:authorize>
+		
+		
+		<spring:message code="note.format.date" var="pattern"></spring:message>
+		<spring:message code="note.replyMoment" var="replyMomentHeader"></spring:message>
+		<display:column property="replyMoment" title="${replyMomentHeader}" sortable="true" format="${ pattern}"/>
+		
+		<security:authorize access="hasRole('MANAGER')">
+		<display:column>
+				<a href="note/manager/display.do?noteId=${row.id}"><spring:message code="note.display"/></a>
+		</display:column>
+		</security:authorize>
+		
+		
+		
+		<security:authorize access="hasRole('AUDITOR')">
+		<display:column>
+				<a href="note/auditor/display.do?noteId=${row.id}"><spring:message code="note.display"/></a>
+		</display:column>
+		</security:authorize>
+		
+		
+
+	
+		
+</display:table>
+
+<security:authorize access="hasRole('AUDITOR')">
+	<a href="note/auditor/create.do"><spring:message code="note.create"/></a>
+</security:authorize>
+

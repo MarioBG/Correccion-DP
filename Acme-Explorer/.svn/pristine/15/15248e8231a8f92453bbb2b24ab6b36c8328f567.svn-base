@@ -1,0 +1,132 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Category;
+import domain.Trip;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class CategoryServiceTest extends AbstractTest {
+
+	@Autowired
+	private CategoryService	categoryService;
+
+
+	@Test
+	public void testCreate() {
+
+		super.authenticate("admin1");
+
+		Category categoryRes = null;
+
+		categoryRes = this.categoryService.create();
+
+		Assert.isNull(categoryRes.getName());
+		Assert.notNull(categoryRes.getChildrenCategories());
+		Assert.isNull(categoryRes.getParentCategory());
+		Assert.notNull(categoryRes.getTrips());
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testSave() {
+
+		super.authenticate("admin1");
+
+		Category category = null;
+		Category categoryParent = null;
+		Category categorySave = null;
+		Collection<Category> categories = null;
+
+		categoryParent = this.categoryService.findOne(this.categoryService.findAll().iterator().next().getId());
+		category = this.categoryService.create();
+
+		category.setChildrenCategories(new ArrayList<Category>());
+		category.setName("CategoryTest");
+		category.setTrips(new ArrayList<Trip>());
+		category.setParentCategory(categoryParent);
+
+		categorySave = this.categoryService.save(category);
+		categories = this.categoryService.findAll();
+
+		Assert.isTrue(categories.contains(categorySave));
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testDelete() {
+
+		super.authenticate("admin1");
+
+		Category category = null;
+		Category categoryParent = null;
+		Category categorySave = null;
+		Collection<Category> categories = null;
+
+		categoryParent = this.categoryService.findOne(this.categoryService.findAll().iterator().next().getId());
+		category = this.categoryService.create();
+
+		category.setChildrenCategories(new ArrayList<Category>());
+		category.setName("CategoryTest");
+		category.setTrips(new ArrayList<Trip>());
+		category.setParentCategory(categoryParent);
+
+		categorySave = this.categoryService.save(category);
+		this.categoryService.delete(categorySave);
+
+		categories = this.categoryService.findAll();
+
+		Assert.isTrue(!categories.contains(categorySave));
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testFindAllTripByCategoryId() {
+
+		super.authenticate("admin1");
+
+		Collection<Trip> trips = null;
+
+		trips = this.categoryService.findAllTripByCategoryId(this.categoryService.findAll().iterator().next().getId());
+
+		Assert.notNull(trips);
+
+		super.authenticate(null);
+	}
+
+	@Test
+	public void testFindCategoryChildrenId() {
+
+		super.authenticate("admin1");
+
+		Collection<Category> categories = null;
+
+		categories = this.categoryService.findCategoryChildrenId(this.categoryService.findAll().iterator().next().getId());
+
+		Assert.notNull(categories);
+
+		super.unauthenticate();
+	}
+}

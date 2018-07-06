@@ -1,0 +1,71 @@
+<%-- edit.jsp de EducationRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<form:form action="personalRecord/ranger/edit.do" modelAttribute="personalRecord" onsubmit="return validateForm()">
+
+	<!-- Atributos ocultos -->
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	
+	<!-- Atributos ocultas de las relaciones -->
+	<!-- No tiene ningún atributo oculto-->
+	
+	<spring:message var="personalRecordFullName" code="personalRecord.fullName"/>
+	<b><form:label path="fullName"/>${personalRecordFullName}:&nbsp;</b>
+	<form:input path="fullName"/>
+	<form:errors path="fullName" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="personalRecordPhoto" code="personalRecord.photo"/>
+	<b><form:label path="photo"/>${personalRecordPhoto}:&nbsp;</b>
+	<form:input path="photo"/>
+	<form:errors path="photo" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="personalRecordEmail" code="personalRecord.email"/>
+	<b><form:label path="email"/>${personalRecordEmail}:&nbsp;</b>
+	<form:input path="email"/>
+	<form:errors path="email" cssClass="error"/>
+	<br/>
+	
+	<spring:message var="personalRecordPhone" code="personalRecord.phone"/>
+	<b><form:label path="phone"/>${personalRecordPhone}:&nbsp;</b>
+	<form:input path="phone" id="phoneId" placeholder="+CC (AC) PN"/>
+	<form:errors path="phone" cssClass="error"/>
+	<br/>
+
+	<spring:message var="personalRecordLink" code="personalRecord.link"/>
+	<b><form:label path="link"/>${personalRecordLink}:&nbsp;</b>
+	<form:input path="link"/>
+	<form:errors path="link" cssClass="error"/>
+	<br/>
+
+	<!-- Botones del formulario -->
+	<spring:message var="personalRecordSave" code="personalRecord.save"/>
+	<input type="submit" name="save" value="${personalRecordSave}"/>
+	
+	<spring:message var="personalRecordCancel" code="personalRecord.cancel"/>
+	<input type="button" name="cancel" value="${personalRecordCancel}" onclick="javascript:relativeRedir('${cancelURI}')"/>
+</form:form>
+
+<script>
+
+function validateForm() {
+ <spring:message code="sponsor.phone.ask" var="ask"/>
+    var x = document.getElementById("phoneId").value;
+    var patt = new RegExp("^(\\+[1-9][0-9]{2}|\\+[1-9][0-9]|\\+[1-9])(\\s\\([1-9][0-9]{2}\\)|\\ \\([1-9][0-9]\\)|\\ \\([1-9]\\))?(\\ \\d{4,})|(\\d{4,})$");
+    if(x != "" && !patt.test(x)){
+        return confirm('<jstl:out value="${ask}"/>');
+    } 
+}
+
+</script>

@@ -1,0 +1,178 @@
+
+package controllers.explorer;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.validation.Valid;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.ApplicationService;
+import services.ExplorerService;
+import services.TripService;
+import controllers.AbstractController;
+import domain.Application;
+import domain.Explorer;
+import domain.Trip;
+
+@Controller
+@RequestMapping("/application/explorer")
+public class ApplicationExplorerController extends AbstractController {
+
+	// Services ------------------------------------------------------------
+
+	@Autowired
+	private ApplicationService	applicationService;
+
+	@Autowired
+	private ExplorerService		explorerService;
+
+	@Autowired
+	private TripService			tripService;
+
+
+	// Constructors --------------------------------------------------------
+
+	public ApplicationExplorerController() {
+		super();
+	}
+
+	// Listing --------------------------------------------------------------
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result = null;
+		Collection<Application> applications = null;
+		Explorer explorer = null;
+		String requestURI = null;
+		Date dateSystem = null;
+		Date dateSystemPlus1Month = null;
+
+		explorer = this.explorerService.findByPrincipal();
+		dateSystem = new Date();
+		dateSystemPlus1Month = DateUtils.addDays(dateSystem, 30);
+		requestURI = "application/explorer/list.do";
+		applications = this.applicationService.findApplicationsByExplorerId(explorer.getId());
+
+		result = new ModelAndView("application/list");
+		result.addObject("applications", applications);
+		result.addObject("requestURI", requestURI);
+		result.addObject("dateSystem", dateSystem);
+		result.addObject("dateSystemPlus1Month", dateSystemPlus1Month);
+
+		return result;
+	}
+
+	// Creation  --------------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result = null;
+		Application application = null;
+
+		application = this.applicationService.create(this.explorerService.findByPrincipal());
+		result = this.createEditModelAndView(application);
+
+		return result;
+	}
+
+	// Display --------------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int applicationId) {
+		ModelAndView result = null;
+		Application application = null;
+		String cancelURI = null;
+
+		cancelURI = "application/explorer/list.do";
+		application = this.applicationService.findOne(applicationId);
+
+		result = new ModelAndView("application/display");
+		result.addObject("application", application);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+	// Creation  --------------------------------------------------------------
+
+	// Edition    --------------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int applicationId) {
+		ModelAndView result = null;
+		Application application = null;
+
+		application = this.applicationService.findOne(applicationId);
+		Assert.notNull(application);
+		result = this.createEditModelAndView(application);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Application application, final BindingResult bindingResult) {
+		ModelAndView result = null;
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(application);
+		else
+			try {
+				this.applicationService.save(application);
+				result = new ModelAndView("redirect:../explorer/list.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(application, "application.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/cancel", method = RequestMethod.GET)
+	public ModelAndView cancel(@RequestParam final int applicationId) {
+		ModelAndView result = null;
+		Application application = null;
+
+		application = this.applicationService.findOne(applicationId);
+		Assert.notNull(application);
+		this.applicationService.cancelApplication(application);
+		result = new ModelAndView("redirect:list.do");
+
+		return result;
+	}
+
+	// Ancillary methods ----------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Application application) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(application, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Application application, final String messageCode) {
+		ModelAndView result = null;
+		String cancelURI = null;
+		String actionURI = null;
+		Collection<Trip> trips = null;
+
+		trips = this.tripService.findAvailableTrips(new Date(System.currentTimeMillis() - 1000));
+		cancelURI = "application/explorer/list.do";
+		actionURI = "application/explorer/edit.do";
+
+		result = new ModelAndView("application/edit");
+		result.addObject("application", application);
+		result.addObject("message", messageCode);
+		result.addObject("cancelURI", cancelURI);
+		result.addObject("trips", trips);
+		result.addObject("actionURI", actionURI);
+
+		return result;
+	}
+}

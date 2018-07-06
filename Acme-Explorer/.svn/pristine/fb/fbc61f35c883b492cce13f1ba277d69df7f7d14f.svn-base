@@ -1,0 +1,23 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Links
+miscellaneousRecord.edit       = Edit
+miscellaneousRecord.display    = Display
+miscellaneousRecord.create     = Create a miscellaneous record
+miscellaneousRecord.editDisplay= Edit a miscellaneous record
+
+# Attributes
+miscellaneousRecord.title      = Title
+miscelleanousRecord.attachment = Attachment
+miscelleanousRecord.comments   = Comments
+
+# Button message
+miscellaneousRecord.save       = Save
+miscellaneousRecord.delete     = Delete
+miscellaneousRecord.cancel     = Cancel

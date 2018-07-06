@@ -1,0 +1,53 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+master.page.administrator			= Administrador
+master.page.administrator.action.1	= Acción 1
+master.page.administrator.action.2	= Acción 2
+master.page.administrator.configuration = Configuración
+
+master.page.auditor.list			= Mis Audit Records
+master.page.auditor					= AUDITOR
+master.page.auditor.note.list       = Lista de notas
+
+master.page.explorer.survivalClasses = Clases de supervivencia
+master.page.explorer.enrolledClasses = Subscriciones a Clases de supervivencia
+master.page.explorer.stories		=  Mis historias
+master.page.explorer				= Explorador
+master.page.explorer.edit			= Buscar viajes
+master.page.explorer.list			= Listar viajes
+
+socialIdentity.commit.error        = Error
+
+master.page.manager					= Manager 
+master.page.manager.list			= List trips
+master.page.manager.survivalClasses			= Clases de supervivencia
+master.page.manager.note.list        = List of notes
+
+master.page.sponsor                 = Sponsor
+master.page.sponsor.sponsorship.list= List of sponsorships
+
+master.page.trip 					= Trip
+master.page.anonymous.list			= List trip
+
+master.page.customer				= Cliente
+master.page.customer.action.1		= Acción 1
+master.page.customer.action.2		= Acción 2
+
+master.page.profile 				= Perfil
+master.page.profile.action.1 		= Acción 1
+master.page.profile.action.2		= Acción 2
+master.page.profile.action.3		= Acción 3
+master.page.profile.action.4        = Red Social
+
+trip.commit.error					= No se puede hacer la operacion
+finder.commit.error					= No se puede hacer la operacion
+
+master.page.login 					= Entrar
+master.page.logout 					= Salir
+master.page.register				= Register

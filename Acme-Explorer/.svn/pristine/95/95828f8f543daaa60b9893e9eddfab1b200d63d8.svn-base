@@ -1,0 +1,17 @@
+package repositories;
+
+import java.util.Collection;
+import java.util.Map;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import org.springframework.stereotype.Repository;
+
+import domain.LegalText;
+
+@Repository
+public interface LegalTextRepository extends JpaRepository<LegalText, Integer>{
+	@Query("select l.title,l.trips.size from LegalText l")
+	Collection<Map<String,Integer>> findLegalTextperTrips();
+}

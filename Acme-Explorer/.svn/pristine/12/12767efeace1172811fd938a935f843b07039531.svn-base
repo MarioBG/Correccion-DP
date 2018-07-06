@@ -1,0 +1,133 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Explorer;
+import domain.Story;
+import domain.Trip;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class StoryServiceTest extends AbstractTest {
+
+	// Service under test ---------------------------------
+
+	@Autowired
+	private StoryService	storyService;
+
+	@Autowired
+	private TripService		tripService;
+
+	@Autowired
+	private ExplorerService	explorerService;
+
+
+	// Tests ----------------------------------------------
+
+	@Test
+	public void testCreate() {
+
+		super.authenticate("explorer1");								// Simulamos que estamos autenticados en el sistema
+
+		Story result = null;
+		Trip trip = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		result = this.storyService.create();						// Creamos trip utilizando el servicio
+
+		// Comprobamos que los atributos...
+
+		Assert.isNull(result.getTitle());								// title: String(NotBlank)
+		Assert.isNull(result.getText());								// text:  String(NotBlank)
+		Assert.notNull(result.getAttachments());						// attachments: String[0..*] {Url}
+
+		// Comprobamos que las relaciones...
+
+		Assert.notNull(result.getTrip());								// Story (0..*) - Trip (1) 
+		Assert.notNull(result.getWriter());								// Story (0..*) - Explorer (1)  
+
+		super.unauthenticate();											// Eliminamos la simulación de la autenticación
+
+	}
+
+	@Test
+	public void testSave() {
+
+		super.authenticate("explorer1");								// Simulamos que estamos autenticados en el sistema
+
+		Story story = null;
+		Story saved = null;
+		Collection<Story> stories = null;
+		Trip trip = null;
+		Explorer writer = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		// Obtenemos el trip autenticado de la base de datos
+		story = this.storyService.create();							// Creamos trip utilizando el servicio
+		writer = this.explorerService.findByPrincipal();				// Obtenemos el explorer autenticado de la base de datos
+
+		// Modificamos los atributos de explorer
+
+		story.setText("Text modified");
+		story.setTitle("Title modified");
+		story.getAttachments().add("www.attachmentModified.com");
+		story.setWriter(writer);
+		story.setTrip(trip);
+
+		saved = this.storyService.save(story);							// Persistimos el story en la base de datos
+		stories = this.storyService.findAll();							// Obtenemos todos los story de la base de datos
+
+		Assert.isTrue(stories.contains(saved));							// Comprobamos que se ha eliminado y no persiste en la base de datos
+
+		super.unauthenticate();											// Eliminamos la simulación de la autenticación
+
+	}
+
+	@Test
+	public void testDelete() {
+
+		super.authenticate("explorer1");								// Simulamos que estamos autenticados en el sistema
+
+		Story story = null;
+		Story saved = null;
+		Collection<Story> stories = null;
+		Trip trip = null;
+		Explorer writer = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		story = this.storyService.create();							// Creamos trip utilizando el servicio
+		writer = this.explorerService.findByPrincipal();				// Obtenemos el explorer autenticado de la base de datos
+
+		// Modificamos los atributos de explorer
+
+		story.setText("Text modified");
+		story.setTitle("Title modified");
+		story.getAttachments().add("www.attachmentModified.com");
+		story.setWriter(writer);
+
+		saved = this.storyService.save(story);							// Persistimos el curriculum en la base de datos...
+		this.storyService.delete(saved);								// ...y lo borramos de ella
+		stories = this.storyService.findAll();							// Obtenemos todos los story de la base de datos
+
+		Assert.isTrue(!stories.contains(saved));						// Comprobamos que está en la base de datos
+
+		super.unauthenticate();											// Eliminamos la simulación de la autenticación
+
+	}
+
+}

@@ -1,0 +1,125 @@
+
+package services;
+
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Explorer;
+import domain.Story;
+import domain.Trip;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+})
+@Transactional
+public class StoryServiceTest extends AbstractTest {
+
+	// Service under test ---------------------------------
+
+	@Autowired
+	private StoryService	storyService;
+
+	@Autowired
+	private TripService		tripService;
+
+	@Autowired
+	private ExplorerService	explorerService;
+
+
+	// Tests ----------------------------------------------
+
+	@Test
+	public void testCreate() {
+
+		super.authenticate("explorer1");
+
+		Story result = null;
+		Trip trip = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		result = this.storyService.create();
+
+		Assert.isNull(result.getTitle());
+		Assert.isNull(result.getText());
+		Assert.notNull(result.getAttachments());
+
+		result.setTrip(trip);
+
+		Assert.notNull(result.getTrip());
+		Assert.notNull(result.getWriter());
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testSave() {
+
+		super.authenticate("explorer1");
+
+		Story story = null;
+		Story saved = null;
+		Collection<Story> stories = null;
+		Trip trip = null;
+		Explorer writer = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+
+		story = this.storyService.create();
+		writer = this.explorerService.findByPrincipal();
+
+		story.setText("Text modified");
+		story.setTitle("Title modified");
+		story.getAttachments().add("www.attachmentModified.com");
+		story.setWriter(writer);
+		story.setTrip(trip);
+		saved = this.storyService.save(story);
+		stories = this.storyService.findAll();
+
+		Assert.isTrue(stories.contains(saved));
+
+		super.unauthenticate();
+
+	}
+
+	@Test
+	public void testDelete() {
+
+		super.authenticate("explorer1");
+
+		Story story = null;
+		Story saved = null;
+		Collection<Story> stories = null;
+		Trip trip = null;
+		Explorer writer = null;
+
+		trip = this.tripService.findOne(this.tripService.findAll().iterator().next().getId());
+		story = this.storyService.create();
+		writer = this.explorerService.findByPrincipal();
+
+		story.setText("Text modified");
+		story.setTitle("Title modified");
+		story.getAttachments().add("www.attachmentModified.com");
+		story.setWriter(writer);
+		story.setTrip(trip);
+
+		saved = this.storyService.save(story);
+		this.storyService.delete(saved);
+		stories = this.storyService.findAll();
+
+		Assert.isTrue(!stories.contains(saved));
+
+		super.unauthenticate();
+
+	}
+}

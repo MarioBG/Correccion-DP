@@ -1,0 +1,162 @@
+
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import security.UserAccount;
+
+@Entity
+@Access(AccessType.PROPERTY)
+public abstract class Actor extends DomainEntity {
+
+	// Constructors -----------------------------------------------------------
+
+	public Actor() {
+		super();
+	}
+
+
+	// Attributes -------------------------------------------------------------
+
+	private String	name;
+	private String	surname;
+	private String	email;
+	private String	address;
+	private String	phone;
+
+
+	//	private boolean	deactivated;
+
+	@NotBlank
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	@NotBlank
+	public String getSurname() {
+		return this.surname;
+	}
+
+	public void setSurname(final String surname) {
+		this.surname = surname;
+	}
+
+	@NotBlank
+	@Email
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
+	@NotBlank
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(final String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(final String phone) {
+		this.phone = phone;
+	}
+
+
+	//	public boolean getDeactivated() {
+	//		return this.deactivated;
+	//	}
+	//
+	//	public void setDeactivated(final boolean deactivated) {
+	//		this.deactivated = deactivated;
+	//	}
+
+	// Relationships ----------------------------------------------------------
+
+	private Collection<SocialIdentity>	socialIdentities;
+	private UserAccount					userAccount;
+	private Collection<Folder>			folders;
+
+
+	//	private Collection<Message>			sentMessages;
+	//	private Collection<Message>			recipientMessages;
+
+	@Valid
+	@NotNull
+	@OneToMany
+	//(mappedBy = "actor")
+	public Collection<SocialIdentity> getSocialIdentities() {
+		return this.socialIdentities;
+	}
+
+	public void setSocialIdentities(final Collection<SocialIdentity> socialIdentities) {
+		this.socialIdentities = socialIdentities;
+	}
+
+	@Valid
+	@NotNull
+	@OneToOne(cascade = javax.persistence.CascadeType.ALL)
+	public UserAccount getUserAccount() {
+		return this.userAccount;
+	}
+
+	public void setUserAccount(final UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	@Valid
+	@NotEmpty
+	@OneToMany
+	//(mappedBy = "actor")
+	public Collection<Folder> getFolders() {
+		return this.folders;
+	}
+
+	public void setFolders(final Collection<Folder> folder) {
+		this.folders = folder;
+	}
+
+	//	@Valid
+	//	@NotNull
+	//	@OneToMany(mappedBy = "sender")
+	//	public Collection<Message> getSentMessages() {
+	//		return this.sentMessages;
+	//	}
+	//
+	//	public void setSentMessages(final Collection<Message> sentMessages) {
+	//		this.sentMessages = sentMessages;
+	//	}
+	//
+	//	@Valid
+	//	@NotNull
+	//	@ManyToMany
+	//	public Collection<Message> getRecipientMessages() {
+	//		return this.recipientMessages;
+	//	}
+	//
+	//	public void setRecipientMessages(final Collection<Message> recipientMessages) {
+	//		this.recipientMessages = recipientMessages;
+	//	}
+}

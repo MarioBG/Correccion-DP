@@ -1,0 +1,24 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+sponsorship.banner 			= Banner
+sponsorship.information 	= Information
+sponsorship.creditCard		= Credit Card
+sponsorship.cancel 			= Cancel
+
+sponsorship.edit					= Edit
+creditCard.holder					= Holder
+creditCard.brand					= Brand
+creditCard.number		= Number
+creditCard.expirationMonth			= Expiration month
+creditCard.expirationYear			= Expiration year
+creditCard.cvv						= CVV
+
+sponsorship.save					= Save
+sponsorship.delete					= Delete
+sponsorship.display                 = Display

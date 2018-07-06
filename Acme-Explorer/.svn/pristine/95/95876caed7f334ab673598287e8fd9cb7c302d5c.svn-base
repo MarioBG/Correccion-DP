@@ -1,0 +1,18 @@
+
+
+
+
+
+
+auditRecord.trip    				= Viaje
+auditRecord.moment    				= Momento
+auditRecord.title    				= Titulo
+auditRecord.description    			= Descripción
+auditRecord.attachments  			= Adjuntos
+auditRecord.finalVersion    		= Versión final
+auditRecord.save    				= Guardar
+auditRecord.delete					= Borrar
+auditRecord.cancel    				= Cancelar
+auditRecord.edit					= Editar
+auditRecord.create					= Crear una nueva audit Record
+auditRecord.display					= Display

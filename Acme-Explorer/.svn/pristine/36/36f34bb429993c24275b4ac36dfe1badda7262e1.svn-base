@@ -1,0 +1,100 @@
+
+package controllers;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CategoryService;
+import services.TripService;
+import domain.Sponsorship;
+import domain.Trip;
+
+@Controller
+@RequestMapping("/trip")
+public class TripController extends AbstractController {
+
+	// Services -------------------------------------------------------------
+
+	@Autowired
+	private TripService		tripService;
+
+	@Autowired
+	private CategoryService	categoryService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public TripController() {
+		super();
+	}
+
+	// Display  -------------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int tripId) {
+		ModelAndView result;
+		Trip trip;
+		Sponsorship sponsorship;
+		trip = this.tripService.findOne(tripId);
+
+		sponsorship = this.tripService.getRandomSponsorship(trip);
+		result = new ModelAndView("trip/display");
+		result.addObject("sponsorship", sponsorship);
+		result.addObject("trip", trip);
+		result.addObject("trip/list.do");
+
+		return result;
+
+	}
+
+	// Listing  -------------------------------------------------------------
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		final ModelAndView result;
+		Collection<Trip> trips;
+
+		trips = this.tripService.findTripPerPublicationDate();
+
+		result = new ModelAndView("trip/list");
+		result.addObject("trips", trips);
+		result.addObject("requestURI", "trip/list.do");
+		result.addObject("searchURI", "trip/list-keyword.do?keyword=");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list-byCategoryId", method = RequestMethod.GET)
+	public ModelAndView listByCategoryId(final int categoryId) {
+		ModelAndView result = null;
+		Collection<Trip> trips = null;
+
+		trips = this.categoryService.findOne(categoryId).getTrips();
+
+		result = new ModelAndView("trip/list");
+		result.addObject("trips", trips);
+		result.addObject("requestURI", "trip/list.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/list-keyword", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam final String keyword) {
+		final ModelAndView result;
+		Collection<Trip> trips;
+
+		trips = this.tripService.findTripPerKeywordR(keyword);
+
+		result = new ModelAndView("trip/list");
+		result.addObject("trips", trips);
+		result.addObject("requestURI", "trip/list.do");
+
+		return result;
+	}
+}

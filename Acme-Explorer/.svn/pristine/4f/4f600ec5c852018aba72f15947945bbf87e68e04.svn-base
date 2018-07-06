@@ -1,0 +1,64 @@
+<%--
+ * action-1.jsp
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="rangers" id="row" pagesize="5" class="displaytag" requestURI="admin/listSuspicious.do">
+	
+	<display:column>
+		<jstl:if test="${row.userAccount.enable}">
+					<a href="admin/desactivate-ranger.do?rangerId=${row.id}"><spring:message code="admin.desactivate"/></a>
+		</jstl:if>
+		
+		<jstl:if test="${!row.userAccount.enable}">
+					<a href="admin/activate-ranger.do?rangerId=${row.id}"><spring:message code="admin.activate"/></a>
+		</jstl:if>
+	</display:column>		
+	
+	<spring:message var="rHeader" code="admin.userAccount.username"/>
+	<display:column property="userAccount.username" title="${rHeader}"/>
+	
+	<spring:message var="name" code="admin.ranger.name"/>
+	<display:column property="name" title="${name}"/>
+	
+	<spring:message var="surname" code="admin.ranger.surname"/>
+	<display:column property="surname" title="${surname}"/>
+	
+</display:table>
+<br>
+<display:table name="managers" id="row" pagesize="5" class="displaytag" requestURI="admin/listSuspicious.do">
+	
+	<display:column>
+		<jstl:if test="${row.userAccount.enable}">
+					<a href="admin/desactivate-manager.do?managerId=${row.id}"><spring:message code="admin.desactivate"/></a>
+		</jstl:if>
+		
+		<jstl:if test="${!row.userAccount.enable}">
+					<a href="admin/activate-manager.do?managerId=${row.id}"><spring:message code="admin.activate"/></a>
+		</jstl:if>
+	</display:column>		
+	
+	<spring:message var="rHeader" code="admin.userAccount.username"/>
+	<display:column property="userAccount.username" title="${rHeader}"/>
+	
+	<spring:message var="name" code="admin.ranger.name"/>
+	<display:column property="name" title="${name}"/>
+	
+	<spring:message var="surname" code="admin.ranger.surname"/>
+	<display:column property="surname" title="${surname}"/>
+	
+</display:table>
+

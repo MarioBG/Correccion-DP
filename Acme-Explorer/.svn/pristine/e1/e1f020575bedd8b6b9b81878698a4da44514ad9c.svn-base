@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles_es.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="curriculum/list-endorserRecord" extends="master.page">	
+		<put-attribute name="title" value="Listar registros de recomendaciones" />
+		<put-attribute name="body" value="/views/endorserRecord/list.jsp" />
+	</definition>
+	
+	<definition name="curriculum/edit-endorserRecord" extends="master.page">	
+		<put-attribute name="title" value="Editar registros de recomendaciones" />
+		<put-attribute name="body" value="/views/endorserRecord/edit.jsp" />
+	</definition>
+	
+	<definition name="curriculum/display-endorserRecord" extends="master.page">	
+		<put-attribute name="title" value="Mostrar registros de recomendaciones" />
+		<put-attribute name="body" value="/views/endorserRecord/display.jsp" />
+	</definition>
+	
+</tiles-definitions>

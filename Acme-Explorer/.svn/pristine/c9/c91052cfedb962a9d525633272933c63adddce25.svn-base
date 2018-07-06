@@ -1,0 +1,30 @@
+
+package repositories;
+
+import java.util.Collection;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import domain.Actor;
+import domain.Folder;
+import domain.SocialIdentity;
+
+@Repository
+public interface ActorRepository extends JpaRepository<Actor, Integer> {
+
+	@Query("select a from Actor a where a.userAccount.id = ?1")
+	Actor findByUserAccountId(int userAccountId);
+
+	// TODO: Antes estaba en FolderRepository. Preguntar al profesor si podemos dejarlo así.
+	@Query("select a.folders from Actor a where a.userAccount.id = ?1")
+	Collection<Folder> findFoldersByUserAccountId(int userAccountId);
+
+	// TODO: Antes estaba en SocialIdentityRepository. Preguntar al profesor si podemos dejarlo así.
+	@Query("select a.socialIdentities from Actor a where a.userAccount.id = ?1")
+	Collection<SocialIdentity> findSocialIdentitiesByUserAccountId(int userAccountId);
+
+	@Query("select a from Actor a join a.socialIdentities socIden where socIden.id = ?1")
+	Actor findActorBySocialIdentityId(int socialIdentityId);
+}

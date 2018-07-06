@@ -1,0 +1,11 @@
+finder.keyword				= keyword
+finder.minimumprice			= Minimum price
+finder.maximumprice			= Maximum price
+finder.rangeStartingDate	= Range of date
+finder.commit.error			= Can't complete your action
+
+finder.search               = Search
+finder.cancel				= Cancel
+
+finder.startDate			= Start date
+finder.endDate				= End date

@@ -1,0 +1,75 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.EndorserRecordRepository;
+import domain.Curriculum;
+import domain.EndorserRecord;
+
+@Service
+@Transactional
+public class EndorserRecordService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private EndorserRecordRepository	endorserRecordRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public EndorserRecordService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public EndorserRecord create() {
+
+		EndorserRecord endorserRecord = null;
+
+		endorserRecord = new EndorserRecord();
+
+		return endorserRecord;
+	}
+
+	public EndorserRecord save(final EndorserRecord endorserRecord) {
+
+		Assert.notNull(endorserRecord);
+		return this.endorserRecordRepository.save(endorserRecord);
+
+	}
+
+	public void delete(final EndorserRecord endorserRecord, final Curriculum curriculum) {
+
+		Assert.notNull(endorserRecord);
+		Assert.notNull(curriculum);
+
+		this.curriculumService.checkRangerByCurriculum(curriculum);
+		curriculum.getEndorserRecords().remove(endorserRecord);
+		this.curriculumService.save(curriculum);
+		this.endorserRecordRepository.delete(endorserRecord);
+	}
+
+	public EndorserRecord findOne(final int id) {
+		return this.endorserRecordRepository.findOne(id);
+	}
+
+	public Collection<EndorserRecord> findAll() {
+		return this.endorserRecordRepository.findAll();
+	}
+
+	// Other business methods -------------------------------------------------
+
+}

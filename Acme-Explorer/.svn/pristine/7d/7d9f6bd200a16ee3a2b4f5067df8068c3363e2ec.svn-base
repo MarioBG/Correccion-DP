@@ -1,0 +1,47 @@
+
+package controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.AuditRecordService;
+import domain.AuditRecord;
+
+@Controller
+@RequestMapping("/auditRecord")
+public class AuditRecordController extends AbstractController {
+
+	// Services --------------------------------------------------------
+
+	@Autowired
+	private AuditRecordService	auditRecordService;
+
+
+	// constructor -----------------------------------------------------
+
+	public AuditRecordController() {
+		super();
+	}
+
+	// Listing ---------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int auditRecordId) {
+		ModelAndView result;
+		AuditRecord auditRecord;
+
+		auditRecord = this.auditRecordService.findOne(auditRecordId);
+		Assert.notNull(auditRecord);
+		result = new ModelAndView("auditRecord/display");
+		result.addObject("auditRecord", auditRecord);
+		result.addObject("cancelURI", "auditRecord/auditor/list.do");
+
+		return result;
+	}
+
+}

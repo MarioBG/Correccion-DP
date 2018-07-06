@@ -1,0 +1,39 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+survivalClass.edit						= Edit
+survivalClass.editsurvivalClass			= Edit survivalClass
+survivalClass.create					= Create a new survival class
+
+survivalClass.title						= Title
+survivalClass.description   			= Description
+survivalClass.manager					= Manager
+survivalClass.moment					= Moment
+survivalClass.location					= Location
+survivalClass.trip						= Trip
+
+survivalClass.GPSCoordinates			= GPS coordinates
+survivalClass.GPSCoordinates.name		= Name
+survivalClass.GPSCoordinates.longitude	= Longitude	
+survivalClass.GPSCoordinates.latitude	= Latitude
+
+survivalClass.enroll					= Enrol to the survival class
+survivalClass.disenroll					= Disenrol to the survival class
+
+survivalClass.save						= Save
+survivalClass.delete					= Delete
+survivalClass.cancel					= Cancel
+survivalClass.search					= Search
+survivalClass.display					= Display
+
+
+survivalClass.confirm.delete 			= Delete this survival class?
+survivalClass.confirm.unregister		= Unregister from this survival class?
+
+survivalClass.commit.error				= Can't complete your action
+survivalClass.commit.ok					= Action sucessfully completed

@@ -1,0 +1,51 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Enlaces
+application.create					     = Crear una solicitud
+application.edit                         = Editar
+application.display					     = Mostrar
+application.editDisplay				     = Editar la solicitud
+application.cancelApplication            = Cancelar solicitud
+application.dueApplication               = Aceptar solicitud
+application.rejectedApplication          = Rechazar solicitud
+application.addCreditCard                = Añadir tarjeta de credito
+
+# Atributos
+application.tripLabel            	     = Seleccione un viaje disponible
+application.trip					     = Viaje
+application.applicant                    = Solicitante
+application.moment  				     = Momento de creaci�n
+application.rejectReason			     = Razon de rechazo
+application.status          		     = Estado
+application.comments       	             = Comentarios
+application.comments.annotation          = Cada comentario en una l�nea
+application.statusLabel   			     = Estado de la aplicaci�n
+
+# Atributos - CreditCard 
+application.creditCard.legend            = Tarjeta de cr�dito
+application.creditCard.holder            = Titular
+application.creditCard.brand             = Marca
+application.creditCard.number            = Numero
+application.creditCard.expirationMonth   = Mes de expiracion
+application.creditCard.expirationYear    = Año de expiracion
+application.creditCard.cvv               = CVV
+
+# Mensajes de los botones
+application.save            		     = Guardar
+application.cancel          	         = Cancelar
+
+# Formato de las fechas
+application.format.date                  = {0,date,dd/MM/yyyy HH:mm}
+
+# No hay viajes disponibles
+application.applicationNotPossible       = No hay mas viajes disponibles
+
+# Informaci�n sobre la ejecuci�n de las acciones
+application.commit.error                 = No se puede completar su operacion
+application.commit.ok                    = Operacion completada con exito

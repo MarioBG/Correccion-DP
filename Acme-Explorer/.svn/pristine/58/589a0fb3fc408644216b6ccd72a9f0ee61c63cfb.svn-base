@@ -1,0 +1,85 @@
+<%--
+ * list.jsp
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<jstl:if test="${pageContext.response.locale.language == 'es' }">
+	<jstl:set value="{0,date,dd/MM/yyyy HH:mm}" var="es_enFormatDate"/> 
+</jstl:if>
+
+<jstl:if test="${pageContext.response.locale.language == 'en' }">
+	<jstl:set value="{0,date,MM/dd/yyyy HH:mm}" var="es_enFormatDate"/> 
+</jstl:if>
+
+<!-- Función javascript para realizar un petición GET cuando se presiona "ENTER" dentro del input con id "keyword" -->
+
+<script>
+function searchByKeyword(e) {
+    if (e.keyCode == 13) {
+        var keyword = document.getElementById("keyword").value;
+        window.location.assign("trip/list.do?keyword=" + keyword);
+        return false;
+    }
+}
+</script>
+
+<input type="text" id="keyword" placeholder="<spring:message code="trip.search" />" onkeypress="searchByKeyword(event)" />
+
+<display:table name="trips" id="row" pagesize="5" class="displaytag" requestURI="${requestURI}">
+	
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<jstl:if test="${requestURI == 'trip/manager/list.do'}">
+			<display:column>
+				<jstl:if test="${row.publicationDate gt date}">
+					<a href="trip/manager/edit.do?tripId=${row.id}"><spring:message code="trip.edit"/></a>
+				</jstl:if>
+			</display:column>
+		</jstl:if>
+	</security:authorize>
+	
+	<display:column>
+		<a href="trip/display.do?tripId=${row.id}"><spring:message code="trip.display"/></a>
+	</display:column>
+	
+	<spring:message var="tickerHeader" code="trip.ticker"/>
+	<display:column property="ticker" title="${tickerHeader}"/>
+	
+	<spring:message var="titleHeader" code="trip.title"/>
+	<display:column property="title" title="${titleHeader}"/>
+	
+	<spring:message var="categoryHeader" code="trip.category"/>
+	<display:column property="category.name" title="${categoryHeader}" sortable="true"/>
+	
+	<spring:message var="startDateHeader" code="trip.startDate"/>
+	<spring:message var="formatDate" code="event.format.date"/>
+	<display:column property="startDateTrip" title="${startDateHeader}" format="${es_enFormatDate}" sortable="true" />
+	
+	<spring:message var="endDateHeader" code="trip.endDate"/>
+	<display:column property="endDateTrip" title="${endDateHeader}" format="${es_enFormatDate}" sortable="true" />
+	
+	<spring:message var="priceHeader" code="trip.price"/>
+	<spring:message var="formatPrice" code="event.format.price" />
+	<display:column property="price" title="${priceHeader}" sortable="true" format="${formatPrice}"/>
+	
+</display:table>
+
+<security:authorize access="hasRole('MANAGER')">
+	<a href="trip/manager/create.do"><spring:message code="trip.create"/></a>
+</security:authorize>

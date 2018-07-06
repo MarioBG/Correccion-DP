@@ -1,0 +1,271 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.FolderRepository;
+import security.LoginService;
+import security.UserAccount;
+import domain.Actor;
+import domain.Folder;
+import domain.Message;
+
+@Service
+@Transactional
+public class FolderService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private FolderRepository	folderRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private MessageService		messageService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public FolderService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Folder create(final boolean predefined, final Folder folder) {
+
+		Folder result = null;
+
+		result = new Folder();
+
+		if (folder != null)
+			result.setParent(folder);
+
+		result.setPredefined(predefined);
+		result.setChildren(new ArrayList<Folder>());
+		result.setMessages(new ArrayList<Message>());
+
+		return result;
+	}
+
+	public Folder findOne(final int folderId) {
+
+		Folder result = null;
+		result = this.folderRepository.findOne(folderId);
+		return result;
+	}
+
+	public Folder findOneToEdit(final int folderId) {
+
+		Folder result = null;
+		result = this.folderRepository.findOne(folderId);
+		this.checkPrincipal(result);
+		Assert.isTrue(result.getPredefined() == false);
+		return result;
+	}
+
+	public Collection<Folder> findAll() {
+
+		Collection<Folder> result = null;
+		result = this.folderRepository.findAll();
+		return result;
+	}
+
+	public Folder save(final Folder folder) {
+
+		Assert.notNull(folder);
+		this.checkPrincipal(folder);
+
+		Actor actor;
+		Folder saved, parent;
+
+		if (folder.getId() == 0) {
+			saved = this.folderRepository.save(folder);
+			actor = this.actorService.findByPrincipal();
+			actor.getFolders().add(saved);
+			parent = folder.getParent();
+			if (parent != null)
+				parent.getChildren().add(saved);
+		} else
+			saved = this.folderRepository.save(folder);
+
+		return saved;
+	}
+
+	public void delete(final Folder folder) {
+
+		Assert.notNull(folder);
+		this.checkPrincipal(folder);
+
+		Actor actor;
+		Folder parent;
+
+		actor = this.actorService.findByPrincipal();
+		parent = folder.getParent();
+
+		this.messageService.deleteByFolder(folder);
+		actor.getFolders().remove(folder);
+		if (parent != null)
+			parent.getChildren().remove(folder);
+		this.folderRepository.delete(folder);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public Collection<Folder> defaultFolders(final Actor actor) {
+
+		Collection<Folder> result = null;
+		Folder inbox = null;
+		Folder savedInbox = null;
+		Folder outbox = null;
+		Folder savedOutbox = null;
+		Folder notificationbox = null;
+		Folder savedNotificationbox = null;
+		Folder spambox = null;
+		Folder savedSpambox = null;
+		Folder trashbox = null;
+		Folder savedTrashbox = null;
+
+		result = new ArrayList<Folder>();
+
+		inbox = this.create(true, null);
+		outbox = this.create(true, null);
+		notificationbox = this.create(true, null);
+		spambox = this.create(true, null);
+		trashbox = this.create(true, null);
+
+		inbox.setName("In Box");
+		outbox.setName("Out Box");
+		notificationbox.setName("Notification Box");
+		spambox.setName("Spam Box");
+		trashbox.setName("Trash Box");
+
+		if (actor.getId() == 0) {
+			savedInbox = this.save(inbox, actor);
+			savedOutbox = this.save(outbox, actor);
+			savedNotificationbox = this.save(notificationbox, actor);
+			savedSpambox = this.save(spambox, actor);
+			savedTrashbox = this.save(trashbox, actor);
+		} else {
+			savedInbox = this.save(inbox);
+			savedOutbox = this.save(outbox);
+			savedNotificationbox = this.save(notificationbox);
+			savedSpambox = this.save(spambox);
+			savedTrashbox = this.save(trashbox);
+
+		}
+
+		result.add(savedInbox);
+		result.add(savedOutbox);
+		result.add(savedNotificationbox);
+		result.add(savedSpambox);
+		result.add(savedTrashbox);
+
+		return result;
+	}
+
+	public Folder save(final Folder folder, final Actor actor) {
+		Assert.notNull(folder);
+		Assert.notNull(actor);
+
+		Folder result = null;
+
+		result = this.folderRepository.save(folder);
+		actor.getFolders().add(result);
+		this.actorService.save(actor);
+
+		return result;
+	}
+
+	public void deleteByActor(final Actor actor) {
+
+		Assert.notNull(actor);
+
+		final Collection<Folder> folders = actor.getFolders();
+		for (final Folder f : folders)
+			this.messageService.deleteByFolder(f);
+		this.folderRepository.delete(folders);
+		actor.getFolders().removeAll(folders);
+	}
+
+	public Collection<Folder> findByPrincipal() {
+
+		Collection<Folder> result = null;
+		final UserAccount userAccount = LoginService.getPrincipal();
+		result = this.findByUserAccountId(userAccount.getId());
+		return result;
+	}
+
+	public Collection<Folder> findByFolderId(final Integer folderId) {
+
+		Collection<Folder> result;
+		Folder folder;
+		Actor actor;
+
+		actor = this.actorService.findByPrincipal();
+
+		if (folderId == null)
+			result = this.findFoldersWithoutParent(actor.getUserAccount().getId());
+		else {
+			folder = this.findOne(folderId);
+			this.checkPrincipal(folder);
+			result = folder.getChildren();
+		}
+
+		return result;
+	}
+
+	public Collection<Folder> findFoldersWithoutParent(final int userAccountId) {
+
+		Collection<Folder> result;
+
+		result = this.folderRepository.findFoldersWithoutParent(userAccountId);
+
+		return result;
+	}
+
+	public Collection<Folder> findByUserAccountId(final int userAccountId) {
+
+		Collection<Folder> result = null;
+		//result = this.folderRepository.findByUserAccountId(userAccountId);
+		result = this.actorService.findFoldersByUserAccountId(userAccountId);
+		return result;
+	}
+
+	public Folder findByFolderName(final int userAccountId, final String folderName) {
+
+		Folder result = null;
+		final Collection<Folder> folders = this.folderRepository.findByFolderName(userAccountId, folderName);
+		result = folders.iterator().next();
+		return result;
+	}
+
+	public void checkPrincipal(final Folder folder) {
+
+		Assert.notNull(folder);
+
+		final Actor actor = this.actorService.findByPrincipal();
+		final Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(actor.equals(principal));
+	}
+
+	public Collection<Folder> save(final Collection<Folder> folders) {
+		return this.folderRepository.save(folders);
+	}
+
+	public void delete(final Collection<Folder> folders) {
+		this.folderRepository.delete(folders);
+	}
+
+}

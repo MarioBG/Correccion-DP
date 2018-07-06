@@ -1,0 +1,61 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+master.page.administrator					= Administrator
+master.page.administrator.configuration 	= Configuration
+master.page.suspicious						= Suspicious Actor
+
+master.page.login 							= Login
+master.page.logout 							= Logout
+
+master.page.auditor.edit					= Edit an auditor
+master.page.auditor.list					= My Audit Records 
+master.page.auditor							= Auditor
+master.page.auditor.note.list       		= List of notes
+
+master.page.explorer.edit					= Edit an explorer
+master.page.explorer.survivalClasses 		= Survival Classes
+master.page.explorer.enrolledClasses 		= Enrolled survivalClasses
+master.page.explorer.stories		 		= My stories
+master.page.explorer				 		= Explorer
+master.page.explorer.finder			 		= Finder trip
+master.page.explorer.list			 		= List trip
+
+master.page.manager.edit					= Edit a manager
+master.page.manager							= Manager
+master.page.manager.list					= List of trips
+master.page.trip 							= Trips
+master.page.manager.survivalClasses			= SurvivalClass
+master.page.manager.note.list        		= List of notes
+
+master.page.sponsor.edit					= Edit a sponsor
+master.page.sponsor                			= Sponsor
+master.page.sponsor.sponsorship.list		= List of sponsorship
+
+master.page.anonymous.list					= List of trips
+master.page.authenticated.folders			= Folders
+master.page.admin.legalTexts				= Legal texts
+
+master.page.profile 						= Profile
+master.page.profile.socialIdentity          = SocialIdentity
+
+master.page.login 							= Login
+master.page.register.explorer				= Register as explorer
+master.page.register.ranger		   			= Register as ranger
+master.page.register.manager				= Register as manager
+master.page.register.sponsor				= Register as sponsor
+master.page.register.auditor				= Register as auditor
+
+master.page.ranger.edit						= Edit a ranger
+master.page.ranger							= Ranger
+
+master.page.category                        = Categories
+master.page.application.list                = List applications
+
+master.page.logout 							= Logout
+master.page.curriculum.list					= Display curriculum

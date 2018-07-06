@@ -1,0 +1,177 @@
+
+package services;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.CurriculumRepository;
+import domain.Curriculum;
+import domain.EducationRecord;
+import domain.EndorserRecord;
+import domain.MiscellaneousRecord;
+import domain.ProfessionalRecord;
+import domain.Ranger;
+
+@Service
+@Transactional
+public class CurriculumService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private CurriculumRepository	curriculumRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private RangerService			rangerService;
+
+	@Autowired
+	private PersonalRecordService	personalRecordService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public CurriculumService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Curriculum create() {
+		Ranger ranger = null;
+		Curriculum result = null;
+
+		result = this.generateTicker(new Curriculum());
+		ranger = this.rangerService.findByPrincipal();
+
+		Assert.notNull(ranger);
+
+		result.setPersonalRecord(this.personalRecordService.create());
+		result.setEducationRecords(new ArrayList<EducationRecord>());
+		result.setEndorserRecords(new ArrayList<EndorserRecord>());
+		result.setMiscellaneousRecords(new ArrayList<MiscellaneousRecord>());
+		result.setProfessionalRecords(new ArrayList<ProfessionalRecord>());
+
+		return result;
+	}
+
+	public Curriculum findOne(final int curriculumId) {
+
+		Curriculum result = null;
+		result = this.curriculumRepository.findOne(curriculumId);
+		return result;
+	}
+
+	public Collection<Curriculum> findAll() {
+
+		Collection<Curriculum> result = null;
+		result = this.curriculumRepository.findAll();
+		return result;
+	}
+
+	public Curriculum save(final Curriculum curriculum) {
+		Assert.notNull(curriculum);
+
+		Curriculum result = null;
+		Ranger rangerCurriculum = null;
+		Ranger rangerLogin = null;
+
+		rangerLogin = this.rangerService.findByPrincipal();
+
+		//this.checkRangerByCurriculum(curriculum);
+
+		if (curriculum.getId() == 0)
+			Assert.isNull(rangerLogin.getCurriculum());
+		else {
+			rangerCurriculum = this.rangerService.findRangerByCurriculumId(curriculum.getId());
+			Assert.isTrue(rangerLogin.equals(rangerCurriculum));
+		}
+
+		result = this.curriculumRepository.save(curriculum);
+		rangerLogin.setCurriculum(result);
+
+		return result;
+	}
+
+	public void delete(final Curriculum curriculum) {
+
+		Assert.notNull(curriculum);
+		Ranger rangerLogin = null;
+		Ranger rangerCurriculum = null;
+
+		rangerCurriculum = this.rangerService.findRangerByCurriculumId(curriculum.getId());
+		rangerLogin = this.rangerService.findByPrincipal();
+		Assert.isTrue(rangerLogin.equals(rangerCurriculum));
+
+		//this.personalRecordService.delete(curriculum.getPersonalRecord());
+		this.curriculumRepository.delete(curriculum);
+		rangerLogin.setCurriculum(null);
+		this.rangerService.save(rangerLogin);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public void checkRangerByCurriculum(final Curriculum curriculum) {
+		Ranger ranger = null;
+		Ranger rangerByCurriculum = null;
+
+		ranger = this.rangerService.findByPrincipal();
+		rangerByCurriculum = this.rangerService.findRangerByCurriculumId(curriculum.getId());
+
+		// Si son el mismo curriculum, significa que es el mismo ranger
+		Assert.isTrue(ranger.equals(rangerByCurriculum));
+	}
+
+	public void deleteByRanger(final Ranger ranger) {
+
+		final Curriculum curriculum = this.findByRangerId(ranger.getId());
+		this.curriculumRepository.delete(curriculum);
+	}
+
+	public Curriculum findByRangerId(final int rangerId) {
+
+		Curriculum result = null;
+		//result = this.curriculumRepository.findByRangerId(rangerId);
+		result = this.rangerService.findCurriculumByRangerId(rangerId);
+		return result;
+	}
+
+	public Curriculum findByPrincipal() {
+
+		Curriculum result = null;
+		final Ranger ranger = this.rangerService.findByPrincipal();
+		result = this.findByRangerId(ranger.getId());
+		return result;
+	}
+
+	public Curriculum generateTicker(final Curriculum curriculum) {
+
+		String result = null;
+		Curriculum curriculumTemp = null;
+		final Random random = new Random();
+		final String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+		while (true) {
+			result = new SimpleDateFormat("yyMMdd").format(new Date()) + "-";
+			for (int i = 0; i <= 3; i++) {
+				final int index = (int) (random.nextFloat() * letters.length());
+				result += letters.charAt(index);
+			}
+			curriculumTemp = this.curriculumRepository.findByTicker(result);
+			if (curriculumTemp == null)
+				break;
+		}
+
+		curriculum.setTicker(result);
+		return curriculum;
+	}
+}

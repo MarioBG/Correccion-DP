@@ -1,0 +1,12 @@
+socialIdentity.edit                     = Edit
+socialIdentity.nick                     = Nick
+socialIdentity.nameSocialNetwork        = Social Identity
+socialIdentity.link                     = Link
+socialIdentity.photo                    = Photo
+socialIdentity.display                  = Display
+socialIdentity.create                   = Create
+socialIdentity.save                     = Save
+socialIdentity.cancel                   = Cancel
+socialIdentity.delete                   = Delete
+
+socialIdentity.commit.error 	        = Can't complete your action

@@ -1,0 +1,75 @@
+
+package repositories;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import domain.Auditor;
+import domain.Category;
+import domain.Explorer;
+import domain.Trip;
+
+@Repository
+public interface TripRepository extends JpaRepository<Trip, Integer> {
+
+	@Query("select avg(t.applications.size),min(t.applications.size),max(t.applications.size),sqrt(sum(t.applications.size * t.applications.size)/ count(a) - (avg(t.applications.size) *avg(t.applications.size)))" + " from Trip t, Application a")
+	public Collection<Double> avgMinMaxDevApplicationsPerTrip();//C1
+
+	@Query("select avg(t.price), " + "min(t.price),max(t.price),sqrt( sum(t.price * t.price) /count(t.price) - (avg(t.price) *avg(t.price))) from Trip t")
+	public Collection<Double> avgMinMaxDevPriceOfTheTrips();//C3
+
+	@Query("select concat( 100 * ( select count(t)from Trip t where t.cancelledReason is not null )/ count(r), '%') from Trip r")
+	public String ratioOfTripsCancelledVsTotalTripsOrganized();//C9
+
+	@Query("select t from Trip t where t.applications.size >= 1.1* ( select avg(r.applications.size) from Trip r) order by t.applications.size")
+	public Collection<Trip> listingTrips10PercentMoreApplicantionsThanAvg();//C10
+
+	@Query("select min(t.notes.size),max(t.notes.size),avg(t.notes.size),sqrt(sum(t.notes.size * t.notes.size) / count(n) -(avg(t.notes.size) * avg(t.notes.size))) from Trip t, Note n")
+	public Collection<Double> minMaxAvgDevNotesPerTrip();//B1
+
+	@Query("select min(t.auditRecords.size),max(t.auditRecords.size),avg(t.auditRecords.size),sqrt(sum(t.auditRecords.size * t.auditRecords.size) / count(a)- (avg(t.auditRecords.size) * avg(t.auditRecords.size))) from Trip t, AuditRecord a")
+	public Collection<Double> minMaxAvgDevAuditRecordPerTrip();//B2
+
+	@Query("select case when (count(app.applicant) > 0) then true else false end from Trip tr join tr.applications app where tr.id = ?1 and app.applicant.id = ?2")
+	Boolean hasThisTripAnyApplicationFromThisExplorer(int tripId, int explorerId);
+
+	@Query("select concat ( 100 * ( select count(t) from Trip t where t.auditRecords is not empty )/ count(r), '%') from Trip r")
+	public String ratioOfTripsWithAnyAuditRecord();//B3
+
+	@Query("select t from Trip t where t.manager.id = ?1")
+	public Collection<Trip> listTripPerManager(int managerId);
+
+	@Query("select distinct a.applicant from Trip t join t.applications a where t.id = ?1")
+	public Collection<Explorer> explorerPerTrip(int tripId);
+
+	@Query("select distinct a.auditor from Trip t join t.auditRecords a where t.id = ?1")
+	public Collection<Auditor> auditorPerTrip(int tripId);
+
+	@Query("select t from Trip t where t.ticker = ?1")
+	public Trip findByTicker(String tickerName);
+
+	@Query("select t from Trip t where t.startDateTrip >= ?1 and t.publicationDate <= ?1")
+	public Collection<Trip> findAvailableTrips(Date moment);
+
+	@Query("select t from Trip t where t.startDateTrip >= ?1")
+	public Collection<Trip> findByDateBeforeStartDateTrip(Date moment);
+
+	@Query("select a.trip from Application a where a.applicant = ?1")
+	public Collection<Trip> listTripPerExplorer(Explorer explorer);
+
+	@Query("select t from Trip t where t.publicationDate <= ?1 and t.cancelledReason = null")
+	public Collection<Trip> findTripPerPublicationDate(Date actualDate);
+
+	@Query("select tr from Trip tr where(tr.title LIKE %?1% or tr.description LIKE %?1% or tr.ticker LIKE %?1%) and tr.publicationDate <= ?2 ")
+	public Collection<Trip> findTripPerKeyword(String keyword, Date moment);
+
+	@Query("select tr from Trip tr where tr.category = ?1 and tr.publicationDate <= ?2 ")
+	public Collection<Trip> findTripPerCategory(Category category, Date moment);
+
+	@Query("select t from Trip t join t.applications a where a.status = 'ACCEPTED' and a.applicant.id = ?1 and t.endDateTrip <= current_timestamp")
+	Collection<Trip> findCanWriteStoryByApplicantId(int explorerId);
+}

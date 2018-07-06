@@ -1,0 +1,41 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Enlaces
+application.create					     = Create an application
+application.edit                         = Edit
+application.display					     = Display
+application.displayEdit                  = Edit application
+application.cancelApplication            = Cancel application
+
+# Atributos
+application.tripLabel            	     = Select an available trip
+application.trip					     = Trip
+application.moment  				     = Creation date
+application.rejectReason			     = Reject reason
+application.status          		     = Status
+application.comments       			     = Comments
+application.comments.annotation          = Each comment in one line
+application.statusLabel   			     = Application status
+
+# Atributos - CreditCard 
+application.creditCard.legend            = Credit card
+application.creditCard.holder            = Holder
+application.creditCard.brand             = Brand
+application.creditCard.number            = Number
+application.creditCard.expirationMonth   = Expiration month 
+application.creditCard.expirationYear    = Expiration year
+application.creditCard.cvv               = CVV
+
+# Mensajes de los botones
+application.save            		     = Save
+application.cancel          		     = Cancel
+
+# Información sobre la ejecución de las acciones
+application.commit.error                 = Can't complete your action
+application.commit.ok                    = Action sucessfully completed

@@ -1,0 +1,23 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+hasValue.edit			= Edit
+hasValue.assign			= Assigna new tag
+
+hasValue.value			= Value
+hasValue.tag			= Tag
+hasValue.trip			= Trip
+
+hasValue.save			= Save
+hasValue.delete			= Delete
+hasValue.cancel			= Cancel
+
+hasValue.confirm.delete = Unassign this tag?
+
+hasValue.commit.error	= Can't complete your action
+hasValue.commit.ok		= Action sucessfully completed

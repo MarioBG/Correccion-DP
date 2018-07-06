@@ -1,0 +1,112 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.AuditorRepository;
+import security.LoginService;
+import security.UserAccount;
+import domain.AuditRecord;
+import domain.Auditor;
+import domain.Folder;
+import domain.Note;
+import domain.SocialIdentity;
+
+@Service
+@Transactional
+public class AuditorService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private AuditorRepository	auditorRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private UserAccountService	userAccountService;
+
+	@Autowired
+	private FolderService		folderService;
+
+	@Autowired
+	private ActorService		actorService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public AuditorService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Auditor create() {
+
+		Auditor result = null;
+		result = new Auditor();
+		result.setAuditRecords(new ArrayList<AuditRecord>());
+		result.setNotes(new ArrayList<Note>());
+		result.setFolders(this.actorService.foldersToRegister());
+		result.setSocialIdentities(new ArrayList<SocialIdentity>());
+		//		result.setRecipientMessages(new ArrayList<Message>());
+		//		result.setSentMessages(new ArrayList<Message>());
+		final UserAccount userAccount = this.userAccountService.create("AUDITOR");
+		result.setUserAccount(userAccount);
+		return result;
+	}
+
+	public Auditor findOne(final int auditorId) {
+
+		Auditor result = null;
+		result = this.auditorRepository.findOne(auditorId);
+		return result;
+	}
+
+	public Collection<Auditor> findAll() {
+
+		Collection<Auditor> result = null;
+		result = this.auditorRepository.findAll();
+		return result;
+	}
+
+	public Auditor save(final Auditor auditor) {
+
+		Assert.notNull(auditor);
+
+		Auditor result = null;
+		if (auditor.getId() == 0) {
+
+			final Collection<Folder> folders = this.folderService.defaultFolders(auditor);
+			auditor.setFolders(folders);
+			result = this.auditorRepository.save(auditor);
+
+		} else
+			result = this.auditorRepository.save(auditor);
+		return result;
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public Auditor findByPrincipal() {
+
+		Auditor result = null;
+		final UserAccount userAccount = LoginService.getPrincipal();
+		result = this.findByUserAccountId(userAccount.getId());
+		return result;
+	}
+
+	public Auditor findByUserAccountId(final int userAccountId) {
+
+		Auditor result = null;
+		result = this.auditorRepository.findByUserAccountId(userAccountId);
+		return result;
+	}
+}

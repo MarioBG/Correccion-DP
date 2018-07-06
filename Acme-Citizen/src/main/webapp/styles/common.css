@@ -1,0 +1,43 @@
+/* common.css
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ * 
+ */
+
+.error {
+	color: red;
+	font-weight: bolder;
+}
+
+.message {
+	color: red;
+	font-weight: bolder;
+}
+
+.middle{
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+}
+
+#chartdiv {
+  width: 400px;
+  height: 200px;
+  	margin: auto;
+	padding: 10px;
+  border: 1px dotted #ccc;
+}
+
+.goodThing {
+	color: green;
+	font-family: "Palatino Linotype", "Book Antiqua", Candara, serif;
+}
+
+.badThing {
+	color: red;
+	font-family: "Palatino Linotype", "Book Antiqua", Candara, serif;
+}

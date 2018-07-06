@@ -1,0 +1,22 @@
+dashboard.minMaxAvgStddevOfApplicationsPerTrip	= Minimo, maximo, media y desviación estandar del numero de aplicaciones por viaje
+dashboard.minMaxAvgStddevOfTripsPerManager		= Minimo, maximo, media y desviación estandar del numero de viajes gestionados por gerente
+dashboard.minMaxAvgStddevOfPricePerTrip			= Minimo, maximo, media y desviación estandar del precio por viaje
+dashboard.minMaxAvgOfTripsPerRanger				= Minimo, maximo, media y desviación estandar del numero de viajes guiados por guardabosque 
+
+dashboard.ratioApplicationsPending				= Ratio de aplicaciones con estatus "PENDIENTE"
+dashboard.ratioApplicationsDue					= Ratio de aplicaciones con estatus "EN PROCESO"
+dashboard.ratioApplicationsAccepted				= Ratio de aplicaciones con estatus "ACEPTADO"
+dashboard.ratioApplicationsCancelled			= Ratio de aplicaciones con estatus "CANCELADO"
+dashboard.ratioTripsCancelled					= Ratio de viajes cancelados entre todos los viajes organizados
+
+dashboard.findTrips10MoreApplications			= Lista de viajes que tienen al menos un 10% más que la media, ordenados por numero de aplicaciones
+dashboard.findLegalTextOrderByReferenced		= Tabla con el numero de veces que cada texto legal ha sido referenciado
+
+trip.ticker					= Ticker
+trip.title					= Título
+trip.category				= Categoría
+trip.publicationDate		= Fecha de publicación
+trip.startDate				= Fecha de inicio
+trip.endDate				= Fecha de finalización
+trip.description			= Descripción
+trip.price		   			= Precio

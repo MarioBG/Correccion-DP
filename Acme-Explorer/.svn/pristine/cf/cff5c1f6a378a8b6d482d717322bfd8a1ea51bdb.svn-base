@@ -1,0 +1,96 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.EducationRecordRepository;
+import domain.Curriculum;
+import domain.EducationRecord;
+import domain.Ranger;
+
+@Service
+@Transactional
+public class EducationRecordService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private EducationRecordRepository	educationalrecordRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+	@Autowired
+	private RangerService				rangerService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public EducationRecordService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public EducationRecord create() {
+		EducationRecord educationRecord = null;
+
+		educationRecord = new EducationRecord();
+
+		return educationRecord;
+	}
+
+	public EducationRecord save(final EducationRecord educationRecord) {
+		Assert.notNull(educationRecord);
+
+		Ranger ranger = null;
+		Curriculum curriculum = null;
+		EducationRecord result = null;
+
+		ranger = this.rangerService.findByPrincipal();
+		curriculum = ranger.getCurriculum();
+
+		result = this.educationalrecordRepository.save(educationRecord);
+		if (educationRecord.getId() == 0) {
+			curriculum.getEducationRecords().add(result);
+			this.curriculumService.save(curriculum);
+		}
+
+		return result;
+
+	}
+
+	public void delete(final EducationRecord educationRecord) {
+
+		Assert.notNull(educationRecord);
+		Assert.isTrue(educationRecord.getStartDate().before(educationRecord.getEndDate())); // TODO: ¿Qué sentido tiene esto?
+
+		Ranger ranger = null;
+		Curriculum curriculum = null;
+
+		ranger = this.rangerService.findByPrincipal();
+		curriculum = ranger.getCurriculum();
+
+		curriculum.getEducationRecords().remove(educationRecord);
+		this.curriculumService.save(curriculum);
+
+		this.educationalrecordRepository.delete(educationRecord);
+	}
+
+	public EducationRecord findOne(final int id) {
+		return this.educationalrecordRepository.findOne(id);
+	}
+
+	public Collection<EducationRecord> findAll() {
+		return this.educationalrecordRepository.findAll();
+	}
+
+	// Other business methods -------------------------------------------------
+}

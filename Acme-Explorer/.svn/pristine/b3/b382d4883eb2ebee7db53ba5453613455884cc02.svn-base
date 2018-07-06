@@ -1,0 +1,49 @@
+<%-- edit.jsp de EducationRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+	
+<h3>
+	<spring:message var="educationRecordTitle" code="educationRecord.title"/>
+	<b>${educationRecordTitle}:&nbsp;</b> <jstl:out value="${educationRecord.title}"/>
+</h3>
+<br/>
+
+<spring:message var="educationRecordStartDate" code="educationRecord.startDate"/>
+<b>${educationRecordStartDate}:&nbsp;</b> <jstl:out value="${educationRecord.startDate}"/>
+<br/>
+
+<spring:message var="educationRecordEndDate" code="educationRecord.endDate"/>
+<b>${educationRecordEndDate}:&nbsp;</b> <jstl:out value="${educationRecord.endDate}"/>
+<br/>
+
+<spring:message var="educationRecordInstitution" code="educationRecord.institution"/>
+<b>${educationRecordInstitution}:&nbsp;</b> <jstl:out value="${educationRecord.institution}"/>
+<br/>
+
+<spring:message var="educationRecordAttachment" code="educationRecord.attachment"/>
+<b>${educationRecordAttachment}:&nbsp;</b> <jstl:out value="${educationRecord.attachment}"/>
+<br/>
+
+<spring:message var="educationRecordComments" code="educationRecord.comments"/>
+<b>${educationRecordComments}:&nbsp;</b> <jstl:out value="${educationRecord.comments}"/>
+<br/>
+
+<!-- Enlace para editar el education record -->
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="educationRecordEditDisplay" code="educationRecord.editDisplay"/>
+	<a href="curriculum/ranger/edit-educationRecord.do?educationRecordId=${educationRecord.id}">${educationRecordEditDisplay}</a>
+</security:authorize>
+<br/>
+
+<spring:message var="educationRecordCancel" code="educationRecord.cancel" />
+<input type="button" name="cancel" value="${educationRecordCancel}" onclick="javascript: relativeRedir('${cancelURI}');" />
+<br/>

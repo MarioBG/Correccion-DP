@@ -1,0 +1,30 @@
+# messages_es.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+application.explorer        		= Explorador
+application.trip        			= Viaje
+application.moment 					= Fecha de cración
+application.rejectReason			= Razon de rechazo
+application.status          		= Estado
+
+application.create					= Crear una solicitud
+
+application.trip            		= Seleccione un viaje disponible
+application.comments        		= Comentarios
+application.comments.annotation     = Cada comentario en una línea 
+application.status          		= Estado de la aplicación
+
+application.creditCard.legend       = Tarjeta de crédito
+application.creditCard.holder       = Titular
+application.creditCard.brand        = Marca
+application.creditCard.number       = Número
+application.expirationYear          = Fecha de expiración
+application.creditCard.cvv          = CVV
+
+application.save            		= Guardar
+application.cancel					= Cancelar

@@ -1,0 +1,17 @@
+
+
+
+
+
+
+configuration.banner    				= Anuncio
+configuration.englishWelcome    		= Mensaje de bienvenida inglés
+configuration.spanishWelcome    		= Mensaje de bienvenida español
+configuration.spamWords    				= Palabras spam
+configuration.vat    					= IVA
+configuration.countryCode    			= Código de país 
+configuration.finderCache				= Caché del buscador
+configuration.maxTripDisplay			= Máximo número de viajes a mostrar
+configuration.listTags					= Listar etiquetas
+configuration.save    					= Guardar
+configuration.cancel    				= Cancelar

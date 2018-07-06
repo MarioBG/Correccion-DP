@@ -1,0 +1,26 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Links
+professionalRecord.edit        = Edit
+professionalRecord.display     = Display
+professionalRecord.create      = Create a professional record
+professionalRecord.editDisplay = Edit a professional record
+
+# Attributes
+professionalRecord.company     = Title
+professionalRecord.startDate   = Start date
+professionalRecord.endDate     = End date
+professionalRecord.role        = Role
+professionalRecord.attachment  = Attachment
+professionalRecord.comments    = Comments
+
+# Button message
+professionalRecord.save        = Save
+professionalRecord.delete      = Delete
+professionalRecord.cancel      = Cancel

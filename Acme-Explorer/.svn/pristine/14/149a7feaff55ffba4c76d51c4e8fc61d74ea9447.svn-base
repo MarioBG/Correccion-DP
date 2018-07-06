@@ -1,0 +1,132 @@
+
+package controllers.manager;
+
+import java.util.Collection;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.HasValueService;
+import services.TagService;
+import services.TripService;
+import controllers.AbstractController;
+import domain.HasValue;
+import domain.Tag;
+import domain.Trip;
+
+@Controller
+@RequestMapping("/hasValue/manager")
+public class HasValueManagerController extends AbstractController {
+
+	// Services ------------------------------------------------------
+
+	@Autowired
+	private HasValueService	hasValueService;
+
+	@Autowired
+	private TripService		tripService;
+
+	@Autowired
+	private TagService		tagService;
+
+
+	// Constructors --------------------------------------------------
+
+	public HasValueManagerController() {
+		super();
+	}
+
+	// Creation ------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam final int tripId) {
+
+		ModelAndView result;
+		HasValue hasValue;
+
+		final Trip trip = this.tripService.findOne(tripId);
+		hasValue = this.hasValueService.create(trip);
+
+		result = this.createEditModelAndView(hasValue);
+
+		return result;
+	}
+
+	// Edition -------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int hasValueId) {
+
+		ModelAndView result;
+
+		final HasValue hasValue = this.hasValueService.findOneToEdit(hasValueId);
+		result = this.createEditModelAndView(hasValue);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final HasValue hasValue, final BindingResult binding) {
+
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(hasValue);
+		else
+			try {
+				this.hasValueService.save(hasValue);
+				result = new ModelAndView("redirect:/hasValue/list.do?tripId=" + hasValue.getTrip().getId());
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(hasValue, "hasValue.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(final HasValue hasValue, final BindingResult binding) {
+
+		ModelAndView result;
+
+		try {
+			this.hasValueService.delete(hasValue);
+			result = new ModelAndView("redirect:/hasValue/list.do?tripId=" + hasValue.getTrip().getId());
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(hasValue, "hasValue.commit.error");
+		}
+
+		return result;
+	}
+
+	// Ancillary methods ---------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final HasValue hasValue) {
+
+		ModelAndView result;
+
+		result = this.createEditModelAndView(hasValue, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final HasValue hasValue, final String messageCode) {
+
+		final ModelAndView result;
+		final Collection<Tag> tags;
+
+		tags = this.tagService.findAll();
+
+		result = new ModelAndView("hasValue/edit");
+		result.addObject("hasValue", hasValue);
+		result.addObject("tags", tags);
+
+		return result;
+	}
+}

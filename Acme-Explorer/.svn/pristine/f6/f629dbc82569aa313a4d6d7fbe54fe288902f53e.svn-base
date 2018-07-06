@@ -1,0 +1,120 @@
+
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.StageRepository;
+import security.Authority;
+import domain.Manager;
+import domain.Stage;
+import domain.Trip;
+
+@Service
+@Transactional
+public class StageService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private StageRepository	stageRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private ManagerService	managerService;
+
+	@Autowired
+	private TripService		tripService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public StageService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Stage create(final int tripId) {
+
+		Stage result;
+		Trip trip;
+
+		result = new Stage();
+		trip = this.tripService.findOneToEdit(tripId);
+		result.setTrip(trip);
+
+		return result;
+	}
+
+	public Stage findOne(final int stageId) {
+
+		Assert.notNull(stageId);
+
+		final Stage res = this.stageRepository.findOne(stageId);
+		return res;
+
+	}
+
+	public Collection<Stage> findAll() {
+
+		Manager manager = null;
+
+		manager = this.managerService.findByPrincipal();
+		final Collection<Authority> authorities = manager.getUserAccount().getAuthorities();
+		final String authority = authorities.toArray()[0].toString();
+
+		Assert.isTrue((authority.equals("MANAGER")));
+
+		final Collection<Stage> res = this.stageRepository.findAll();
+		return res;
+
+	}
+
+	public Stage save(final Stage stage) {
+
+		Manager manager;
+		final Trip trip;
+
+		manager = this.managerService.findByPrincipal();
+		final Collection<Authority> authorities = manager.getUserAccount().getAuthorities();
+		final String authority = authorities.toArray()[0].toString();
+
+		Assert.isTrue((authority.equals("MANAGER")));
+
+		Assert.notNull(stage);
+
+		final Stage res = this.stageRepository.save(stage);
+		trip = stage.getTrip();
+		trip.getStages().add(res);
+		this.tripService.getPrice(trip);
+
+		return res;
+	}
+
+	public void delete(final Stage stage) {
+
+		final Trip trip = stage.getTrip();
+		this.tripService.checkPrincipalManager(trip);
+
+		trip.getStages().remove(stage);
+		this.stageRepository.delete(stage);
+		this.tripService.getPrice(trip);
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public Collection<Stage> findByTripId(final int tripId) {
+
+		Collection<Stage> result;
+
+		result = this.stageRepository.findByTripId(tripId);
+
+		return result;
+	}
+}

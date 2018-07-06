@@ -1,0 +1,124 @@
+
+package controllers;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.Valid;
+
+import org.jboss.logging.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import security.Authority;
+import services.ActorService;
+import services.FolderService;
+import services.RangerService;
+import domain.Ranger;
+
+@Controller
+@RequestMapping("/ranger")
+public class RangerController extends AbstractController {
+
+	// Services ---------------------------------------------------------------
+	@Autowired
+	private RangerService	rangerService;
+
+	@Autowired
+	private FolderService	folderService;
+
+	@Autowired
+	private ActorService	actorService;
+
+
+	// Constructor -------------------------------------------------------------
+	public RangerController() {
+		super();
+	}
+
+	// Creating  --------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		final Ranger user = this.rangerService.create();
+		result = this.createEditModelAndView(user);
+		return result;
+	}
+
+	// Register ---------------------------------------------------------
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	public ModelAndView register(@Valid final Ranger ranger, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(ranger);
+		else
+			try {
+				this.actorService.registerAsActor(ranger);
+				result = new ModelAndView("redirect:../security/login.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(ranger, "ranger.commit.error");
+			}
+		return result;
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "cancel")
+	public ModelAndView cancelRegisteration(final Ranger ranger) {
+		ModelAndView result;
+
+		try {
+			this.folderService.delete(ranger.getFolders());
+			result = new ModelAndView("redirect:../welcome/index.do");
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(ranger, "ranger.commit.error");
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView displayRanger(@Param final int rangerId) {
+		ModelAndView result;
+		Ranger ranger;
+
+		ranger = this.rangerService.findOne(rangerId);
+		result = new ModelAndView("ranger/display");
+		result.addObject("id", ranger.getCurriculum().getId());
+		result.addObject("ranger", ranger);
+		return result;
+	}
+
+	// Ancillary methods ------------------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Ranger user) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(user, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Ranger ranger, final String message) {
+		ModelAndView result;
+		Collection<Authority> authorities;
+		Authority authorityRanger;
+
+		authorities = new ArrayList<>();
+		authorityRanger = new Authority();
+		authorityRanger.setAuthority(Authority.RANGER);
+		authorities.add(authorityRanger);
+
+		result = new ModelAndView("ranger/register");
+		result.addObject("ranger", ranger);
+		result.addObject("authorities", authorities);
+		result.addObject("message", message);
+
+		return result;
+	}
+}

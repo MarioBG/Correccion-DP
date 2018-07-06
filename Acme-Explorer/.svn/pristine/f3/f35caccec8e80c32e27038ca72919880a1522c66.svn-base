@@ -1,0 +1,112 @@
+
+package controllers.admin;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import security.Authority;
+import services.ActorService;
+import services.FolderService;
+import services.ManagerService;
+import controllers.AbstractController;
+import domain.Manager;
+
+@Controller
+@RequestMapping("/manager/admin")
+public class AdminManagerController extends AbstractController {
+
+	// Services ---------------------------------------------------------------
+	@Autowired
+	public ManagerService	managerService;
+
+	@Autowired
+	public FolderService	folderService;
+
+	@Autowired
+	public ActorService		actorService;
+
+
+	// Constructor -------------------------------------------------------------
+	public AdminManagerController() {
+		super();
+	}
+
+	// Creating  --------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		final Manager user = this.managerService.create();
+		result = this.createEditModelAndView(user);
+		return result;
+	}
+
+	// Register ---------------------------------------------------------
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	public ModelAndView register(@Valid final Manager manager, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(manager);
+		else
+			try {
+				this.actorService.registerAsActor(manager);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(manager, "manager.commit.error");
+			}
+		return result;
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "cancel")
+	public ModelAndView cancelRegisteration(final Manager manager) {
+		ModelAndView result;
+
+		try {
+			this.folderService.delete(manager.getFolders());
+			result = new ModelAndView("redirect:../../welcome/index.do");
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(manager, "manager.commit.error");
+		}
+		return result;
+	}
+
+	// Ancillary methods ------------------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Manager user) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(user, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Manager manager, final String message) {
+		ModelAndView result;
+		Collection<Authority> authorities;
+		Authority authorityManager;
+
+		authorityManager = new Authority();
+		authorities = new ArrayList<>();
+		authorityManager.setAuthority(Authority.MANAGER);
+		authorities.add(authorityManager);
+
+		result = new ModelAndView("manager/admin/register");
+		result.addObject("manager", manager);
+		result.addObject("authorities", authorities);
+		result.addObject("message", message);
+
+		return result;
+	}
+}

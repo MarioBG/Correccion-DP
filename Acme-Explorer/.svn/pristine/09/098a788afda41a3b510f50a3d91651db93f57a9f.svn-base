@@ -1,0 +1,45 @@
+<%-- edit.jsp de EndorserRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<h3>
+	<spring:message var="endorserRecordFullName" code="endorserRecord.fullName"/>
+	<b>${endorserRecordFullName}:&nbsp;</b> <jstl:out value="${endorserRecord.fullName}"/>
+</h3>
+<br/>
+
+<spring:message var="endorserRecordEmail" code="endorserRecord.email"/>
+<b>${endorserRecordEmail}:&nbsp;</b> <jstl:out value="${endorserRecord.email}"/>
+<br/>
+
+<spring:message var="endorserRecordPhone" code="endorserRecord.phone"/>
+<b>${endorserRecordPhone}:&nbsp;</b> <jstl:out value="${endorserRecord.phone}"/>
+<br/>
+
+<spring:message var="endorserRecordLink" code="endorserRecord.link"/>
+<b>${endorserRecordLink}:&nbsp;</b> <jstl:out value="${endorserRecord.link}"/>
+<br/>
+
+<spring:message var="endorserRecordComments" code="endorserRecord.comments"/>
+<b>${endorserRecordComments}:&nbsp;</b> <jstl:out value="${endorserRecord.comments}"/>
+<br/>
+
+<!-- Enlace para editar el education record -->
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="endorserRecordEditDisplay" code="endorserRecord.editDisplay"/>
+	<a href="curriculum/ranger/edit-endorserRecord.do?endorserRecordId=${endorserRecord.id}">${endorserRecordEditDisplay}</a>
+</security:authorize>
+<br/>
+
+<spring:message var="endorserRecordCancel" code="endorserRecord.cancel" />
+<input type="button" name="cancel" value="${endorserRecordCancel}" onclick="javascript: relativeRedir('${cancelURI}');" />
+<br/>

@@ -1,0 +1,68 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+# Enlaces 
+curriculum.editPersonalRecord             = Edit personal record
+curriculum.createEducationRecord          = Create an education record
+curriculum.createEndorserRecord           = Create an endorser record
+curriculum.createMiscellaneousRecord      = Create a miscellaneous record
+curriculum.createProfessionalRecord       = Create a professional record
+curriculum.edit                           = Edit
+
+# Atributos - curriculum:
+curriculum.ticker                         = Ticker
+
+# Atributos - personalRecord:
+curriculum.personalRecord.fullname        = Full name
+curriculum.personalRecord.email           = Email
+curriculum.personalRecord.photo           = Photo
+curriculum.personalRecord.phone           = Phone
+curriculum.personalRecord.link            = Link
+
+# Atributos - educationRecord:
+# curriculum.educationRecord.title          = Title
+curriculum.educationRecord.startDate      = Start date
+curriculum.educationRecord.endDate        = End date
+curriculum.educationRecord.institution    = Institution
+curriculum.educationRecord.attachment     = Attachment
+curriculum.educationRecord.comments       = Comments
+
+# Atributos - endorserRecord:
+curriculum.endorserRecord.fullName        = Full name
+curriculum.endorserRecord.email           = Email
+curriculum.endorserRecord.phone           = Phone
+curriculum.endorserRecord.link            = Link
+curriculum.endorserRecord.comments        = Comments
+
+# Atributos - professionalRecord:
+
+curriculum.professionalRecord.company     = Company
+curriculum.professionalRecord.startDate   = Start date
+curriculum.professionalRecord.endDate     = End date
+curriculum.professionalRecord.role        = Role
+curriculum.professionalRecord.attachment  = Attachment
+curriculum.professionalRecord.comments    = Comments
+
+# Atributos - miscellaneousRecord:
+
+curriculum.miscellaneousRecord.title      = Title
+curriculum.miscellaneousRecord.attachment = Attachment
+curriculum.miscellaneousRecord.comments   = Comments
+
+# Fieldset (legend)
+curriculum.personalRecord.legend          = Personal information
+curriculum.educationRecord.legend         = Education records
+curriculum.endorserRecord.legend          = Endorser records
+curriculum.miscellaneousRecord.legend     = Miscellaneous records
+curriculum.professionalRecord.legend      = Professional records
+
+# Botones:
+curriculum.create				          = Create
+curriculum.cancel                         = Cancel
+curriculum.return                         = Return to main page
+curriculum.deleteCurriculum               = Delete curriculum

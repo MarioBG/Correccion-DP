@@ -1,0 +1,45 @@
+<%-- list.jsp de EducationRecord --%>
+
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<display:table name="educationRecords" id="row" requestURI="curriculum/list-educationRecord.do" pagesize="5" class="displaytag">
+
+	<div>
+		<security:authorize access="hasRole('RANGER')">		
+			<display:column>
+					<spring:message var="educationRecordEdit" code="educationRecord.edit"/> 
+					<a href="curriculum/ranger/edit-educationRecord.do?educationRecordId=${row.id}"> ${educationRecordEdit} </a>
+			</display:column>
+		</security:authorize>
+		
+		<display:column>
+			<spring:message var="educationRecordDisplay" code="educationRecord.display"/> 
+			<a href="curriculum/display-educationRecord.do?educationRecordId=${row.id}"> ${educationRecordDisplay} </a>
+		</display:column>
+			
+		<spring:message var="educationRecordTitle" code="educationRecord.title"/>
+		<display:column property="title" title="${educationRecordTitle}"/>
+
+		<spring:message var="educationRecordStartDate" code="educationRecord.startDate"/>
+		<display:column property="startDate" title="${educationRecordStartDate}"/>
+		
+		<spring:message var="educationRecordEndDate" code="educationRecord.endDate"/>
+		<display:column property="endDate" title="${educationRecordEndDate}"/>
+		
+		<spring:message var="educationRecordInstitution" code="educationRecord.institution"/>
+		<display:column property="institution" title="${educationRecordInstitution}"/>
+	</div>
+</display:table>
+
+<security:authorize access="hasRole('RANGER')">
+	<spring:message var="educationRecordCreate" code="educationRecord.create"/> 
+	<a href="curriculum/ranger/create-educationRecord.do"> ${educationRecordCreate}</a>
+</security:authorize>

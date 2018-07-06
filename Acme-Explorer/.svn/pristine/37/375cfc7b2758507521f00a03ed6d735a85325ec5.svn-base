@@ -1,0 +1,56 @@
+# messages.properties
+#
+# Copyright (C) 2017 Universidad de Sevilla
+# 
+# The use of this project is hereby constrained to the conditions of the 
+# TDG Licence, a copy of which you may download from 
+# http://www.tdg-seville.info/License.html
+
+trip.edit					= Edit
+trip.editTrip				= Edit trip
+trip.create					= Create a new trip
+
+trip.ticker					= Ticker
+trip.title					= Title
+trip.category				= Category
+trip.publicationDate		= Publication date
+trip.startDate				= Start date
+trip.endDate				= End date
+trip.description   			= Description
+trip.price   				= Price
+trip.requirements			= Requirements
+trip.tags					= Tags
+trip.auditRecords			= Audit records
+trip.survivalClasses		= Survival classes
+trip.stories				= Stories
+trip.manager				= Manager
+trip.ranger					= Ranger
+trip.legalText				= Legal text
+trip.cancelledReason		= Cancelled reason
+
+trip.addTag					= Add tag
+trip.addRequirement			= Add requirement
+trip.createAuditRecord		= Create a new audit record
+trip.createSurvivalClass	= Create a new survival class
+trip.createStory			= Create a new story
+trip.createApplication		= Create a new application
+trip.createNote				= Create a new note
+trip.listStages				= List of stages
+trip.listApplications		= List of applications
+trip.listNotes				= List of notes
+trip.eachRequirement		= Each requirement separated by a dot (".")
+trip.editTag				= Edit tag
+trip.assignTag				= Assing a new tag
+
+trip.save					= Save
+trip.delete					= Delete
+trip.cancel					= Cancel
+trip.search					= Search
+trip.display				= Display
+trip.cancelTrip				= Cancel trip
+
+trip.confirm.delete 		= Delete this trip?
+trip.confirm.unregister		= Unregister from this trip?
+
+trip.commit.error			= Can't complete your action
+trip.commit.ok				= Action sucessfully completed

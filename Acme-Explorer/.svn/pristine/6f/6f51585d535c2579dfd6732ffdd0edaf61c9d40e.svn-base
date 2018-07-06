@@ -1,0 +1,104 @@
+
+package controllers.ranger;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CurriculumService;
+import services.PersonalRecordService;
+import controllers.AbstractController;
+import domain.Curriculum;
+import domain.PersonalRecord;
+
+@Controller
+@RequestMapping("/personalRecord/ranger")
+public class PersonalRecordRangerController extends AbstractController {
+
+	// Services ------------------------------------------------------------
+
+	@Autowired
+	private CurriculumService		curriculumService;
+
+	@Autowired
+	private PersonalRecordService	personalRecordService;
+
+
+	// Constructors --------------------------------------------------------
+
+	public PersonalRecordRangerController() {
+		super();
+	}
+
+	// Listing --------------------------------------------------------------
+
+	// Display --------------------------------------------------------------
+
+	// Creation  --------------------------------------------------------------
+
+	// Edition    --------------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int personalRecordId) {
+		ModelAndView result = null;
+		PersonalRecord personalRecord = null;
+
+		personalRecord = this.personalRecordService.findOne(personalRecordId);
+		Assert.notNull(personalRecord);
+		result = this.createEditModelAndView(personalRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final PersonalRecord personalRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(personalRecord);
+		else
+			try {
+				this.personalRecordService.save(personalRecord);
+				result = new ModelAndView("redirect:../../curriculum/display.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(personalRecord, "educationRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	// Ancillary methods ----------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final PersonalRecord personalRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(personalRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final PersonalRecord personalRecord, final String messageCode) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		String cancelURI = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		cancelURI = "curriculum/display.do?curriculumId=" + curriculum.getId();
+
+		result = new ModelAndView("personalRecord/edit");
+		result.addObject("personalRecord", personalRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+}

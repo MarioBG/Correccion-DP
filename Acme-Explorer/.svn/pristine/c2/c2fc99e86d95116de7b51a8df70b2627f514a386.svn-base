@@ -1,0 +1,412 @@
+
+package controllers.ranger;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CurriculumService;
+import services.EducationRecordService;
+import services.EndorserRecordService;
+import services.MiscellaneousRecordService;
+import services.ProfessionalRecordService;
+import controllers.AbstractController;
+import domain.Curriculum;
+import domain.EducationRecord;
+import domain.EndorserRecord;
+import domain.MiscellaneousRecord;
+import domain.ProfessionalRecord;
+
+@Controller
+@RequestMapping("/curriculum/ranger")
+public class CurriculumRangerController extends AbstractController {
+
+	// Services ------------------------------------------------------------
+
+	@Autowired
+	private CurriculumService			curriculumService;
+
+	@Autowired
+	private EducationRecordService		educationRecordService;
+
+	@Autowired
+	private EndorserRecordService		endorserRecordService;
+
+	@Autowired
+	private MiscellaneousRecordService	miscellaneousRecordService;
+
+	@Autowired
+	private ProfessionalRecordService	professionalRecordService;
+
+
+	// Constructors --------------------------------------------------------
+
+	public CurriculumRangerController() {
+		super();
+	}
+
+	// Listing --------------------------------------------------------------
+
+	// Display --------------------------------------------------------------
+
+	// Creation  --------------------------------------------------------------
+
+	@RequestMapping(value = "/create-educationRecord", method = RequestMethod.GET)
+	public ModelAndView createEducationRecord() {
+		ModelAndView result = null;
+		EducationRecord educationRecord = null;
+
+		educationRecord = this.educationRecordService.create();
+		result = this.createEditModelAndView(educationRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/create-endorserRecord", method = RequestMethod.GET)
+	public ModelAndView createEndoserRecord() {
+		ModelAndView result = null;
+		EndorserRecord endorserRecord = null;
+
+		endorserRecord = this.endorserRecordService.create();
+		result = this.createEditModelAndView(endorserRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/create-miscellaneousRecord", method = RequestMethod.GET)
+	public ModelAndView createMiscellaneousRecord() {
+		ModelAndView result = null;
+		MiscellaneousRecord miscellaneousRecord = null;
+
+		miscellaneousRecord = this.miscellaneousRecordService.create();
+		result = this.createEditModelAndView(miscellaneousRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/create-professionalRecord", method = RequestMethod.GET)
+	public ModelAndView createProfessionalRecord() {
+		ModelAndView result = null;
+		ProfessionalRecord professionalRecord = null;
+
+		professionalRecord = this.professionalRecordService.create();
+		result = this.createEditModelAndView(professionalRecord);
+
+		return result;
+	}
+
+	// Edition    --------------------------------------------------------------
+
+	@RequestMapping(value = "/edit-educationRecord", method = RequestMethod.GET)
+	public ModelAndView editEducationRecord(@RequestParam final int educationRecordId) {
+		ModelAndView result = null;
+		EducationRecord educationRecord = null;
+
+		educationRecord = this.educationRecordService.findOne(educationRecordId);
+		Assert.notNull(educationRecord);
+		result = this.createEditModelAndView(educationRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-endorserRecord", method = RequestMethod.GET)
+	public ModelAndView editEndorserRecord(@RequestParam final int endorserRecordId) {
+		ModelAndView result = null;
+		EndorserRecord endorserRecord = null;
+
+		endorserRecord = this.endorserRecordService.findOne(endorserRecordId);
+		Assert.notNull(endorserRecord);
+		result = this.createEditModelAndView(endorserRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-miscellaneousRecord", method = RequestMethod.GET)
+	public ModelAndView editMiscellaneousRecord(@RequestParam final int miscellaneousRecordId) {
+		ModelAndView result = null;
+		MiscellaneousRecord miscellaneousRecord = null;
+
+		miscellaneousRecord = this.miscellaneousRecordService.findOne(miscellaneousRecordId);
+		Assert.notNull(miscellaneousRecord);
+		result = this.createEditModelAndView(miscellaneousRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-professionalRecord", method = RequestMethod.GET)
+	public ModelAndView editProfessionalRecord(@RequestParam final int professionalRecordId) {
+		ModelAndView result = null;
+		ProfessionalRecord professionalRecord = null;
+
+		professionalRecord = this.professionalRecordService.findOne(professionalRecordId);
+		Assert.notNull(professionalRecord);
+		result = this.createEditModelAndView(professionalRecord);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-educationRecord", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveEducationRecord(@Valid final EducationRecord educationRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(educationRecord);
+		else
+			try {
+				this.educationRecordService.save(educationRecord);
+				result = new ModelAndView("redirect:../list-educationRecord.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(educationRecord, "educationRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-endorserRecord", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveEndorserRecord(@Valid final EndorserRecord endorserRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(endorserRecord);
+		else
+			try {
+				this.endorserRecordService.save(endorserRecord);
+				result = new ModelAndView("redirect:../list-endorserRecord.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(endorserRecord, "endorserRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-miscellaneousRecord", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveMiscellaneousRecord(@Valid final MiscellaneousRecord miscellaneousRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(miscellaneousRecord);
+		else
+			try {
+				this.miscellaneousRecordService.save(miscellaneousRecord);
+				result = new ModelAndView("redirect:../list-miscellaneousRecord.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(miscellaneousRecord, "miscellaneousRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-professionalRecord", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveProfessionalRecord(@Valid final ProfessionalRecord professionalRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		if (bindingResult.hasErrors())
+			result = this.createEditModelAndView(professionalRecord);
+		else
+			try {
+				// TODO: terminar el servicio de save en ProfessionalRecord
+				//this.professionalRecordService.save(professionalRecord);
+				result = new ModelAndView("redirect:../list-professionalRecord.do?curriculumId=" + curriculumId);
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(professionalRecord, "professionalRecord.commit.error");
+			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-educationRecord", method = RequestMethod.POST, params = "delete")
+	public ModelAndView deleteEducationRecord(final EducationRecord educationRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		try {
+			this.educationRecordService.delete(educationRecord, curriculum);
+			result = new ModelAndView("redirect:../list-educationRecord.do?curriculumId=" + curriculumId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(educationRecord, "educationRecord.commit.error");
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-endorserRecord", method = RequestMethod.POST, params = "delete")
+	public ModelAndView deleteEndorserRecord(final EndorserRecord endorserRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		try {
+			this.endorserRecordService.delete(endorserRecord, curriculum);
+			result = new ModelAndView("redirect:../list-endorserRecord.do?curriculumId=" + curriculumId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(endorserRecord, "endorserRecord.commit.error");
+		}
+
+		return result;
+	}
+	@RequestMapping(value = "/edit-miscellaneousRecord", method = RequestMethod.POST, params = "delete")
+	public ModelAndView deleteMiscellaneousRecord(final MiscellaneousRecord miscellaneousRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		try {
+			this.miscellaneousRecordService.delete(miscellaneousRecord, curriculum);
+			result = new ModelAndView("redirect:../list-miscellaneousRecord.do?curriculumId=" + curriculumId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(miscellaneousRecord, "miscellaneousRecord.commit.error");
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/edit-professionalRecord", method = RequestMethod.POST, params = "delete")
+	public ModelAndView deleteProfessionalRecord(final ProfessionalRecord professionalRecord, final BindingResult bindingResult) {
+		ModelAndView result = null;
+		Curriculum curriculum = null;
+		int curriculumId;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+
+		try {
+			this.professionalRecordService.delete(professionalRecord, curriculum);
+			result = new ModelAndView("redirect:../list-professionalRecord.do?curriculumId=" + curriculumId);
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(professionalRecord, "professionalRecord.commit.error");
+		}
+
+		return result;
+	}
+
+	// Ancillary methods ----------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final EducationRecord educationRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(educationRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final EducationRecord educationRecord, final String messageCode) {
+		ModelAndView result = null;
+		final int curriculumId;
+		String cancelURI = null;
+		Curriculum curriculum = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+		cancelURI = "curriculum/list-educationRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/edit-educationRecord");
+		result.addObject("educationRecord", educationRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final EndorserRecord endorserRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(endorserRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final EndorserRecord endorserRecord, final String messageCode) {
+		ModelAndView result = null;
+		final int curriculumId;
+		String cancelURI = null;
+		Curriculum curriculum = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+		cancelURI = "curriculum/list-endorserRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/edit-endorserRecord");
+		result.addObject("endorserRecord", endorserRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final MiscellaneousRecord miscellaneousRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(miscellaneousRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final MiscellaneousRecord miscellaneousRecord, final String messageCode) {
+		ModelAndView result = null;
+		final int curriculumId;
+		String cancelURI = null;
+		Curriculum curriculum = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+		cancelURI = "curriculum/list-miscellaneousRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/edit-miscellaneousRecord");
+		result.addObject("miscellaneousRecord", miscellaneousRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final ProfessionalRecord professionalRecord) {
+		ModelAndView result = null;
+		result = this.createEditModelAndView(professionalRecord, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final ProfessionalRecord professionalRecord, final String messageCode) {
+		ModelAndView result = null;
+		final int curriculumId;
+		String cancelURI = null;
+		Curriculum curriculum = null;
+
+		curriculum = this.curriculumService.findByPrincipal();
+		curriculumId = curriculum.getId();
+		cancelURI = "curriculum/list-professionalRecord.do?curriculumId=" + curriculumId;
+
+		result = new ModelAndView("curriculum/edit-professionalRecord");
+		result.addObject("professionalRecord", professionalRecord);
+		result.addObject("cancelURI", cancelURI);
+
+		return result;
+	}
+}

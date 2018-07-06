@@ -1,0 +1,27 @@
+
+package repositories;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import domain.Finder;
+import domain.Trip;
+
+@Repository
+public interface FinderRepository extends JpaRepository<Finder, Integer> {
+
+	// TODO: findByUserAccountId pasado a ExplorerRepository como findFinderByUserAccountId
+	//@Query("select f from Finder f where f.explorer.userAccount.id = ?1")
+	//Finder findByUserAccountId(int userAccountId);
+
+	@Query("select f from Finder f join f.trips t where t = ?1")
+	Collection<Finder> findFinderByTrip(Trip trip);
+
+	@Query("select tr from Trip tr where(tr.title LIKE '%?1%' or tr.description LIKE '%?1%' or tr.requirements LIKE '%?1%' or tr.cancelledReason LIKE '%?1%') and (tr.startDateTrip >= '?2' and tr.endDateTrip <= '?3') and tr.price.amount >= ?4 and tr.price.amount <= ?5")
+	Collection<Trip> findTripsPerFinder(String keyword1, String keyword2, String keyword3, String keyword4, Date date1, Date date2, Double price1, Double price2);
+
+}

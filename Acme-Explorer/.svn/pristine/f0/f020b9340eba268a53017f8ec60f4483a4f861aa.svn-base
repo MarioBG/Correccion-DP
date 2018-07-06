@@ -1,0 +1,16 @@
+
+
+
+
+
+
+configuration.banner    				= Banner
+configuration.englishWelcome    		= English welcome
+configuration.spanishWelcome    		= Spanish welcome
+configuration.spamWords    				= Spam words
+configuration.vat    					= VAT
+configuration.countryCode    			= Country code
+configuration.finderCache				= Finder cache
+configuration.maxTripDisplay			= Maximum number of trips to diplay
+configuration.save    					= Save
+configuration.cancel    				= Cancel

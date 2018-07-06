@@ -1,0 +1,13 @@
+
+contact.save                   = Guardar
+contact.create                 = Crear
+contact.delete                 = Eliminar
+contact.cancel				    = Cancelar
+
+contact.edit					= Editar
+
+contact.name				= Nombre
+contact.email				= Correo electrónico
+contact.phone				= Teléfono
+
+contact.commit.error		= No se puede completar su operación

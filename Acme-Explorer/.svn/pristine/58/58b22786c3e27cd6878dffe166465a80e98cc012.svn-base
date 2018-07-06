@@ -1,0 +1,112 @@
+
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.SponsorshipRepository;
+import domain.Sponsor;
+import domain.Sponsorship;
+import domain.Trip;
+
+@Service
+@Transactional
+public class SponsorshipService {
+
+	// Managed repository -----------------------------------------------------
+
+	@Autowired
+	private SponsorshipRepository	sponsorshipRepository;
+
+	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private TripService				tripService;
+
+	@Autowired
+	private SponsorService			sponsorService;
+
+
+	// Constructors -----------------------------------------------------------
+
+	public SponsorshipService() {
+		super();
+	}
+
+	// Simple CRUD methods ----------------------------------------------------
+
+	public Sponsorship create() {
+		final Sponsorship sponsorship = new Sponsorship();
+
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		sponsorship.setSponsor(sponsor);
+		return sponsorship;
+	}
+
+	public Collection<Sponsorship> findAll() {
+		return this.sponsorshipRepository.findAll();
+	}
+
+	public Sponsorship findOne(final int id) {
+		return this.sponsorshipRepository.findOne(id);
+	}
+
+	public Sponsorship save(final Sponsorship sponsorship) {
+		Assert.notNull(sponsorship);
+		Sponsorship result = null;
+		result = this.sponsorshipRepository.save(sponsorship);
+		final Sponsor sponsor = this.sponsorService.findByPrincipal();
+		if (sponsorship.getId() == 0) {
+			sponsor.getSponsorships().add(result);
+			this.sponsorService.save(sponsor);
+		}
+		return result;
+	}
+
+	public void delete(final Sponsorship sponsorship) {
+		this.sponsorshipRepository.delete(sponsorship);
+	}
+
+	public Sponsorship assignSponsorshipToTrip(final Trip trip) {
+		Sponsorship sponsorship;
+		final Collection<Sponsorship> sponsorships = this.sponsorshipRepository.findAll();
+		final List<Sponsorship> list = new ArrayList<Sponsorship>(sponsorships);
+		final Random r = new Random();
+		final Integer i = r.nextInt(list.size());
+		sponsorship = list.get(i);
+		sponsorship.setTrip(trip);
+		trip.getSponsorships().add(sponsorship);
+		this.save(sponsorship);
+		this.tripService.save(trip);
+		return sponsorship;
+
+	}
+
+	// Other business methods -------------------------------------------------
+
+	public void deleteSponsorShips(final Trip trip) {
+		final Collection<Sponsorship> sponsorShips = trip.getSponsorships();
+		this.sponsorshipRepository.delete(sponsorShips);
+
+	}
+	public void deleteBySponsor(final Sponsor sponsor) {
+
+		final Collection<Sponsorship> sponsorships = this.findBySponsor(sponsor);
+		this.sponsorshipRepository.delete(sponsorships);
+	}
+
+	public Collection<Sponsorship> findBySponsor(final Sponsor sponsor) {
+
+		Collection<Sponsorship> result = null;
+		result = this.sponsorshipRepository.findBySponsor(sponsor);
+		return result;
+	}
+
+}
