@@ -26,7 +26,7 @@ import forms.MessageForm;
 
 @Controller
 @RequestMapping("/message/governmentAgent")
-public class MessageAdminController extends AbstractController {
+public class MessageGovernmentAgentController extends AbstractController {
 
 	// Services ------------------------------------------------------
 
@@ -42,7 +42,7 @@ public class MessageAdminController extends AbstractController {
 
 	// Constructors --------------------------------------------------
 
-	public MessageAdminController() {
+	public MessageGovernmentAgentController() {
 		super();
 	}
 

@@ -40,31 +40,35 @@
 
 		<!-- Registers -->
 		<security:intercept-url
-			pattern="/governmentAgent/governmentAgent/**"
+			pattern="/governmentAgent/governmentAgent/register.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
-			pattern="/bankAgent/governmentAgent/**"
+			pattern="/bankAgent/governmentAgent/register.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
-			pattern="/citizen/governmentAgent/**"
+			pattern="/citizen/governmentAgent/register.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
 			pattern="/governmentAgent/governmentAgent/dashboard.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 
 		<security:intercept-url
-			pattern="/configuration/**" access="hasRole('GOVERNMENTAGENT')" />
+			pattern="/configuration/governmentAgent/edit.do" access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
 			pattern="/security/login.do" access="permitAll" />
 		<security:intercept-url
 			pattern="/security/loginFailure.do" access="permitAll" />
 		<security:intercept-url
-			pattern="/welcomemessage/**" access="hasRole('GOVERNMENTAGENT')" />
+			pattern="/welcomemessage/governmentAgent/create.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/welcomemessage/governmentAgent/edit.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/welcomemessage/governmentAgent/delete.do" access="hasRole('GOVERNMENTAGENT')" />
 
 		<security:intercept-url
 			pattern="/welcome/index.do" access="permitAll" />
 
-		<security:intercept-url pattern="/terms/**"
+		<security:intercept-url pattern="/terms/list.do"								
 			access="permitAll" />
 
 		<security:intercept-url
@@ -74,7 +78,13 @@
 		<security:intercept-url
 			pattern="/lottery/list.do" access="permitAll" />
 		<security:intercept-url
-			pattern="/lottery/governmentAgent/**"
+			pattern="/lottery/governmentAgent/create.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/lottery/governmentAgent/edit.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/lottery/governmentAgent/MyLotterys.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
 			pattern="/lottery/buyTicket.do" access="hasRole('CITIZEN')" />
@@ -84,9 +94,16 @@
 		<!-- Transactions -->
 
 		<security:intercept-url
-			pattern="/transaction/**" access="permitAll" />
+			pattern="/transaction/create.do" access="permitAll" />
+		<security:intercept-url
+			pattern="/transaction/edit.do" access="permitAll" />
+		<security:intercept-url
+			pattern="/transaction/list.do" access="permitAll" />
 		<security:intercept-url
 			pattern="/transaction/createMoney.do"
+			access="hasAnyRole('BANKAGENT', 'GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/transaction/listMoneyCreate.do"
 			access="hasAnyRole('BANKAGENT', 'GOVERNMENTAGENT')" />
 
 
@@ -96,7 +113,9 @@
 		<security:intercept-url
 			pattern="/bankAgent/display.do" access="permitAll" />
 		<security:intercept-url
-			pattern="/bankaccount/bankAgent/**" access="hasRole('BANKAGENT')" />
+			pattern="/bankaccount/bankAgent/edit.do" access="hasRole('BANKAGENT')" />
+		<security:intercept-url
+			pattern="/bankaccount/bankAgent/create.do" access="hasRole('BANKAGENT')" />
 		<security:intercept-url
 			pattern="/bankAccount/display.do" access="permitAll" />
 		<security:intercept-url
@@ -108,69 +127,122 @@
 
 		<!-- Candidate -->
 		<security:intercept-url
-			pattern="/candidate/citizen/**" access="hasRole('CITIZEN')" />
+			pattern="/candidate/citizen/register.do" access="hasRole('CITIZEN')" />
 
 		<!-- Candidature -->
 		<security:intercept-url
-			pattern="/candidature/governmentAgent/**"
+			pattern="/candidature/governmentAgent/delete.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
-			pattern="/candidature/citizen/**" access="hasRole('CITIZEN')" />
+			pattern="/candidature/citizen/register.do" access="hasRole('CITIZEN')" />
 		<security:intercept-url
-			pattern="/candidature/**" access="permitAll" />
+			pattern="/candidature/display.do" access="permitAll" />
+		<security:intercept-url
+			pattern="/candidature/list.do" access="permitAll" />
 
 		<!-- Chirp -->
 		<security:intercept-url
-			pattern="/chirp/governmentAgent/**"
+			pattern="/chirp/governmentAgent/create.do"
 			access="hasRole('GOVERNMENTAGENT')" />
-		<security:intercept-url pattern="/chirp/**"
+		<security:intercept-url
+			pattern="/chirp/governmentAgent/edit.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/chirp/governmentAgent/list.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url pattern="/chirp/display.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/chirp/list.do"
 			access="permitAll" />
 
 		<!-- Comment -->
 		<security:intercept-url
-			pattern="/comment/governmentAgent/**"
+			pattern="/comment/governmentAgent/delete.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
-			pattern="/comment/actor/**"
+			pattern="/comment/actor/create.do"
 			access="hasAnyRole('CITIZEN', 'GOVERNMENTAGENT')" />
-		<security:intercept-url pattern="/comment/**"
+		<security:intercept-url
+			pattern="/comment/actor/edit.do"
+			access="hasAnyRole('CITIZEN', 'GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/comment/actor/list.do"
+			access="hasAnyRole('CITIZEN', 'GOVERNMENTAGENT')" />
+		<security:intercept-url pattern="/comment/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/comment/display.do"
 			access="permitAll" />
 
 		<!-- Election -->
 		<security:intercept-url
-			pattern="/election/governmentAgent/**"
+			pattern="/election/governmentAgent/create.do"
 			access="hasRole('GOVERNMENTAGENT')" />
-		<security:intercept-url pattern="/election/**"
+		<security:intercept-url
+			pattern="/election/governmentAgent/edit.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url pattern="/election/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/election/display.do"
 			access="permitAll" />
 
 		<!-- Citizen -->
-		<security:intercept-url
-			pattern="/citizen/citizen/**" access="hasRole('CITIZEN')" />
-		<security:intercept-url pattern="/citizen/**"
+		<security:intercept-url pattern="/citizen/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/citizen/display.do"
 			access="permitAll" />
 
 		<!-- Government agent -->
 		<security:intercept-url
-			pattern="/governmentAgent/citizen/**" access="hasRole('CITIZEN')" />
+			pattern="/governmentAgent/citizen/addGovernmentAgents.do" access="hasRole('CITIZEN')" />
 		<security:intercept-url
-			pattern="/governmentAgent/**" access="permitAll" />
+			pattern="/governmentAgent/list.do" access="permitAll" />
+		<security:intercept-url
+			pattern="/governmentAgent/display.do" access="permitAll" />
 
 
 		<!-- Folders y messages -->
 
-		<security:intercept-url pattern="/folder/**"
+		<security:intercept-url pattern="/folder/list.do"
 			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
-		<security:intercept-url pattern="/message/**"
+		<security:intercept-url pattern="/folder/create.do"
+			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
+		<security:intercept-url pattern="/folder/edit.do"
+			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
+		<security:intercept-url pattern="/message/list.do"
+			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
+		<security:intercept-url pattern="/message/create.do"
+			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
+		<security:intercept-url pattern="/message/edit.do"
+			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
+		<security:intercept-url pattern="/message/display.do"
 			access="hasAnyRole('GOVERNMENTAGENT', 'BANKAGENT','CITIZEN')" />
 		<security:intercept-url
-			pattern="/notification/admin/**" access="hasRole('GOVERNMENTAGENT')" />
+			pattern="/message/governmentAgent/create.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/message/governmentAgent/edit.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/message/governmentAgent/create-notification.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/message/governmentAgent/notification.do" access="hasRole('GOVERNMENTAGENT')" />
+			
 
 		<!-- Petition -->
 		<security:intercept-url
-			pattern="/petition/governmentAgent/**"
+			pattern="/petition/governmentAgent/resolve.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
-			pattern="/petition/citizen/**" access="hasRole('CITIZEN')" />
+			pattern="/petition/governmentAgent/delete.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/petition/citizen/list.do" access="hasRole('CITIZEN')" />
+		<security:intercept-url
+			pattern="/petition/citizen/create.do" access="hasRole('CITIZEN')" />
+		<security:intercept-url
+			pattern="/petition/citizen/edit.do" access="hasRole('CITIZEN')" />
+		<security:intercept-url
+			pattern="/petition/citizen/createGovernmentAgent.do" access="hasRole('CITIZEN')" />
+		<security:intercept-url
+			pattern="/petition/citizen/deleteGovernmentAgent.do" access="hasRole('CITIZEN')" />
 		<security:intercept-url
 			pattern="/petition/citizen/list.do" access="permitAll" />
 		<security:intercept-url pattern="/petition/**"
