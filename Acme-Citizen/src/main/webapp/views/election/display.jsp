@@ -132,7 +132,7 @@
 </display:table>
 
 <security:authorize access="hasRole('CITIZEN')">
-	<jstl:if test="${daysCandidature >= 0 and daysCelebration < 0}">
+	<jstl:if test="${daysCandidature >= 0 and daysCelebration < -1}">
 		<a href="candidature/citizen/create.do?electionId=${election.id}"><spring:message
 				code="election.createCandidature" /></a>
 	</jstl:if>

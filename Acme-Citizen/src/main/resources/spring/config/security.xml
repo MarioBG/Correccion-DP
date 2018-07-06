@@ -136,6 +136,8 @@
 		<security:intercept-url
 			pattern="/candidature/citizen/register.do" access="hasRole('CITIZEN')" />
 		<security:intercept-url
+			pattern="/candidature/citizen/create.do" access="hasRole('CITIZEN')" />
+		<security:intercept-url
 			pattern="/candidature/display.do" access="permitAll" />
 		<security:intercept-url
 			pattern="/candidature/list.do" access="permitAll" />

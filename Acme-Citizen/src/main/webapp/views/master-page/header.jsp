@@ -110,10 +110,10 @@
 								code="master.page.sendMoney" /></a></li>
 					<li><a href="transaction/list.do"><spring:message
 								code="master.page.transactions" /></a></li>
-					<li><a href="transaction/listMoneyCreate.do"><spring:message
-								code="master.page.moneyMade" /></a></li>
 					<security:authorize
 						access="hasAnyRole('BANKAGENT','GOVERNMENTAGENT')">
+						<li><a href="transaction/listMoneyCreate.do"><spring:message
+									code="master.page.moneyMade" /></a></li>
 						<li><a href="transaction/createMoney.do"><spring:message
 									code="master.page.createMoney" /></a></li>
 					</security:authorize>

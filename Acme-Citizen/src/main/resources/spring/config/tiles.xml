@@ -18,7 +18,6 @@
 		<value>/views/welcome/tiles.xml</value>
 
 		<value>/views/governmentAgent/tiles.xml</value>
-		<value>/views/customer/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
 
 		<value>/views/terms/tiles.xml</value>
