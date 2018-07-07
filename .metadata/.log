@@ -1,0 +1,304 @@
+!SESSION 2018-07-07 00:45:39.973 -----------------------------------------------
+eclipse.buildId=4.7.3.M20180301-0715
+java.version=1.8.0_171
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui 2 0 2018-07-07 00:46:04.966
+!MESSAGE Warnings while parsing the images from the 'org.eclipse.ui.commandImages' extension point.
+!SUBENTRY 1 org.eclipse.ui 2 0 2018-07-07 00:46:04.966
+!MESSAGE Cannot bind to an undefined command: plug-in='com.genuitec.eclipse.theming.ui', id='com.genuitec.myeclipse.help.darktheme.commandid'
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2018-07-07 00:46:06.431
+!MESSAGE A DevStyle Theme is being activated on this workspace; preparing colors and configuration
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2018-07-07 00:46:06.476
+!MESSAGE DevStyle has archived current color configurations to alternate preferences - will be restored when switching out of the DevStyle Theme
+
+!ENTRY org.eclipse.jface 2 0 2018-07-07 00:46:07.175
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-07-07 00:46:07.175
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@3ffa424d,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@652cb87d,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2018-07-07 00:46:11.160
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Ruano'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.291
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.297
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.313
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.318
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.929
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:12.936
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:17.620
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:46:17.625
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:47:13.747
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 00:47:13.752
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 01:17:13.791
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 01:17:13.796
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 01:47:13.881
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 01:47:13.904
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 02:17:13.989
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 02:17:14.083
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 11:57:58.922
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 11:57:58.929
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 12:27:58.968
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 12:27:59.034
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 12:57:59.080
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 12:57:59.113
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 13:27:59.145
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 13:27:59.158
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 13:57:59.248
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 13:57:59.291
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 14:27:59.325
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 14:27:59.393
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 14:57:59.424
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 14:57:59.429
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 15:27:59.461
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 15:27:59.467
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 15:57:59.547
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 15:57:59.552
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:27:59.606
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:27:59.664
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:28:13.969
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:28:13.974
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:49:04.532
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 16:49:04.566
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+!SESSION 2018-07-07 17:23:03.585 -----------------------------------------------
+eclipse.buildId=4.7.3.M20180301-0715
+java.version=1.8.0_171
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_ES
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.jface 2 0 2018-07-07 17:24:09.574
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-07-07 17:24:09.574
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@54d3b4fe,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@52364a6e,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2018-07-07 17:24:16.034
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Ruano'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:17.691
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:17.710
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:17.747
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:17.757
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:18.251
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:18.265
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:22.784
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:24:22.789
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:25:20.268
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:25:20.285
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:17.778
+!MESSAGE Could not publish server configuration for Tomcat v7.0 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:17.778
+!MESSAGE Multiple Contexts have a path of "/Acme-Citizen".
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:31.524
+!MESSAGE Could not publish server configuration for Tomcat v7.0 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:31.524
+!MESSAGE Multiple Contexts have a path of "/Acme-Citizen".
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:40.751
+!MESSAGE Could not publish server configuration for Tomcat v7.0 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2018-07-07 17:27:40.751
+!MESSAGE Multiple Contexts have a path of "/Acme-Citizen".
+
+!ENTRY org.eclipse.wst.server.core 4 0 2018-07-07 17:29:23.570
+!MESSAGE Server Tomcat v7.0 Server at localhost was unable to start within 45 seconds. If the server requires more time, try increasing the timeout in the server editor.
+
+!ENTRY org.eclipse.wst.server.core 4 0 2018-07-07 17:30:18.647
+!MESSAGE Server Tomcat v7.0 Server at localhost was unable to start within 45 seconds. If the server requires more time, try increasing the timeout in the server editor.
+
+!ENTRY org.eclipse.wst.server.discovery 1 0 2018-07-07 17:30:46.782
+!MESSAGE already installed: org.eclipse.jst.server.generic.jonas4
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:37:57.166
+!MESSAGE System property http.proxyHost is not set but should be localhost.
+
+!ENTRY org.eclipse.core.net 1 0 2018-07-07 17:37:57.171
+!MESSAGE System property http.proxyPort is not set but should be 9090.
+
+!ENTRY org.eclipse.core.resources 4 566 2018-07-07 17:43:02.014
+!MESSAGE Cannot set lower sequence number for root (previous: 132, new: 131). Ignoring the new value.
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 132, new: 131). Ignoring the new value.
+	at org.eclipse.core.internal.resources.SaveManager$MasterTable.put(SaveManager.java:52)
+	at java.util.Properties.load0(Unknown Source)
+	at java.util.Properties.load(Unknown Source)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1612)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1285)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1277)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1254)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1165)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.core.resources 4 566 2018-07-07 17:43:02.022
+!MESSAGE Cannot set lower sequence number for root (previous: 132, new: 131). Ignoring the new value.
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 132, new: 131). Ignoring the new value.
+	at org.eclipse.core.internal.resources.SaveManager$MasterTable.put(SaveManager.java:52)
+	at java.util.Properties.load0(Unknown Source)
+	at java.util.Properties.load(Unknown Source)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1612)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1285)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1277)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1254)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1165)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.core.jobs 4 2 2018-07-07 17:43:02.029
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 132, new: 1). Location: C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\.metadata\.plugins\org.eclipse.core.resources\.safetable\org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1621)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1285)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1277)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1254)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1165)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)

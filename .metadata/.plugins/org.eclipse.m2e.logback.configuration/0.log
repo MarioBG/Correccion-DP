@@ -1,0 +1,94 @@
+2018-07-07 00:46:10,805 [Worker-6] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2018-07-07 00:49:44,012 [Worker-24] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: Design-and-Testing:Acme-Citizen:1.13 @ C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\pom.xml.
+2018-07-07 00:49:55,535 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:49:55,540 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 00:49:55,722 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:49:55,723 [Worker-14] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
+2018-07-07 00:51:04,975 [Worker-25] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: Design-and-Testing:Acme-Newspaper-2.0:1.13 @ C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\pom.xml.
+2018-07-07 00:51:06,423 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:51:06,424 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 00:51:06,496 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:51:06,496 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 00:51:41,095 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:51:41,102 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 00:51:41,177 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 00:51:41,177 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:51:27,903 [Worker-123] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:51:27,924 [Worker-123] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:51:27,925 [Worker-123] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:51:27,925 [Worker-123] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:51:45,266 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:51:45,273 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:51:45,281 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:51:45,287 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:53:54,194 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:53:54,199 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:53:54,205 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:53:54,212 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:54:00,358 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:54:00,365 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:54:00,372 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:54:00,376 [Worker-121] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:55:05,609 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:55:05,617 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:55:05,625 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:55:05,630 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 13:55:31,603 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:55:31,611 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 13:55:31,622 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 13:55:31,629 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 14:01:27,905 [Worker-124] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:01:27,916 [Worker-124] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 14:01:28,152 [Worker-124] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:01:28,158 [Worker-124] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
+2018-07-07 14:01:28,159 [Worker-124] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Acme-Citizen
+2018-07-07 14:01:28,310 [Worker-124] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Acme-Citizen
+2018-07-07 14:01:32,220 [Worker-124] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:01:33,238 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:01:33,241 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 14:01:33,318 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:01:33,327 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 14:01:33,332 [Worker-129] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of Acme-Newspaper-2.0
+2018-07-07 14:01:33,332 [Worker-129] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Acme-Newspaper-2.0
+2018-07-07 14:01:33,343 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:02:28,273 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:02:28,273 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 14:02:28,274 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:02:28,279 [Worker-115] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 14:02:35,354 [Worker-126] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:02:35,361 [Worker-126] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 14:02:35,369 [Worker-126] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 14:02:35,374 [Worker-126] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 17:24:15,576 [Worker-7] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2018-07-07 17:24:30,094 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:24:30,101 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 17:24:30,119 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:24:30,119 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
+2018-07-07 17:24:31,942 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:24:31,943 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 17:24:31,948 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:24:31,948 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 17:25:20,730 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:25:20,733 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 17:25:20,734 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:25:20,734 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 17:25:37,650 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:25:37,651 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 17:25:37,653 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:25:37,661 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
+2018-07-07 17:34:24,618 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:34:24,619 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 17:34:24,621 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:34:24,627 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
+2018-07-07 17:34:24,657 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:34:24,665 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-07-07 17:34:24,666 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:34:24,675 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 17:38:02,162 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:38:02,184 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 17:38:02,189 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:38:02,190 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Newspaper-2.0\src\test\resources
+2018-07-07 17:39:20,877 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:39:20,880 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
+2018-07-07 17:39:20,887 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'ISO-8859-1' encoding to copy filtered resources.
+2018-07-07 17:39:20,895 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ruano\Desktop\DP\Entregas Junio\Correccion-DP\Acme-Citizen\src\test\resources
