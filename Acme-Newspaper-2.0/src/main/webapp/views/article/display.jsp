@@ -58,14 +58,20 @@
 <br />
 
 <security:authorize access="hasRole('USER')">
-	<security:authentication property="principal" var="loggedactor"/>
-	<jstl:if test="${article.isFinal == true and article.newspaper.publicationDate lt date and article.writer.userAccount.id eq loggedactor.id}">
+	<security:authentication property="principal" var="loggedactor" />
+	<jstl:if
+		test="${article.isFinal == true and article.newspaper.publicationDate lt date and article.writer.userAccount.id eq loggedactor.id}">
 		<a href="followUp/user/create.do?articleId=${article.id}"> <spring:message
 				code="article.createFollowUp" /></a>
 	</jstl:if>
 </security:authorize>
 
 <jstl:if test="${advertisement!=null}">
-	<a href="${advertisement.page}"> <img src="${advertisement.banner}"/></a>
+	<a href="${advertisement.page}"> <img src="${advertisement.banner}" /></a>
 </jstl:if>
+
+<input type="button" value="<spring:message code="newspaper.back"/>"
+	onclick="javascript:window.history.back();" />
+&nbsp;
+
 
