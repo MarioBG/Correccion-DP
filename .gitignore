@@ -1,9 +1,6 @@
-.metadata/
+*.lock
 Acme-Explorer/target/m2e-wtp/web-resources/META-INF/maven/Design-and-Testing/Acme-Explorer/pom.properties
 *.snap
 *.dat
 
-target
 Acme-Explorer
-target
-target
