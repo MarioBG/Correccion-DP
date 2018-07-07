@@ -63,6 +63,6 @@
 		<input type="button" name="cancel" value="<spring:message code="folder.cancel" />" onclick="javascript: relativeRedir('folder/list.do')" />
 	</jstl:when>
 	<jstl:when test="${parentFolder == null}">
-		
+		<input type="button" name="cancel" value="<spring:message code="folder.cancel" />" onclick="javascript: relativeRedir('welcome/index.do')" />
 	</jstl:when>
 </jstl:choose>

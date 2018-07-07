@@ -251,3 +251,5 @@
 	</table>
 
 </security:authorize>
+
+<input type="button" name="cancel" value="<spring:message code="administrator.back" />" onclick="javascript: relativeRedir('folder/list.do')" />

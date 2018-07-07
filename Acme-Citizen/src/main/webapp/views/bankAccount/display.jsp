@@ -60,7 +60,6 @@
 	</jstl:otherwise>
 </jstl:choose>
 
-
-
-
-
+<spring:message var="backValue" code="lottery.back" />
+<input type="button" name="back" value="${backValue}"
+	onclick="javascript: relativeRedir('welcome/index.do');" />
