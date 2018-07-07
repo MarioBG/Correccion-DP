@@ -4,3 +4,5 @@ Acme-Explorer/target/m2e-wtp/web-resources/META-INF/maven/Design-and-Testing/Acm
 *.dat
 
 Acme-Explorer
+
+\.metadata/\.plugins/org\.eclipse\.wst\.server\.core/
