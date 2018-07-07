@@ -3,3 +3,7 @@ Acme-Explorer/target/m2e-wtp/web-resources/META-INF/maven/Design-and-Testing/Acm
 *.snap
 *.dat
 
+target
+Acme-Explorer
+target
+target

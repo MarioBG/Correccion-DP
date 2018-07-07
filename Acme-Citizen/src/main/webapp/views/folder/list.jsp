@@ -57,7 +57,7 @@
 <jstl:set var="parentFolder" value="${folders.toArray()[0].parent}"/>
 <jstl:choose>
 	<jstl:when test="${parentFolder != null && parentFolder.parent != null}">
-		<input type="button" name="cancel" value="<spring:message code="folder.cancel" />" onclick="javascript: relativeRedir('folder/list.do?folderId=${parentFolder.id}')" />
+		<input type="button" name="cancel" value="<spring:message code="folder.cancel" />" onclick="javascript: relativeRedir('folder/list.do?folderId=${parentFolder.parent.id}')" />
 	</jstl:when>
 	<jstl:when test="${parentFolder != null && parentFolder.parent == null}">
 		<input type="button" name="cancel" value="<spring:message code="folder.cancel" />" onclick="javascript: relativeRedir('folder/list.do')" />

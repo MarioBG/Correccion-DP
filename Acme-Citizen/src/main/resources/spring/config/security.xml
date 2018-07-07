@@ -246,9 +246,9 @@
 		<security:intercept-url
 			pattern="/petition/citizen/deleteGovernmentAgent.do" access="hasRole('CITIZEN')" />
 		<security:intercept-url
-			pattern="/petition/citizen/list.do" access="permitAll" />
-		<security:intercept-url pattern="/petition/**"
-			access="permitAll" />
+			pattern="/petition/list.do" access="permitAll" />
+		<security:intercept-url
+			pattern="/petition/display.do" access="permitAll" />
 
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />

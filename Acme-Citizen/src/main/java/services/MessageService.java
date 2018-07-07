@@ -213,10 +213,8 @@ public class MessageService {
 		message.setBody(messageForm.getBody());
 		message.setPriority(messageForm.getPriority());
 		message.setSender(this.actorService.findOne(messageForm.getSenderId()));
-		if (messageForm.getRecipientId() == null)
-			message.setRecipient(this.actorService.findOne(messageForm.getSenderId()));
-		else
-			message.setRecipient(this.actorService.findOne(messageForm.getRecipientId()));
+		Assert.isTrue(!(messageForm.getRecipientId() == null || messageForm.getRecipientId() == 0), "message.error.needsRecipient");
+		message.setRecipient(this.actorService.findOne(messageForm.getRecipientId()));
 		message.setFolder(this.folderService.findOne(messageForm.getFolderId()));
 
 		if (binding != null)

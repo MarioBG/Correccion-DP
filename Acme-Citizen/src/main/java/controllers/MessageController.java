@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.ArrayList;
@@ -29,13 +30,14 @@ public class MessageController extends AbstractController {
 	// Services ------------------------------------------------------
 
 	@Autowired
-	private MessageService messageService;
+	private MessageService	messageService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService	actorService;
 
 	@Autowired
-	private FolderService folderService;
+	private FolderService	folderService;
+
 
 	// Constructors --------------------------------------------------
 
@@ -71,7 +73,7 @@ public class MessageController extends AbstractController {
 		Message message;
 
 		message = this.messageService.create();
-		MessageForm messageForm = messageService.construct(message);
+		final MessageForm messageForm = this.messageService.construct(message);
 
 		result = this.createEditModelAndView(messageForm);
 
@@ -88,13 +90,13 @@ public class MessageController extends AbstractController {
 		Actor actor;
 
 		message = this.messageService.findOneToEdit(messageId);
-		MessageForm messageForm = messageService.construct(message);
+		final MessageForm messageForm = this.messageService.construct(message);
 		actor = this.actorService.findByPrincipal();
 
 		result = new ModelAndView("message/edit2");
 		result.addObject("messageForm", messageForm);
-		result.addObject("recipientName", actorService.findOne(messageForm.getRecipientId()).getName());
-		result.addObject("senderName", actorService.findOne(messageForm.getSenderId()).getName());
+		result.addObject("recipientName", this.actorService.findOne(messageForm.getRecipientId()).getName());
+		result.addObject("senderName", this.actorService.findOne(messageForm.getSenderId()).getName());
 		result.addObject("folders", actor.getFolders());
 		result.addObject("actionURI", "message/edit.do");
 
@@ -102,8 +104,7 @@ public class MessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final MessageForm messageForm,
-			final BindingResult binding) {
+	public ModelAndView save(@Valid final MessageForm messageForm, final BindingResult binding) {
 
 		ModelAndView result;
 
@@ -111,33 +112,31 @@ public class MessageController extends AbstractController {
 			result = this.createEditModelAndView(messageForm);
 		else
 			try {
-				Message message = messageService.reconstruct(messageForm,
-						binding);
+				final Message message = this.messageService.reconstruct(messageForm, binding);
 				final Message saved = this.messageService.save(message);
-				result = new ModelAndView("redirect:list.do?folderId="
-						+ saved.getFolder().getId());
+				result = new ModelAndView("redirect:list.do?folderId=" + saved.getFolder().getId());
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(messageForm,
-						"message.commit.error");
+				String msg = oops.getMessage();
+				if (msg == null)
+					msg = "message.commit.error";
+				result = this.createEditModelAndView(messageForm, msg);
 			}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final MessageForm messageForm,
-			final BindingResult binding) {
+	public ModelAndView delete(final MessageForm messageForm, final BindingResult binding) {
 
 		ModelAndView result;
 		int folderid;
 		folderid = messageForm.getFolderId();
 		try {
-			Message message = messageService.reconstruct(messageForm, binding);
+			final Message message = this.messageService.reconstruct(messageForm, binding);
 			this.messageService.delete(message);
 			result = new ModelAndView("redirect:list.do?folderId=" + folderid);
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(messageForm,
-					"message.commit.error");
+			result = this.createEditModelAndView(messageForm, "message.commit.error");
 		}
 
 		return result;
@@ -175,8 +174,7 @@ public class MessageController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			final MessageForm messageForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final MessageForm messageForm, final String messageCode) {
 
 		ModelAndView result;
 		Collection<Actor> actors;
@@ -195,9 +193,9 @@ public class MessageController extends AbstractController {
 
 		result = new ModelAndView("message/edit");
 		result.addObject("messageForm", messageForm);
-		if(messageForm.getId() != 0){
-			result.addObject("recipientName", actorService.findOne(messageForm.getRecipientId()).getName());
-			result.addObject("senderName", actorService.findOne(messageForm.getSenderId()).getName());
+		if (messageForm.getId() != 0) {
+			result.addObject("recipientName", this.actorService.findOne(messageForm.getRecipientId()).getName());
+			result.addObject("senderName", this.actorService.findOne(messageForm.getSenderId()).getName());
 		}
 		result.addObject("actors", actors);
 		result.addObject("priorities", priorities);

@@ -1,3 +1,4 @@
+
 package forms;
 
 import java.util.Date;
@@ -21,86 +22,88 @@ public class MessageForm {
 		super();
 	}
 
+
 	// Atributes
-	private int id;
-	private int senderId;
-	private Integer recipientId;
-	private int folderId;
-	private Date moment;
-	private String subject;
-	private String body;
-	private Priority priority;
+	private int			id;
+	private int			senderId;
+	private Integer		recipientId;
+	private int			folderId;
+	private Date		moment;
+	private String		subject;
+	private String		body;
+	private Priority	priority;
+
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
 	public int getSenderId() {
-		return senderId;
+		return this.senderId;
 	}
 
-	public void setSenderId(int senderId) {
+	public void setSenderId(final int senderId) {
 		this.senderId = senderId;
 	}
 
 	public Integer getRecipientId() {
-		return recipientId;
+		return this.recipientId;
 	}
 
-	public void setRecipientId(Integer recipientId) {
+	public void setRecipientId(final Integer recipientId) {
 		this.recipientId = recipientId;
 	}
 
 	public int getFolderId() {
-		return folderId;
+		return this.folderId;
 	}
 
-	public void setFolderId(int folderId) {
+	public void setFolderId(final int folderId) {
 		this.folderId = folderId;
 	}
-	
+
 	@NotNull
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMoment() {
-		return moment;
+		return this.moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getSubject() {
-		return subject;
+		return this.subject;
 	}
 
-	public void setSubject(String subject) {
+	public void setSubject(final String subject) {
 		this.subject = subject;
 	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getBody() {
-		return body;
+		return this.body;
 	}
 
-	public void setBody(String body) {
+	public void setBody(final String body) {
 		this.body = body;
 	}
 
 	@NotNull
 	public Priority getPriority() {
-		return priority;
+		return this.priority;
 	}
 
-	public void setPriority(Priority priority) {
+	public void setPriority(final Priority priority) {
 		this.priority = priority;
 	}
 

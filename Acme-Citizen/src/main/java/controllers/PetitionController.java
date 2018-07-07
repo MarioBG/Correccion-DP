@@ -78,6 +78,7 @@ public class PetitionController extends AbstractController {
 	public ModelAndView display(@RequestParam final int petitionId) {
 
 		final Petition petition = this.petitionService.findOne(petitionId);
+		Assert.notNull(petition);
 		GovernmentAgent governmentAgent = null;
 		if (this.governmentAgentService.findByPrincipal() != null)
 			governmentAgent = this.governmentAgentService.findByPrincipal();
