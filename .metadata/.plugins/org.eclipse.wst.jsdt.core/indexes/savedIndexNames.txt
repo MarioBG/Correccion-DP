@@ -1,8 +1,0 @@
-INDEX VERSION 1.122+D:\Correccion-DP\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-3293797197.index
-3479030672.index
-3479030672.index
-270249240.index
-2486363900.index
-1999358397.index
-1437077193.index
