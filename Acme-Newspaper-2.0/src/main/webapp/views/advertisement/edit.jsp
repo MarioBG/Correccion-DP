@@ -106,7 +106,7 @@
 		value="<spring:message code="advertisement.save" />" />&nbsp; 
 
 	<%-- SOLO SE PUEDE ELIMINAR SI ESTAMOS EDITANDO, NO SI ESTAMOS CREANDO --%>
-	<jstl:if test="${advertisement.id != 0}">
+	<jstl:if test="${advertisementForm.id != 0}">
 	<input type="submit" name="delete"
 		value="<spring:message code="advertisement.delete" />"
 		onclick="return confirm('<spring:message code="advertisement.confirm.delete" />')" />&nbsp; 
