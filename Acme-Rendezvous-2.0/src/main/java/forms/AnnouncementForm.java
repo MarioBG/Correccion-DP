@@ -1,69 +1,60 @@
+
 package forms;
-
-
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
-import domain.Rendezvous;
-
 public class AnnouncementForm {
 
 	// Constructor 
-	
-	public AnnouncementForm(){
+
+	public AnnouncementForm() {
 		super();
 	}
 
+
 	// Attributes
-	
-	private int id;
-	private String title;
-	private String description;
-	private Rendezvous rendezvous;
-	
-	
-	public int getId(){
-		return id;
+
+	private int		id;
+	private String	title;
+	private String	description;
+	private int		rendezvousId;
+
+
+	public int getId() {
+		return this.id;
 	}
-	
-	public void setId(int id){
-		this.id=id;
+
+	public void setId(final int id) {
+		this.id = id;
 	}
-	
+
 	@NotBlank
 	@SafeHtml
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
-	
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		this.title = title;
 	}
-	
+
 	@NotBlank
 	@SafeHtml
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	
-	public void setDescription(String description) {
+
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	@Valid
-	@NotNull
-	@ManyToOne(optional=false)
-	public Rendezvous getRendezvous() {
-		return rendezvous;
+	public int getRendezvousId() {
+		return this.rendezvousId;
 	}
 
-	public void setRendezvous(Rendezvous rendezvous) {
-		this.rendezvous = rendezvous;
+	public void setRendezvousId(final int rendezvousId) {
+		this.rendezvousId = rendezvousId;
 	}
 
-	
 }

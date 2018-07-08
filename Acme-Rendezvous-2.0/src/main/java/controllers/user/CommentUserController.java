@@ -1,7 +1,9 @@
+
 package controllers.user;
 
-import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +29,14 @@ public class CommentUserController extends AbstractController {
 	// Services -------------------------------------------------------------
 
 	@Autowired
-	private CommentService commentService;
+	private CommentService		commentService;
 
 	@Autowired
-	private UserService userService;
+	private UserService			userService;
 
 	@Autowired
-	private RendezvousService rendezvousService;
+	private RendezvousService	rendezvousService;
+
 
 	// Constructors ---------------------------------------------------------
 
@@ -43,81 +46,71 @@ public class CommentUserController extends AbstractController {
 
 	// Listing --------------------------------------------------------------
 
-	@RequestMapping(value = "/listReplies", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam int commentId) {
-		ModelAndView result;
-
-		Comment comment = new Comment();
-		comment = this.commentService.findOne(commentId);
-
-		Collection<Comment> comments;
-		comments = comment.getReplies();
-
-		result = new ModelAndView("comment/list");
-
-		result.addObject("comment", comments);
-		result.addObject("requestURI", "comment/user/list.do");
-
-		return result;
-	}
+	//	@RequestMapping(value = "/listReplies", method = RequestMethod.GET)
+	//	public ModelAndView list(@RequestParam int commentId) {
+	//		ModelAndView result;
+	//
+	//		Comment comment = new Comment();
+	//		comment = this.commentService.findOne(commentId);
+	//
+	//		Collection<Comment> comments;
+	//		comments = comment.getReplies();
+	//
+	//		result = new ModelAndView("comment/list");
+	//
+	//		result.addObject("comment", comments);
+	//		result.addObject("requestURI", "comment/user/list.do");
+	//
+	//		return result;
+	//	}
 
 	// Creation ---------------------------------------------------------------
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int rendezvousId) {
 		ModelAndView result;
 		Comment c;
-		c = this.commentService.create();
-		
-		CommentForm cForm = this.commentService.construct(c);
+		c = this.commentService.create(rendezvousId, null);
+
+		final CommentForm cForm = this.commentService.construct(c);
 		result = this.createEditModelAndViewForm(cForm);
 		return result;
 	}
 
 	@RequestMapping(value = "/editReplies", method = RequestMethod.GET)
-	public ModelAndView createReplies(@RequestParam int commentId) {
+	public ModelAndView createReplies(@RequestParam final int commentId) {
 		ModelAndView result;
 		Comment c;
 		Comment commentParent;
 		commentParent = this.commentService.findOne(commentId);
 
-		c = this.commentService.create();
-		
-		c.setCommentParent(commentParent);
-		c.setRendezvous(commentParent.getRendezvous());
-		
-		CommentForm cForm = this.commentService.construct(c);
+		c = this.commentService.create(commentParent.getRendezvous().getId(), commentId);
+
+		final CommentForm cForm = this.commentService.construct(c);
 
 		result = this.createEditModelAndViewReplyForm(cForm);
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(CommentForm commentForm, final BindingResult binding) {
+	public ModelAndView save(@Valid final CommentForm commentForm, final BindingResult binding) {
 		ModelAndView result;
-		int rendezvousId = 0;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndViewForm(commentForm,
-					"comment.params.error");
+			result = this.createEditModelAndViewForm(commentForm, "comment.params.error");
 		else
 			try {
-				Comment comment = this.commentService.reconstruct(commentForm, binding);
-				this.commentService.save(comment);
-				rendezvousId = comment.getRendezvous().getId();
-				result = new ModelAndView(
-						"redirect:/comment/rendezvous/list.do?rendezvousId="
-								+ rendezvousId);
+				final Comment comment = this.commentService.reconstruct(commentForm, binding);
+				final Comment saved = this.commentService.save(comment);
+				result = new ModelAndView("redirect:/comment/list.do?rendezvousId=" + saved.getRendezvous().getId());
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndViewForm(commentForm,
-						"comment.commit.error");
+				result = this.createEditModelAndViewForm(commentForm, "comment.commit.error");
 			}
 		return result;
 	}
 
 	@RequestMapping(value = "/editReplies", method = RequestMethod.POST, params = "saveReply")
-	public ModelAndView saveReply(CommentForm commentForm, final BindingResult binding) {
+	public ModelAndView saveReply(@Valid final CommentForm commentForm, final BindingResult binding) {
 		ModelAndView result;
-		int rendezvousId = 0;
 
 		// Collection<Comment> replies = new ArrayList<Comment>();
 		// Comment commentParent;
@@ -127,82 +120,19 @@ public class CommentUserController extends AbstractController {
 		// replies.add(comment);
 		//
 		if (binding.hasErrors())
-			result = this.createEditModelAndViewReplyForm(commentForm,
-					"comment.params.error");
+			result = this.createEditModelAndViewReplyForm(commentForm, "comment.params.error");
 		else
 			try {
-				Comment comment= this.commentService.reconstruct(commentForm, binding);
-				this.commentService.save(comment);
-				rendezvousId = comment.getRendezvous().getId();
-				result = new ModelAndView(
-						"redirect:/comment/rendezvous/list.do?rendezvousId="
-								+ rendezvousId);
+				final Comment comment = this.commentService.reconstruct(commentForm, binding);
+				final Comment saved = this.commentService.save(comment);
+				result = new ModelAndView("redirect:/comment/listReplies.do?commentId=" + saved.getCommentParent().getId());
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndViewReplyForm(commentForm,
-						"comment.commit.error");
+				result = this.createEditModelAndViewReplyForm(commentForm, "comment.commit.error");
 			}
 		return result;
 	}
 
 	// Ancillary methods --------------------------------------------------
-
-	protected ModelAndView createEditModelAndView(final Comment comment) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(comment, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndView(final Comment comment,
-			final String message) {
-		ModelAndView result;
-		User u = new User();
-		Collection<Rendezvous> rendezvous;
-
-		u = this.userService.findByPrincipal();
-		rendezvous = this.rendezvousService.findByAttendantId(u.getId());
-
-		result = new ModelAndView("comment/edit");
-		result.addObject("rendezvous", rendezvous);
-		result.addObject("comment", comment);
-		result.addObject("message", message);
-		result.addObject("requestURI", "comment/user/edit.do");
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndViewReply(final Comment comment) {
-		ModelAndView result;
-
-		result = this.createEditModelAndViewReply(comment, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndViewReply(final Comment comment,
-			final String message) {
-		ModelAndView result;
-		// Rendezvous rendezvous;
-		// Comment commentParent;
-		//
-		// rendezvous = comment.getRendezvous();
-		// commentParent = comment.getCommentParent();
-
-		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
-		rendezvous.add(comment.getRendezvous());
-		Collection<Comment> comments = new ArrayList<Comment>();
-		comments.add(comment.getCommentParent());
-
-		result = new ModelAndView("comment/edit");
-		result.addObject("comment", comment);
-		result.addObject("rendezvous", rendezvous);
-		result.addObject("commentParent", comments);
-		result.addObject("message", message);
-		result.addObject("requestURI", "comment/user/editReplies.do");
-
-		return result;
-	}
 
 	protected ModelAndView createEditModelAndViewForm(final CommentForm comment) {
 		ModelAndView result;
@@ -212,8 +142,7 @@ public class CommentUserController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndViewForm(
-			final CommentForm commentForm, final String message) {
+	protected ModelAndView createEditModelAndViewForm(final CommentForm commentForm, final String message) {
 
 		//this.commentService.checkPrincipalForm(commentForm);
 
@@ -232,7 +161,7 @@ public class CommentUserController extends AbstractController {
 
 		return result;
 	}
-	
+
 	protected ModelAndView createEditModelAndViewReplyForm(final CommentForm commentForm) {
 		ModelAndView result;
 
@@ -241,25 +170,23 @@ public class CommentUserController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndViewReplyForm(final CommentForm commentForm,
-			final String message) {
+	protected ModelAndView createEditModelAndViewReplyForm(final CommentForm commentForm, final String message) {
 		ModelAndView result;
 		// Rendezvous rendezvous;
 		// Comment commentParent;
 		//
 		// rendezvous = comment.getRendezvous();
 		// commentParent = comment.getCommentParent();
-		
 
-		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
-		rendezvous.add(commentForm.getRendezvous());
-		Collection<Comment> comments = new ArrayList<Comment>();
-		comments.add(commentForm.getCommentParent());
+		//		final Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
+		//		rendezvous.add(commentForm.getRendezvous());
+		//		final Collection<Comment> comments = new ArrayList<Comment>();
+		//		comments.add(commentForm.getCommentParent());
 
 		result = new ModelAndView("comment/edit");
 		result.addObject("commentForm", commentForm);
-		result.addObject("rendezvous", rendezvous);
-		result.addObject("commentParent", comments);
+		//		result.addObject("rendezvous", rendezvous);
+		//		result.addObject("commentParent", comments);
 		result.addObject("message", message);
 		result.addObject("requestURI", "comment/user/editReplies.do");
 

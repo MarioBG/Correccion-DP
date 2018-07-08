@@ -15,8 +15,10 @@
 	<jstl:when test="${rendezvous.deleted == false}">
 		<h3><b><spring:message code="rendezvous.name"/>:&nbsp;</b><jstl:out value="${rendezvous.name}"/></h3>
 		
-		<img src="<jstl:out value="${rendezvous.picture}"/>" width="450" height="174">
-		<br/>
+		<jstl:if test="${rendezvous.picture != ''}">
+			<img src="<jstl:out value="${rendezvous.picture}"/>" width="450" height="174">
+			<br/>
+		</jstl:if>
 		
 		<b><spring:message code="rendezvous.description"/>:&nbsp;</b><jstl:out value="${rendezvous.description}"/>
 		<br/>

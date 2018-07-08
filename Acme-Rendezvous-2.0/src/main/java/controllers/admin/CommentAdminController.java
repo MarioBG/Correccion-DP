@@ -1,3 +1,4 @@
+
 package controllers.admin;
 
 import java.util.Collection;
@@ -14,47 +15,47 @@ import domain.Comment;
 
 @Controller
 @RequestMapping("/comment/admin")
-public class CommentAdminController extends AbstractController{
+public class CommentAdminController extends AbstractController {
 
 	// Services -------------------------------------------------------------
 
-		@Autowired
-		private CommentService commentService;
+	@Autowired
+	private CommentService	commentService;
 
-		 
-		// Constructors ---------------------------------------------------------
 
-		public CommentAdminController() {
-			super();
-		}
-		
-		// Listing --------------------------------------------------------------
+	// Constructors ---------------------------------------------------------
 
-		@RequestMapping(value = "/list", method = RequestMethod.GET)
-		public ModelAndView display() {
-			ModelAndView result;
+	public CommentAdminController() {
+		super();
+	}
 
-			Collection<Comment> comment;
-			comment = this.commentService.findAll();
+	// Listing --------------------------------------------------------------
 
-			result = new ModelAndView("comment/list");
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
 
-			result.addObject("comment", comment);
-			result.addObject("requestURI", "comment/list.do");
+		Collection<Comment> comments;
+		comments = this.commentService.findAll();
 
-			return result;
-		}
-		
-		// Deleting --------------------------------------------------------------
+		result = new ModelAndView("comment/list");
 
-		@RequestMapping(value = "/delete", method = RequestMethod.GET)
-		public ModelAndView delete(int commentId){
-			
-			Comment comment = commentService.findOne(commentId);
-			
-			commentService.delete(comment);
-			
-			return new ModelAndView("redirect:list.do");
-		}
-		
+		result.addObject("comments", comments);
+		result.addObject("requestURI", "comment/list.do");
+
+		return result;
+	}
+
+	// Deleting --------------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int commentId) {
+
+		final Comment comment = this.commentService.findOne(commentId);
+
+		this.commentService.delete(comment);
+
+		return new ModelAndView("redirect:list.do");
+	}
+
 }

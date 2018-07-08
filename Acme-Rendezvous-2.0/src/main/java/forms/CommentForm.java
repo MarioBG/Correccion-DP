@@ -1,15 +1,10 @@
-package forms;
 
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
+package forms;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
-
-import domain.Comment;
-import domain.Rendezvous;
 
 public class CommentForm {
 
@@ -19,64 +14,68 @@ public class CommentForm {
 		super();
 	}
 
+
 	// Attributes
 
-	private String text;
-	private String picture;
-	
-	private int id;
-	private Rendezvous rendezvous;
-	private Comment commentParent;
+	private String	text;
+	private String	picture;
+
+	private int		id;
+	private int		rendezvousId;
+	private Integer	commentParentId;
+	private int		userId;
 
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	@URL
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPicture() {
-		return picture;
+		return this.picture;
 	}
 
-	public void setPicture(String picture) {
+	public void setPicture(final String picture) {
 		this.picture = picture;
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
-	
-	@ManyToOne(optional = false)
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public Rendezvous getRendezvous() {
-		return rendezvous;
+
+	public int getRendezvousId() {
+		return this.rendezvousId;
 	}
 
-	public void setRendezvous(Rendezvous rendezvous) {
-		this.rendezvous = rendezvous;
+	public void setRendezvousId(final int rendezvousId) {
+		this.rendezvousId = rendezvousId;
 	}
 
-	@Valid
-	@ManyToOne(optional = true)
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public Comment getCommentParent() {
-		return commentParent;
+	public Integer getCommentParentId() {
+		return this.commentParentId;
 	}
 
-	public void setCommentParent(Comment commentParent) {
-		this.commentParent = commentParent;
+	public void setCommentParentId(final Integer commentParentId) {
+		this.commentParentId = commentParentId;
 	}
-	
-	
+
+	public int getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(final int userId) {
+		this.userId = userId;
+	}
+
 }

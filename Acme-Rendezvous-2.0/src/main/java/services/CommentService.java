@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -24,17 +25,20 @@ public class CommentService {
 	// Managed repository
 
 	@Autowired
-	private CommentRepository commentRepository;
-	
+	private CommentRepository	commentRepository;
+
 	@Autowired
-	private UserService userService;
-	
+	private UserService			userService;
+
 	@Autowired
-	private Validator validator;
-	
+	private Validator			validator;
+
 	@Autowired
-	private AdminService adminService;
-	
+	private AdminService		adminService;
+
+	@Autowired
+	private RendezvousService	rendezvousService;
+
 
 	// Constructors
 
@@ -44,16 +48,24 @@ public class CommentService {
 
 	// Simple CRUD methods
 
-	public Comment create() {
-		userService.checkAuthority();
-		Comment res = new Comment();
-		Collection<Comment> replies = new ArrayList<Comment>();
-		Rendezvous rendezvous = new Rendezvous();
-		User u = new User();
-		Comment parent= new Comment();
+	public Comment create(final int rendezvousId, final Integer commentId) {
+
+		Assert.isTrue(rendezvousId != 0);
+		Assert.isTrue(commentId != 0);
+
+		this.userService.checkAuthority();
+		final Comment res = new Comment();
+		final Collection<Comment> replies = new ArrayList<Comment>();
+		final Rendezvous rendezvous = this.rendezvousService.findOne(rendezvousId);
+		final User u = this.userService.findByPrincipal();
+		Assert.isTrue(rendezvous.getAttendants().contains(u));
+		Comment parent = null;
+		if (commentId != null)
+			parent = this.findOne(commentId);
+
 		Assert.notNull(u);
 
-		Date moment = new Date(System.currentTimeMillis()-1000);
+		final Date moment = new Date(System.currentTimeMillis() - 1000);
 
 		res.setMoment(moment);
 		res.setUser(u);
@@ -62,7 +74,6 @@ public class CommentService {
 		res.setRendezvous(rendezvous);
 		return res;
 	}
-
 	public Collection<Comment> findAll() {
 		Collection<Comment> res;
 		res = this.commentRepository.findAll();
@@ -70,7 +81,7 @@ public class CommentService {
 		return res;
 	}
 
-	public Comment findOne(int comment) {
+	public Comment findOne(final int comment) {
 		Assert.isTrue(comment != 0);
 		Comment res;
 		res = this.commentRepository.findOne(comment);
@@ -78,70 +89,45 @@ public class CommentService {
 		return res;
 	}
 
-	public Comment save(Comment comment) {
-		
-		userService.checkAuthority();
-		
-		User user = new User();
-		user = this.userService.findByPrincipal();
-		Rendezvous rendezvous;
-		rendezvous = comment.getRendezvous();
-		Assert.isTrue(user.getRsvpdRendezvouses().contains(rendezvous));
-		
-		Comment res;
-		Assert.notNull(comment);
-		
-		comment.setUser(user);
-		
-		res = this.commentRepository.save(comment);
-		
-		
-//		if(comment.getId() == 0){
-//			Date moment;
-//			moment = new Date(System.currentTimeMillis()-1000);
-//			comment.setMoment(moment);
-//		}
-		
-		if(comment.getCommentParent() != null){
-			this.actualizarParent(comment.getCommentParent(), res);
+	public Comment save(final Comment comment) {
+
+		this.userService.checkAuthority();
+
+		if (comment.getId() == 0)
+			comment.setMoment(new Date(System.currentTimeMillis() - 1000));
+
+		final Comment result = this.commentRepository.save(comment);
+
+		if (comment.getId() == 0) {
+			result.getRendezvous().getComments().add(result);
+			if (result.getCommentParent() != null)
+				result.getCommentParent().getReplies().add(result);
 		}
-		
-		return res;
+
+		return result;
 	}
 
-	public void delete(Comment comment) {
+	public void delete(final Comment comment) {
 		Assert.notNull(comment);
 		Assert.isTrue(comment.getId() != 0);
 		Assert.isTrue(this.commentRepository.findOne(comment.getId()) != null);
 		this.adminService.checkAuthority();
-		
-		if (comment.getReplies().size() != 0){
-			for (Comment c : comment.getReplies())
+
+		if (comment.getReplies().size() != 0)
+			for (final Comment c : comment.getReplies())
 				this.delete(c);
-		}
 		this.commentRepository.delete(comment);
 	}
-	
-	
+
 	//Other bussines methods
-	
-	public void deleteAll(Collection<Comment> comments){
+
+	public void deleteAll(final Collection<Comment> comments) {
 		//Assert.notNull(comments);
 		this.adminService.checkAuthority();
-		for(Comment c : comments)
+		for (final Comment c : comments)
 			this.commentRepository.delete(c);
 	}
-	
-	private void actualizarParent(Comment commentParent, Comment commentSon){
-		Collection<Comment> replies = new ArrayList<Comment>();
-		if(commentParent.getReplies() != null){
-			replies.addAll(commentParent.getReplies());
-		}
-		replies.add(commentSon);
-		commentParent.setReplies(replies);
-		this.commentRepository.save(commentParent);
-	}
-	
+
 	public Collection<Comment> commentsOfThisRendezvouseWithCommentNull(final int rendezvouseId) {
 		Collection<Comment> commentsOfThisRendezvouse;
 
@@ -149,56 +135,58 @@ public class CommentService {
 
 		return commentsOfThisRendezvouse;
 	}
-	
+
 	public void flush() {
 		this.commentRepository.flush();
 	}
-	
-	
-	public Comment reconstruct(CommentForm commentForm, BindingResult binding) {
-		Comment res= new Comment();
-		
-		Collection<Comment> replies = new ArrayList<Comment>();
+
+	public Comment reconstruct(final CommentForm commentForm, final BindingResult binding) {
+		final Comment res = new Comment();
+
+		final Collection<Comment> replies = new ArrayList<Comment>();
 		User user = new User();
-		user= this.userService.findByPrincipal();
-		
-		Date moment = new Date(System.currentTimeMillis()-1);
-		
+		user = this.userService.findByPrincipal();
+
+		final Date moment = new Date(System.currentTimeMillis() - 1);
+
 		res.setMoment(moment);
 		res.setPicture(commentForm.getPicture());
 		res.setText(commentForm.getText());
-		
+
 		res.setReplies(replies);
 		res.setUser(user);
-		res.setRendezvous(commentForm.getRendezvous());
-		res.setCommentParent(commentForm.getCommentParent());
-		
-		validator.validate(res, binding);
-		
-		
+		res.setRendezvous(this.rendezvousService.findOne(commentForm.getRendezvousId()));
+		if (commentForm.getCommentParentId() != null)
+			res.setCommentParent(this.findOne(commentForm.getCommentParentId()));
+
+		this.validator.validate(res, binding);
+
 		return res;
 	}
-	
-	public CommentForm construct(Comment comment) {
-		CommentForm res= new CommentForm();
-		
+
+	public CommentForm construct(final Comment comment) {
+
+		final CommentForm res = new CommentForm();
+
 		res.setPicture(comment.getPicture());
 		res.setText(comment.getText());
 		res.setId(comment.getId());
-		res.setRendezvous(comment.getRendezvous());
-		res.setCommentParent(comment.getCommentParent());
-		
+		res.setRendezvousId(comment.getRendezvous().getId());
+		if (comment.getCommentParent() != null)
+			res.setCommentParentId(comment.getCommentParent().getId());
+		res.setUserId(comment.getUser().getId());
+
 		return res;
 	}
-	
+
 	public void checkPrincipalForm(final CommentForm commentForm) {
 
 		Assert.notNull(commentForm);
-		
-		Comment comment = reconstruct(commentForm, null);
+
+		final Comment comment = this.reconstruct(commentForm, null);
 		final User principal = this.userService.findByPrincipal();
-		
+
 		Assert.isTrue(comment.getUser().equals(principal));
 	}
-	
+
 }

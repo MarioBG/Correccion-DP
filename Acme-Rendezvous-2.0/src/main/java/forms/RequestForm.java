@@ -1,4 +1,7 @@
+
 package forms;
+
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,44 +17,46 @@ public class RequestForm {
 		super();
 	}
 
+
 	// Attributes -------------------------------------------------------------
 
-	private int id;
-	private String holder;
-	private String brand;
-	private String number;
-	private Integer expirationMonth;
-	private Integer expirationYear;
-	private Integer cvv;
-	private String comment;
-	private int rendezvousId;
-	private int serviceId;
+	private int		id;
+	private String	holder;
+	private String	brand;
+	private String	number;
+	private Integer	expirationMonth;
+	private Integer	expirationYear;
+	private Integer	cvv;
+	private String	comment;
+	private int		rendezvousId;
+	private int		serviceId;
+
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getHolder() {
-		return holder;
+		return this.holder;
 	}
 
-	public void setHolder(String holder) {
+	public void setHolder(final String holder) {
 		this.holder = holder;
 	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getBrand() {
-		return brand;
+		return this.brand;
 	}
 
-	public void setBrand(String brand) {
+	public void setBrand(final String brand) {
 		this.brand = brand;
 	}
 
@@ -59,62 +64,65 @@ public class RequestForm {
 	@CreditCardNumber
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getNumber() {
-		return number;
+		return this.number;
 	}
 
-	public void setNumber(String number) {
+	public void setNumber(final String number) {
 		this.number = number;
 	}
 
+	@NotNull
 	@Range(min = 1, max = 12)
 	public Integer getExpirationMonth() {
-		return expirationMonth;
+		return this.expirationMonth;
 	}
 
-	public void setExpirationMonth(Integer expirationMonth) {
+	public void setExpirationMonth(final Integer expirationMonth) {
 		this.expirationMonth = expirationMonth;
 	}
 
+	@NotNull
 	@Range(min = 2018, max = 3000)
 	public Integer getExpirationYear() {
-		return expirationYear;
+		return this.expirationYear;
 	}
 
-	public void setExpirationYear(Integer expirationYear) {
+	public void setExpirationYear(final Integer expirationYear) {
 		this.expirationYear = expirationYear;
 	}
 
+	@NotNull
 	@Range(min = 100, max = 999)
 	public Integer getCvv() {
-		return cvv;
+		return this.cvv;
 	}
 
-	public void setCvv(Integer cvv) {
+	public void setCvv(final Integer cvv) {
 		this.cvv = cvv;
 	}
 
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
-	public void setComment(String comment) {
+	public void setComment(final String comment) {
 		this.comment = comment;
 	}
 
 	public int getRendezvousId() {
-		return rendezvousId;
+		return this.rendezvousId;
 	}
 
-	public void setRendezvousId(int rendezvousId) {
+	public void setRendezvousId(final int rendezvousId) {
 		this.rendezvousId = rendezvousId;
 	}
 
 	public int getServiceId() {
-		return serviceId;
+		return this.serviceId;
 	}
 
-	public void setServiceId(int serviceId) {
+	public void setServiceId(final int serviceId) {
 		this.serviceId = serviceId;
 	}
 

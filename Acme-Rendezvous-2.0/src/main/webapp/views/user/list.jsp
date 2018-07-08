@@ -19,6 +19,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <!-- displaying grid -->
 
@@ -31,40 +32,48 @@
 	<display:column property="name" title="${nameHeader}" sortable="true" />
 
 	<spring:message code="user.surname" var="surnameHeader" />
-	<display:column property="surname" title="${surnameHeader}" sortable="true" />
+	<display:column property="surname" title="${surnameHeader}"
+		sortable="true" />
 
 	<spring:message code="user.email" var="emailHeader" />
 	<display:column property="email" title="${emailHeader}" sortable="true" />
-	
+
 	<spring:message code="user.phone" var="phoneHeader" />
 	<display:column property="phone" title="${phoneHeader}" sortable="true" />
-	
+
 	<spring:message code="user.address" var="addressHeader" />
-	<display:column property="address" title="${addressHeader}" sortable="true" />
-	
+	<display:column property="address" title="${addressHeader}"
+		sortable="true" />
+
 	<spring:message code="user.birth" var="birthHeader" />
-	<spring:message var="formatDate" code="user.format.date"/>
-	<display:column property="birth" title="${birthHeader}" format="${formatDate}" sortable="true" />
-	
-	<spring:message code="user.rendezvouses" var="rsvpdRendezvous"/>
+	<spring:message var="formatDate" code="user.format.date" />
+	<display:column property="birth" title="${birthHeader}"
+		format="${formatDate}" sortable="true" />
+
+	<spring:message code="user.rendezvouses" var="rsvpdRendezvous" />
 	<display:column title="${rsvpdRendezvous}">
-		<a href="rendezvous/list-rspv.do?userId=${row.id }">
-			<spring:message code="user.rendezvouses.link"/>
-		</a>
+		<jstl:if test="${not empty row.rsvpdRendezvouses}">
+			<a href="rendezvous/list-rspv.do?userId=${row.id }"> <spring:message
+					code="user.rendezvouses.link" />
+			</a>
+		</jstl:if>
 	</display:column>
-	
+
 	<%-- <spring:message code="user.answer" var="answerHeader"/>
 	<display:column title="${answerHeader}">
 		<a href="answer/user/list.do?answerId=${row.id }">
 			<spring:message code="user.answer.link"/>
 		</a>
 	</display:column> --%>
-	
+
 </display:table>
 
-<a href="javascript:window.history.back();">&laquo; <spring:message code="terms.back"/></a>
-
-
-
-
-
+<jstl:choose>
+	<jstl:when test="${requestURI == 'user/listRendezvousAttends.do'}">
+		<acme:cancel url="rendezvous/display.do?rendezvousId=${rendezvous.id}"
+			code="terms.back" />
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:cancel url="welcome/index.do" code="terms.back" />
+	</jstl:otherwise>
+</jstl:choose>

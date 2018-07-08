@@ -19,7 +19,10 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <form:form action="${requestURI }" modelAttribute="commentForm">
-	<security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+
+	<form:hidden path="rendezvousId"/>
+	<form:hidden path="commentParentId"/>
+	<form:hidden path="userId"/>
 	
 	<acme:textarea code="comment.text" path="text"/>
 	<br/>
@@ -27,27 +30,6 @@
 	<acme:textbox code="comment.picture" path="picture"/>
 	<br/>
 	
-	<acme:selectObligatory items="${rendezvous }" itemLabel="name" code="comment.rendezvous" path="rendezvous"/>
-	<br/>
-	
-	<jstl:choose>
-		<jstl:when test="${requestURI == 'comment/user/editReplies.do'}">
-			<acme:selectObligatory items="${commentParent }" itemLabel="text" code="comment.commentParent" path="commentParent"/>
-		</jstl:when>
-	</jstl:choose>
-	
-	<%-- 
-	<br/>
-	<acme:select items="${rendezvous }" itemLabel="name" code="comment.rendezvous" path="rendezvous"/>
-	
-	
-	
-	<br/>
-	<acme:textbox code="comment.rendezvous" path="rendezvous.name"/>
-	--%>
-	<br/>
-</security:authorize>
-
 	<input type="button" name="cancel"
 			value="<spring:message code="comment.cancel" />"
 			onclick="javascript: relativeRedir('/');" />

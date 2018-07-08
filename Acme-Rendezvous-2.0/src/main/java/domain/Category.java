@@ -6,8 +6,10 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +18,9 @@ import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@Index(columnList = "categoryParent_id")
+})
 public class Category extends DomainEntity {
 
 	// Constructors
@@ -54,9 +59,9 @@ public class Category extends DomainEntity {
 
 	// Relationships
 
-	private Collection<Service>	services;
-	private Collection<Category> categories;
-	private Category categoryParent;
+	private Collection<Service>		services;
+	private Collection<Category>	categories;
+	private Category				categoryParent;
 
 
 	@Valid
@@ -72,24 +77,23 @@ public class Category extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@OneToMany(mappedBy="categoryParent")
+	@OneToMany(mappedBy = "categoryParent")
 	public Collection<Category> getCategories() {
-		return categories;
+		return this.categories;
 	}
 
-	public void setCategories(Collection<Category> categories) {
+	public void setCategories(final Collection<Category> categories) {
 		this.categories = categories;
 	}
 
 	@Valid
-	@ManyToOne(optional=true)
+	@ManyToOne(optional = true)
 	public Category getCategoryParent() {
-		return categoryParent;
+		return this.categoryParent;
 	}
 
-	public void setCategoryParent(Category categoryParent) {
+	public void setCategoryParent(final Category categoryParent) {
 		this.categoryParent = categoryParent;
 	}
 
-	
 }

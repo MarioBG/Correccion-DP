@@ -17,6 +17,8 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="cancelled" />
+	<form:hidden path="managerId"/>
+	
 	<acme:textbox code="service.name" path="name"
 		readonly="${serviceForm.cancelled}" />
 	<br />
@@ -30,16 +32,12 @@
 	<br />
 
 	<acme:selectObligatory items="${categories}" itemLabel="name"
-		code="service.category" path="category" />
+		code="service.category" path="categoryId" />
 	<br />
 
 	<jstl:if test="${serviceForm.cancelled == false}">
 		<acme:submit name="save" code="service.save" />
 		&nbsp;
-		<jstl:if test="${serviceForm.id != 0}">
-			<acme:submit name="delete" code="service.delete" />
-			&nbsp;
-		</jstl:if>
 	</jstl:if>
 
 	<acme:cancel url="service/manager/list.do" code="service.cancel" />

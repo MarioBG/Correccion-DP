@@ -11,11 +11,10 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="comment/display.do" modelAttribute="commentForm">
-	
-
-<img src="<jstl:out value="${comment.picture}"/>" width="450" height="174">
-<br/>
+<jstl:if test="${comment.picture != ''}">
+	<img src="<jstl:out value="${comment.picture}"/>" width="450" height="174">
+	<br/>
+</jstl:if>
 
 <spring:message var="patternDate" code="comment.pattern.date"/>
 <b><spring:message code="comment.moment"/>:&nbsp;</b><fmt:formatDate value="${comment.moment}" pattern="${patternDate}"/>
@@ -30,4 +29,11 @@
 <b><spring:message code="comment.user"/>:&nbsp;</b><jstl:out value="${comment.user.name}"/>
 <br/>
 
-</form:form>
+<jstl:choose>
+	<jstl:when test="${comment.commentParent == null}">
+		<acme:cancel url="comment/list.do?rendezvousId=${comment.rendezvous.id}" code="comment.cancel"/>
+	</jstl:when>
+	<jstl:when test="${comment.commentParent != null}">
+		<acme:cancel url="comment/listReplies.do?commentId=${comment.commentParent.id}" code="comment.cancel"/>
+	</jstl:when>
+</jstl:choose>

@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.util.Collection;
@@ -23,7 +24,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(indexes = {@Index(columnList = "rendezvous_Id") })
+@Table(indexes = {
+	@Index(columnList = "rendezvous_id")
+})
 public class Comment extends DomainEntity {
 
 	// Constructors
@@ -32,59 +35,63 @@ public class Comment extends DomainEntity {
 		super();
 	}
 
+
 	// Attributes
 
-	private Date moment;
-	private String text;
-	private String picture;
+	private Date	moment;
+	private String	text;
+	private String	picture;
+
 
 	@NotNull
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMoment() {
-		return moment;
+		return this.moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
 
 	@NotBlank
 	@SafeHtml
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	@URL
 	@SafeHtml
 	public String getPicture() {
-		return picture;
+		return this.picture;
 	}
 
-	public void setPicture(String picture) {
+	public void setPicture(final String picture) {
 		this.picture = picture;
 	}
 
+
 	// Relationships
 
-	private Collection<Comment> replies;
-	private User user;
-	private Rendezvous rendezvous;
-	private Comment commentParent;
+	private Collection<Comment>	replies;
+	private User				user;
+	private Rendezvous			rendezvous;
+	private Comment				commentParent;
+
 
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
 	public User getUser() {
-		return user;
+		return this.user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 
@@ -92,30 +99,30 @@ public class Comment extends DomainEntity {
 	@NotNull
 	@ManyToOne(optional = false)
 	public Rendezvous getRendezvous() {
-		return rendezvous;
+		return this.rendezvous;
 	}
 
-	public void setRendezvous(Rendezvous rendezvous) {
+	public void setRendezvous(final Rendezvous rendezvous) {
 		this.rendezvous = rendezvous;
 	}
 
 	@Valid
-	@OneToMany(mappedBy= "commentParent")
+	@OneToMany(mappedBy = "commentParent")
 	public Collection<Comment> getReplies() {
-		return replies;
+		return this.replies;
 	}
 
-	public void setReplies(Collection<Comment> replies) {
+	public void setReplies(final Collection<Comment> replies) {
 		this.replies = replies;
 	}
-	
+
 	@Valid
 	@ManyToOne(optional = true)
 	public Comment getCommentParent() {
-		return commentParent;
+		return this.commentParent;
 	}
 
-	public void setCommentParent(Comment commentParent) {
+	public void setCommentParent(final Comment commentParent) {
 		this.commentParent = commentParent;
 	}
 

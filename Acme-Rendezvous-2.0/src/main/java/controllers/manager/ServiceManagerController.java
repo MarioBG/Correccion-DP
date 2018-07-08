@@ -1,3 +1,4 @@
+
 package controllers.manager;
 
 import java.util.ArrayList;
@@ -23,135 +24,140 @@ import forms.ServiceForm;
 
 @Controller
 @RequestMapping("/service/manager")
-public class ServiceManagerController extends AbstractController{
+public class ServiceManagerController extends AbstractController {
 
 	// Services ---------------
 	@Autowired
-	private ServiceService serviceService;
-	
+	private ServiceService	serviceService;
+
 	@Autowired
-	private ManagerService managerService;
-	
+	private ManagerService	managerService;
+
 	@Autowired
-	private CategoryService categoryService;
-	
+	private CategoryService	categoryService;
+
+
 	// Constructors -----------
-	public ServiceManagerController(){
+	public ServiceManagerController() {
 		super();
 	}
-	
+
 	// Listing ----------------
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public ModelAndView list(){
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
 
 		Assert.isTrue(this.managerService.checkAuthority());
-		
+
 		ModelAndView res;
 		Collection<Service> services;
-		
-		Manager manager = managerService.findByPrincipal();
+
+		final Manager manager = this.managerService.findByPrincipal();
 		services = this.serviceService.findByManagerId(manager.getId());
-		
+
 		res = new ModelAndView("service/list");
-		res.addObject("services",services);
-		res.addObject("requestURI","service/manager/list.do");
-		
+		res.addObject("services", services);
+		res.addObject("requestURI", "service/manager/list.do");
+
 		return res;
 	}
-	
+
 	// Create --------------
-	@RequestMapping(value="/create",method=RequestMethod.GET)
-	public ModelAndView create(){
-		
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+
 		Assert.isTrue(this.managerService.checkAuthority());
-		
+
 		ModelAndView res;
 		Service service;
 		ServiceForm serviceForm;
-		
+
 		service = this.serviceService.create();
 		serviceForm = this.serviceService.construct(service);
-		
+
 		res = this.createEditModelAndView(serviceForm);
-		
+
 		return res;
 	}
-	
+
 	// Edition -------------
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int serviceId){
-		
+	public ModelAndView edit(@RequestParam final int serviceId) {
+
 		Assert.isTrue(this.managerService.checkAuthority());
-		
+
 		ModelAndView res;
-		
-		Service service = serviceService.findOneToEdit(serviceId);
-		ServiceForm serviceForm = serviceService.construct(service);
-		
-		res = createEditModelAndView(serviceForm);
-		
+
+		final Service service = this.serviceService.findOneToEdit(serviceId);
+		final ServiceForm serviceForm = this.serviceService.construct(service);
+
+		res = this.createEditModelAndView(serviceForm);
+
 		return res;
 	}
-		
-	@RequestMapping(value="/edit",method=RequestMethod.POST, params = "save")
-	public ModelAndView save( final ServiceForm serviceForm, final BindingResult binding){
-		
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final ServiceForm serviceForm, final BindingResult binding) {
+
 		ModelAndView res;
-		
-		if(binding.hasErrors()){
+
+		if (binding.hasErrors())
 			res = this.createEditModelAndView(serviceForm, "service.params.error");
-		}else
-			try{
-				Service service = this.serviceService.reconstruct(serviceForm, binding);
+		else
+			try {
+				final Service service = this.serviceService.reconstruct(serviceForm, binding);
 				this.serviceService.save(service);
 				res = new ModelAndView("redirect:/service/manager/list.do");
-			}catch (final Throwable oops) {
+			} catch (final Throwable oops) {
 				System.out.println(oops);
 				System.out.println(binding);
 				res = this.createEditModelAndView(serviceForm, "service.commit.error");
 			}
-		
+
 		return res;
 	}
-	
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(ServiceForm serviceForm, BindingResult binding){
-		
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int serviceId) {
+
 		ModelAndView res;
-		
-		try{
-			Service service = this.serviceService.reconstruct(serviceForm, binding);
-			serviceService.delete(service);
-			res = new ModelAndView("redirect:/service/manager/list.do");
-		}catch (Throwable oops) {
-			res = createEditModelAndView(serviceForm, "service.commit.error");
-		}
-		
+		final Service service = this.serviceService.findOne(serviceId);
+		final ServiceForm serviceForm = this.serviceService.construct(service);
+
+		if (!service.getRequests().isEmpty())
+			res = this.createEditModelAndView(serviceForm, "service.used");
+		else
+			try {
+				this.serviceService.delete(service);
+				res = new ModelAndView("redirect:/service/manager/list.do");
+			} catch (final Throwable oops) {
+				res = this.createEditModelAndView(serviceForm, "service.commit.error");
+			}
+
 		return res;
 	}
-	
+
 	// Ancillary method ----------------
-	
+
 	protected ModelAndView createEditModelAndView(final ServiceForm serviceForm) {
 		ModelAndView res;
-		
-		res = this.createEditModelAndView(serviceForm,null);
-		
+
+		res = this.createEditModelAndView(serviceForm, null);
+
 		return res;
 	}
 
 	protected ModelAndView createEditModelAndView(final ServiceForm serviceForm, final String message) {
 		ModelAndView res;
 		Collection<Category> categories = new ArrayList<Category>();
-		categories= categoryService.findAll();
-		
+		categories = this.categoryService.findAll();
+
 		res = new ModelAndView("service/edit");
 		res.addObject("serviceForm", serviceForm);
-		res.addObject("categories",categories);
-		res.addObject("message",message);
-		res.addObject("requestURI","service/manager/edit.do");
-		
+		res.addObject("categories", categories);
+		res.addObject("message", message);
+		res.addObject("requestURI", "service/manager/edit.do");
+
 		return res;
 	}
 }

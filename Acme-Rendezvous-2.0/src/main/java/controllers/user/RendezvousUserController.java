@@ -2,6 +2,9 @@
 package controllers.user;
 
 import java.util.Collection;
+import java.util.Date;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +34,9 @@ public class RendezvousUserController extends AbstractController {
 
 	@Autowired
 	private UserService			userService;
-	
+
 	@Autowired
-	private ActorService 		actorService;
+	private ActorService		actorService;
 
 
 	// Constructors --------------------------------------------------
@@ -47,9 +50,11 @@ public class RendezvousUserController extends AbstractController {
 	@RequestMapping(value = "/list-organised", method = RequestMethod.GET)
 	public ModelAndView organised() {
 
+		final Date date = new Date();
 		final Collection<Rendezvous> rendezvouses = this.rendezvousService.findOrganisedRendezvousesByPrincipal();
 
 		final ModelAndView result = new ModelAndView("rendezvous/list");
+		result.addObject("date", date);
 		result.addObject("rendezvouses", rendezvouses);
 		result.addObject("rendezvousSource", null);
 		result.addObject("requestURI", "rendezvous/user/list-organised.do");
@@ -60,9 +65,11 @@ public class RendezvousUserController extends AbstractController {
 	@RequestMapping(value = "/list-rspv", method = RequestMethod.GET)
 	public ModelAndView rspv() {
 
+		final Date date = new Date();
 		final Collection<Rendezvous> rendezvouses = this.rendezvousService.findRspvdRendezvousesByPrincipal();
 
 		final ModelAndView result = new ModelAndView("rendezvous/list");
+		result.addObject("date", date);
 		result.addObject("rendezvouses", rendezvouses);
 		result.addObject("rendezvousSource", null);
 		result.addObject("requestURI", "rendezvous/user/list-rspv.do");
@@ -73,7 +80,7 @@ public class RendezvousUserController extends AbstractController {
 	@RequestMapping(value = "/list-link", method = RequestMethod.GET)
 	public ModelAndView link(@RequestParam final int rendezvousId) {
 
-		final Collection<Rendezvous> rendezvouses = this.rendezvousService.findOrganisedRendezvousesByPrincipal();
+		final Collection<Rendezvous> rendezvouses = this.rendezvousService.findOrganisedRendezvousesByPrincipalFinal();
 		final Rendezvous rendezvousSource = this.rendezvousService.findOneToEdit(rendezvousId);
 
 		rendezvouses.remove(rendezvousSource);
@@ -113,11 +120,19 @@ public class RendezvousUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(final RendezvousForm rendezvousForm, final BindingResult binding) {
+	public ModelAndView save(@Valid final RendezvousForm rendezvousForm, final BindingResult binding) {
 
 		ModelAndView result;
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(rendezvousForm);
+		else if (!this.rendezvousService.isFuture(rendezvousForm.getMoment()))
+			result = this.createEditModelAndView(rendezvousForm, "rendezvous.date.past");
+		else if ((rendezvousForm.getLatitude() != null && rendezvousForm.getLongitude() == null) || (rendezvousForm.getLatitude() == null && rendezvousForm.getLongitude() != null))
+			result = this.createEditModelAndView(rendezvousForm, "rendezvous.wrong.coordinate");
+		else if (rendezvousForm.getLatitude() != null && (rendezvousForm.getLatitude() < -90.0 || rendezvousForm.getLatitude() > 90.0))
+			result = this.createEditModelAndView(rendezvousForm, "rendezvous.wrong.coordinate");
+		else if (rendezvousForm.getLongitude() != null && (rendezvousForm.getLongitude() < -180.0 || rendezvousForm.getLongitude() > 180.0))
+			result = this.createEditModelAndView(rendezvousForm, "rendezvous.wrong.coordinate");
 		else
 			try {
 				final Rendezvous rendezvous = this.rendezvousService.reconstruct(rendezvousForm, binding);
@@ -230,12 +245,16 @@ public class RendezvousUserController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final RendezvousForm rendezvousForm, final String messageCode) {
 
 		this.rendezvousService.checkPrincipalForm(rendezvousForm);
-		User user = this.userService.findByPrincipal(); 
-		boolean adult = this.actorService.isAdult(user.getBirth());
+		final User user = this.userService.findByPrincipal();
+		final boolean adult = this.actorService.isAdult(user.getBirth());
 
 		ModelAndView result;
 
-		result = new ModelAndView("rendezvous/edit");
+		if (rendezvousForm.getId() == 0)
+			result = new ModelAndView("rendezvous/create");
+		else
+			result = new ModelAndView("rendezvous/edit");
+
 		result.addObject("rendezvousForm", rendezvousForm);
 		result.addObject("adultUser", adult);
 		result.addObject("message", messageCode);

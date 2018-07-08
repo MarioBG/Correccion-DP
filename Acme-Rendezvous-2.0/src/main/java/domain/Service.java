@@ -80,9 +80,9 @@ public class Service extends DomainEntity {
 
 	// Relationships
 
-	private Manager					manager;
-	private Collection<Request>		requests;
-	private Category				category;
+	private Manager				manager;
+	private Collection<Request>	requests;
+	private Category			category;
 
 
 	@Valid

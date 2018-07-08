@@ -30,7 +30,7 @@
 	<br/>
 	<acme:textbox code="user.address" path="address"/>
 	<br/>
-	<acme:textbox code="user.birth" path="birth"/>
+	<acme:textbox code="user.birth" path="birth" placeholder="dd/MM/yyyy"/>
 	<br/>
 	<acme:textbox code="user.userName" path="username"/>
 	<br/>

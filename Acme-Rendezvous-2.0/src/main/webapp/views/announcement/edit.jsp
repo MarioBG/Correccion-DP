@@ -11,17 +11,16 @@
 
 <form:form action ="${requestURI }" modelAttribute="announcementForm">
 
+	<form:hidden path="rendezvousId"/>
 
 	<acme:textbox code="announcement.title" path="title"/>
 	<br/>
 	<acme:textarea code="announcement.description" path="description"/>
 	<br/>
-	<acme:select items="${rendezvous }" itemLabel="name" code="announcement.rendezvous" path="rendezvous"/>
+<%-- 	<acme:select items="${rendezvous }" itemLabel="name" code="announcement.rendezvous" path="rendezvous"/> --%>
 	<br/>
 	
-	<input type="button" name="cancel"
-		value="<spring:message code="announcement.cancel" />"
-		onclick="javascript: relativeRedir('/');" />
+	<acme:cancel url="rendezvous/user/edit.do?rendezvousId=${announcementForm.rendezvousId}" code="announcement.cancel"/>
 	
 	<security:authorize access="hasRole('USER')">
 		<input type="submit" name="save"

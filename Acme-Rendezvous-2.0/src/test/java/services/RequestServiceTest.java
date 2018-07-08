@@ -1,13 +1,6 @@
+
 package services;
 
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -17,14 +10,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
-import domain.Comment;
 import domain.CreditCard;
-import domain.Rendezvous;
 import domain.Request;
 import domain.Service;
-import domain.User;
 
-@ContextConfiguration(locations = { "classpath:spring/junit.xml" })
+@ContextConfiguration(locations = {
+	"classpath:spring/junit.xml"
+})
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class RequestServiceTest extends AbstractTest {
@@ -32,19 +24,17 @@ public class RequestServiceTest extends AbstractTest {
 	// Suporting Services ------------------------------------------------------
 
 	@Autowired
-	private RequestService requestService;
+	private RequestService	requestService;
 
 	@Autowired
-	private ServiceService serviceService;
+	private ServiceService	serviceService;
 
 	@Autowired
-	RendezvousService rendezvousService;
+	RendezvousService		rendezvousService;
 
 	@Autowired
-	UserService userService;
+	UserService				userService;
 
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	// Test CreateAndSave
 	// ----------------------------------------------------------------------------------
@@ -56,75 +46,54 @@ public class RequestServiceTest extends AbstractTest {
 	@Test
 	public void driverCreateAndSaveComment() {
 
-		CreditCard cc = createCCOk();
-		CreditCard ccNoHolder = createCCNoHolder();
-		CreditCard ccNoBrand = createCCNoBrand();
-		CreditCard ccBadCVV = createCCBadCVV();
-		CreditCard ccBadMonth = createCCBadMonth();
-		CreditCard ccBadNumber = createCCBadNumber();
-		CreditCard ccBadYear = createCCBadYear();
+		final CreditCard cc = this.createCCOk();
+		final CreditCard ccNoHolder = this.createCCNoHolder();
+		final CreditCard ccNoBrand = this.createCCNoBrand();
+		final CreditCard ccBadCVV = this.createCCBadCVV();
+		final CreditCard ccBadMonth = this.createCCBadMonth();
+		final CreditCard ccBadNumber = this.createCCBadNumber();
+		final CreditCard ccBadYear = this.createCCBadYear();
 
 		final Object testingData[][] = {
 
-				{
-						// lo crea bien
-						"rendezvous1", "service1", cc, "comment1", "user1",
-						null },
-				{
+			{
+				// lo crea bien
+				"rendezvous1", "service1", cc, "comment1", "user1", null
+			}, {
 
-						// sin holder
-						"rendezvous1", "service1", ccNoHolder, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
-				{
+				// sin holder
+				"rendezvous1", "service1", ccNoHolder, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			}, {
 
-						// sin brand
-						"rendezvous1", "service1", ccNoBrand, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
-				{
+				// sin brand
+				"rendezvous1", "service1", ccNoBrand, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			}, {
 
-						// mal CVV
-						"rendezvous1", "service1", ccBadCVV, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
-				{
+				// mal CVV
+				"rendezvous1", "service1", ccBadCVV, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			}, {
 
-						// mal mes
-						"rendezvous1", "service1", ccBadMonth, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
-				{
+				// mal mes
+				"rendezvous1", "service1", ccBadMonth, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			}, {
 
-						// mal number
-						"rendezvous1", "service1", ccBadNumber, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
-				{
+				// mal number
+				"rendezvous1", "service1", ccBadNumber, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			}, {
 
-						// mal year
-						"rendezvous1", "service1", ccBadYear, "comment1",
-						"user1",
-						javax.validation.ConstraintViolationException.class },
+				// mal year
+				"rendezvous1", "service1", ccBadYear, "comment1", "user1", javax.validation.ConstraintViolationException.class
+			},
 
 		};
 
-		for (int i = 0; i < testingData.length; i++) {
-
-			this.templateCreateAndSave(
-					super.getEntityId((String) testingData[i][0]),
-					super.getEntityId((String) testingData[i][1]),
-					(CreditCard) testingData[i][2], (String) testingData[i][3],
-					(String) testingData[i][4], (Class<?>) testingData[i][5]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateCreateAndSave(super.getEntityId((String) testingData[i][0]), super.getEntityId((String) testingData[i][1]), (CreditCard) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
 
 	}
 
-	protected void templateCreateAndSave(final int rendezvousId,
-			final int serviceId, final CreditCard creditCard,
-			final String comment, final String user, Class<?> expected) {
+	protected void templateCreateAndSave(final int rendezvousId, final int serviceId, final CreditCard creditCard, final String comment, final String user, final Class<?> expected) {
 
-		final Rendezvous rendezvous;
 		Request request;
 		Service service;
 		Class<?> caught;
@@ -136,8 +105,6 @@ public class RequestServiceTest extends AbstractTest {
 
 			service = this.serviceService.findOne(serviceId);
 
-			rendezvous = this.rendezvousService.findOne(rendezvousId);
-
 			request = this.requestService.create(rendezvousId);
 			request.setComment(comment);
 			request.setCreditCard(creditCard);
@@ -147,11 +114,11 @@ public class RequestServiceTest extends AbstractTest {
 			this.requestService.flush();
 			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
-		checkExceptions(expected, caught);
-		unauthenticate();
+		this.checkExceptions(expected, caught);
+		this.unauthenticate();
 
 	}
 

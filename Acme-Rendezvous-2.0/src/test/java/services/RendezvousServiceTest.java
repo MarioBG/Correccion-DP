@@ -1,3 +1,4 @@
+
 package services;
 
 import java.text.ParseException;
@@ -23,20 +24,23 @@ import domain.Rendezvous;
 import domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/junit.xml" })
+@ContextConfiguration(locations = {
+	"classpath:spring/junit.xml"
+})
 @Transactional
 public class RendezvousServiceTest extends AbstractTest {
 
 	// System under test ------------------------------------------------------
 
 	@Autowired
-	private RendezvousService rendezvousService;
+	private RendezvousService	rendezvousService;
 
 	@Autowired
-	private UserService userService;
+	private UserService			userService;
 
 	@PersistenceContext
-	private EntityManager entityManager;
+	private EntityManager		entityManager;
+
 
 	// Tests ------------------------------------------------------------------
 
@@ -45,108 +49,70 @@ public class RendezvousServiceTest extends AbstractTest {
 	@Test
 	public void driverCreate() {
 		GpsCoordinate gpsCoordinate = new GpsCoordinate();
-		gpsCoordinate = createGpsOk();
-		GpsCoordinate gpsLatitudeNull = createGpsLatitudeNull();
-		GpsCoordinate gpsLongitudeNull = createGpsLongitudeNull();
-		GpsCoordinate gpsLatitudeOutRangeM = createGpsLatitudeOutRangeMore();
-		GpsCoordinate gpsLongitudeOutRangeM = createGpsLongitudeOutRangeMore();
-		GpsCoordinate gpsLatitudeOutRangeL = createGpsLatitudeOutRangeLess();
-		GpsCoordinate gpsLongitudeOutRangeL = createGpsLongitudeOutRangeLess();
+		gpsCoordinate = this.createGpsOk();
+		final GpsCoordinate gpsLatitudeNull = this.createGpsLatitudeNull();
+		final GpsCoordinate gpsLongitudeNull = this.createGpsLongitudeNull();
+		final GpsCoordinate gpsLatitudeOutRangeM = this.createGpsLatitudeOutRangeMore();
+		final GpsCoordinate gpsLongitudeOutRangeM = this.createGpsLongitudeOutRangeMore();
+		final GpsCoordinate gpsLatitudeOutRangeL = this.createGpsLatitudeOutRangeLess();
+		final GpsCoordinate gpsLongitudeOutRangeL = this.createGpsLongitudeOutRangeLess();
 
-		Object testingData[][] = {
-				// positive test
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsCoordinate, false, false, null },
-				// negative test: usuario no valido
-				{
-						null,
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsCoordinate, false, false,
-						IllegalArgumentException.class },
-				// latitude null
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLatitudeNull, false, false, null },
-				// longitude null
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLongitudeNull, false, false,
-						null },
-				// latitude out of range up
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLatitudeOutRangeM, false, false,
-						javax.validation.ConstraintViolationException.class },
-				// longitude out of range up
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLongitudeOutRangeM, false,
-						false,
-						javax.validation.ConstraintViolationException.class },
-				// latitude out of range down
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLatitudeOutRangeL, false, false,
-						javax.validation.ConstraintViolationException.class },
-				// longitude out of range down
-				{
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsLongitudeOutRangeL, false,
-						false,
-						javax.validation.ConstraintViolationException.class }, };
+		final Object testingData[][] = {
+			// positive test
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsCoordinate, false, false, null
+			},
+			// negative test: usuario no valido
+			{
+				null, "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsCoordinate, false, false, IllegalArgumentException.class
+			},
+			// latitude null
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLatitudeNull, false, false, null
+			},
+			// longitude null
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLongitudeNull, false, false, null
+			},
+			// latitude out of range up
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLatitudeOutRangeM, false, false, javax.validation.ConstraintViolationException.class
+			},
+			// longitude out of range up
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLongitudeOutRangeM, false, false, javax.validation.ConstraintViolationException.class
+			},
+			// latitude out of range down
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLatitudeOutRangeL, false, false, javax.validation.ConstraintViolationException.class
+			},
+			// longitude out of range down
+			{
+				"user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsLongitudeOutRangeL, false, false, javax.validation.ConstraintViolationException.class
+			},
+		};
 
-		for (int i = 0; i < testingData.length; i++) {
-			templateCreate((String) testingData[i][0],
-					(String) testingData[i][1], (String) testingData[i][2],
-					(String) testingData[i][3], (String) testingData[i][4],
-					(GpsCoordinate) testingData[i][5],
-					(boolean) testingData[i][6], (boolean) testingData[i][7],
-					(Class<?>) testingData[i][8]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateCreate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (GpsCoordinate) testingData[i][5], (boolean) testingData[i][6],
+				(boolean) testingData[i][7], (Class<?>) testingData[i][8]);
 
 	}
 
-	private void templateCreate(String user, String name, String description,
-			String picture, String date, GpsCoordinate gps, boolean adult,
-			boolean finalVersion, Class<?> expected) {
+	private void templateCreate(final String user, final String name, final String description, final String picture, final String date, final GpsCoordinate gps, final boolean adult, final boolean finalVersion, final Class<?> expected) {
 		Rendezvous rendezvous;
 		Class<?> caught;
 		caught = null;
 		Date fecha = new Date();
 
-		SimpleDateFormat pattern = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		final SimpleDateFormat pattern = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
 			fecha = pattern.parse(date);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			e.getClass();
 		}
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 			rendezvous = this.rendezvousService.create();
 			rendezvous.setName(name);
 			rendezvous.setDescription(description);
@@ -158,12 +124,12 @@ public class RendezvousServiceTest extends AbstractTest {
 
 			this.rendezvousService.save(rendezvous);
 			this.rendezvousService.flush();
-			unauthenticate();
-		} catch (Throwable oops) {
+			this.unauthenticate();
+		} catch (final Throwable oops) {
 
 			caught = oops.getClass();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 
 	}
 
@@ -172,58 +138,41 @@ public class RendezvousServiceTest extends AbstractTest {
 	@Test
 	public void driverEdit() {
 		GpsCoordinate gpsCoordinate = new GpsCoordinate();
-		gpsCoordinate = createGpsOk();
+		gpsCoordinate = this.createGpsOk();
 
-		Object testingData[][] = {
-				// positive test
-				{
-						"rendezvous1",
-						"user1",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2020 19:32", gpsCoordinate, false, false, null },
-				// negative test: usuario no válido
-				{
-						"rendezvous1",
-						"user2",
-						"name",
-						"description",
-						"http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png",
-						"10/05/2000", gpsCoordinate, false, true,
-						java.lang.IllegalArgumentException.class },
+		final Object testingData[][] = {
+			// positive test
+			{
+				"rendezvous1", "user1", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2020 19:32", gpsCoordinate, false, false, null
+			},
+			// negative test: usuario no válido
+			{
+				"rendezvous1", "user2", "name", "description", "http://www.uwyo.edu/reslife-dining/_files/re-design-images/dining-logos/rendezvouslogo_2016.png", "10/05/2000", gpsCoordinate, false, true, java.lang.IllegalArgumentException.class
+			},
 
 		};
-		for (int i = 0; i < testingData.length; i++) {
-			templateEdit(getEntityId((String) testingData[i][0]),
-					(String) testingData[i][1], (String) testingData[i][2],
-					(String) testingData[i][3], (String) testingData[i][4],
-					(String) testingData[i][5],
-					(GpsCoordinate) testingData[i][6],
-					(boolean) testingData[i][7], (boolean) testingData[i][8],
-					(Class<?>) testingData[i][9]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateEdit(this.getEntityId((String) testingData[i][0]), (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (GpsCoordinate) testingData[i][6],
+				(boolean) testingData[i][7], (boolean) testingData[i][8], (Class<?>) testingData[i][9]);
 
 	}
 
-	private void templateEdit(int rendezvousId, String user, String name,
-			String description, String picture, String date, GpsCoordinate gps,
-			boolean adult, boolean finalVersion, Class<?> expected) {
+	private void templateEdit(final int rendezvousId, final String user, final String name, final String description, final String picture, final String date, final GpsCoordinate gps, final boolean adult, final boolean finalVersion, final Class<?> expected) {
 		Rendezvous rendezvous;
 		rendezvous = new Rendezvous();
 		Class<?> caught;
 		caught = null;
 		Date fecha = new Date();
 
-		SimpleDateFormat pattern = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		final SimpleDateFormat pattern = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
 			fecha = pattern.parse(date);
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			e.getClass();
 		}
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 			rendezvous = this.rendezvousService.findOne(rendezvousId);
 
 			rendezvous.setName(name);
@@ -236,12 +185,12 @@ public class RendezvousServiceTest extends AbstractTest {
 
 			this.rendezvousService.save(rendezvous);
 			this.rendezvousService.flush();
-			unauthenticate();
+			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 	}
 
 	// Test delete de user
@@ -253,39 +202,37 @@ public class RendezvousServiceTest extends AbstractTest {
 	@Test
 	public void driverDeleteUser() {
 
-		Object testingData[][] = {
-		// positive test
-		{ "user2", "rendezvous2", null },
+		final Object testingData[][] = {
+			// positive test
+			{
+				"user2", "rendezvous2", null
+			},
 
 		};
-		for (int i = 0; i < testingData.length; i++) {
-			templateDeleteUser((String) testingData[i][0],
-					getEntityId((String) testingData[i][1]),
-					(Class<?>) testingData[i][2]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateDeleteUser((String) testingData[i][0], this.getEntityId((String) testingData[i][1]), (Class<?>) testingData[i][2]);
 
 	}
 
-	private void templateDeleteUser(String user, int rendezvousId,
-			Class<?> expected) {
+	private void templateDeleteUser(final String user, final int rendezvousId, final Class<?> expected) {
 		Rendezvous rendezvous;
 		rendezvous = new Rendezvous();
 		Class<?> caught;
 		caught = null;
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 			rendezvous = this.rendezvousService.findOne(rendezvousId);
 
 			this.rendezvousService.FakeDelete(rendezvous);
 			this.rendezvousService.flush();
-			unauthenticate();
+			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 			this.entityManager.clear();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 	}
 
 	// Test Assistant
@@ -298,26 +245,28 @@ public class RendezvousServiceTest extends AbstractTest {
 	@Test
 	public void driverAssistUser() {
 
-		Object testingData[][] = {
-				// positive test user 1 asiste a rendezvous 1
-				{ "user1", "rendezvous1", null },
-				// user3 menor de edad asiste a rendezvous para mayores
-				{ "user3", "rendezvous2", IllegalArgumentException.class },
-				// user2 mayor de edad asiste a rendezvous para mayores
-				{ "user2", "rendezvous2", null },
+		final Object testingData[][] = {
+			// positive test user 1 asiste a rendezvous 1
+			{
+				"user1", "rendezvous1", null
+			},
+			// user3 menor de edad asiste a rendezvous para mayores
+			{
+				"user3", "rendezvous2", IllegalArgumentException.class
+			},
+			// user2 mayor de edad asiste a rendezvous para mayores
+			{
+				"user2", "rendezvous2", null
+			},
 
 		};
 
-		for (int i = 0; i < testingData.length; i++) {
-			templateAssistUser((String) testingData[i][0],
-					getEntityId((String) testingData[i][1]),
-					(Class<?>) testingData[i][2]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateAssistUser((String) testingData[i][0], this.getEntityId((String) testingData[i][1]), (Class<?>) testingData[i][2]);
 
 	}
 
-	private void templateAssistUser(String user, int rendezvousId,
-			Class<?> expected) {
+	private void templateAssistUser(final String user, final int rendezvousId, final Class<?> expected) {
 		Rendezvous rendezvous;
 		User userF;
 		Class<?> caught;
@@ -325,7 +274,7 @@ public class RendezvousServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 			userF = this.userService.findByPrincipal();
 			this.rendezvousService.YesRSVP(rendezvousId);
 			this.rendezvousService.flush();
@@ -334,13 +283,13 @@ public class RendezvousServiceTest extends AbstractTest {
 			userF = this.userService.findByPrincipal();
 			Assert.isTrue(rendezvous.getAttendants().contains(userF));
 			this.rendezvousService.flush();
-			unauthenticate();
+			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 			this.entityManager.clear();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 	}
 
 	// Test not Assistant
@@ -353,27 +302,28 @@ public class RendezvousServiceTest extends AbstractTest {
 	@Test
 	public void driverNotAssistUser() {
 
-		Object testingData[][] = {
+		final Object testingData[][] = {
 
-
-				// positive test
-				{ "user1", "rendezvous1", null},
-				// negative test
-				{ "user1", "rendezvous2", IllegalArgumentException.class },
-				// Manager no puede asistir a un rendezvous
-				{ "manager1", "rendezvous1", IllegalArgumentException.class },
+			// positive test
+			{
+				"user1", "rendezvous1", null
+			},
+			// negative test
+			{
+				"user1", "rendezvous2", IllegalArgumentException.class
+			},
+			// Manager no puede asistir a un rendezvous
+			{
+				"manager1", "rendezvous1", IllegalArgumentException.class
+			},
 
 		};
-		for (int i = 0; i < testingData.length; i++) {
-			templateNotAssistUser((String) testingData[i][0],
-					getEntityId((String) testingData[i][1]),
-					(Class<?>) testingData[i][2]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateNotAssistUser((String) testingData[i][0], this.getEntityId((String) testingData[i][1]), (Class<?>) testingData[i][2]);
 
 	}
 
-	private void templateNotAssistUser(String user, int rendezvousId,
-			Class<?> expected) {
+	private void templateNotAssistUser(final String user, final int rendezvousId, final Class<?> expected) {
 		Rendezvous rendezvous;
 		User userF;
 		Class<?> caught;
@@ -381,7 +331,7 @@ public class RendezvousServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 
 			this.rendezvousService.NoRSVP(rendezvousId);
 			this.rendezvousService.flush();
@@ -389,38 +339,37 @@ public class RendezvousServiceTest extends AbstractTest {
 			rendezvous = this.rendezvousService.findOne(rendezvousId);
 			userF = this.userService.findByPrincipal();
 			Assert.isTrue(!rendezvous.getAttendants().contains(userF));
-			unauthenticate();
+			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 			this.entityManager.clear();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 	}
 
 	// 5.5 Acme Rendezvous List the rendezvouses that he or she’s RSVPd.
 	@Test
 	public void driverListAssistUser() {
 
-		Object testingData[][] = {
+		final Object testingData[][] = {
 
-
-				// positive test
-				{ "user1", "rendezvous1", null},
-				// negative test, comprueba que un user efectivamente no tenga un rendezvous al que no va a asistir en su lista de attendants
-				{ "user1", "rendezvous2", IllegalArgumentException.class },
+			// positive test
+			{
+				"user1", "rendezvous1", null
+			},
+			// negative test, comprueba que un user efectivamente no tenga un rendezvous al que no va a asistir en su lista de attendants
+			{
+				"user1", "rendezvous2", IllegalArgumentException.class
+			},
 
 		};
-		for (int i = 0; i < testingData.length; i++) {
-			templateListAssistUser((String) testingData[i][0],
-					getEntityId((String) testingData[i][1]),
-					(Class<?>) testingData[i][2]);
-		}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateListAssistUser((String) testingData[i][0], this.getEntityId((String) testingData[i][1]), (Class<?>) testingData[i][2]);
 
 	}
 
-	private void templateListAssistUser(String user, int rendezvousId,
-			Class<?> expected) {
+	private void templateListAssistUser(final String user, final int rendezvousId, final Class<?> expected) {
 		Rendezvous rendezvous;
 		Collection<Rendezvous> rendezvousAssists = new ArrayList<Rendezvous>();
 		User principalUser;
@@ -429,24 +378,23 @@ public class RendezvousServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			authenticate(user);
+			this.authenticate(user);
 			principalUser = this.userService.findByPrincipal();
 			rendezvous = this.rendezvousService.findOne(rendezvousId);
-			rendezvousAssists = this.rendezvousService.findByAttendantId(principalUser.getId());
+			rendezvousAssists = principalUser.getRsvpdRendezvouses();
 			Assert.isTrue(rendezvousAssists.contains(rendezvous));
-			unauthenticate();
+			this.unauthenticate();
 
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
-		checkExceptions(expected, caught);
+		this.checkExceptions(expected, caught);
 	}
-	
 
 	// Creación de gps
 
 	private GpsCoordinate createGpsOk() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(89.0);
 		res.setLongitude(179.0);
@@ -455,7 +403,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLatitudeNull() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(null);
 		res.setLongitude(179.0);
@@ -464,7 +412,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLongitudeNull() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(89.0);
 		res.setLongitude(null);
@@ -473,7 +421,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLatitudeOutRangeMore() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(100.0);
 		res.setLongitude(179.0);
@@ -482,7 +430,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLongitudeOutRangeMore() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(89.0);
 		res.setLongitude(2005585.0);
@@ -491,7 +439,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLatitudeOutRangeLess() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(-100.0);
 		res.setLongitude(179.0);
@@ -500,7 +448,7 @@ public class RendezvousServiceTest extends AbstractTest {
 	}
 
 	private GpsCoordinate createGpsLongitudeOutRangeLess() {
-		GpsCoordinate res = new GpsCoordinate();
+		final GpsCoordinate res = new GpsCoordinate();
 
 		res.setLatitude(89.0);
 		res.setLongitude(-200.0);

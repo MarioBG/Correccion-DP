@@ -36,6 +36,9 @@ public class ServiceService {
 	private ManagerService		managerService;
 
 	@Autowired
+	private CategoryService		categoryService;
+
+	@Autowired
 	private AdminService		adminService;
 
 	@Autowired
@@ -140,7 +143,6 @@ public class ServiceService {
 		final Service service = this.findOne(serviceId);
 
 		Assert.isTrue(service.isCancelled() == false);
-		Assert.isTrue(service.getRequests().isEmpty());
 
 		service.setCancelled(true);
 		this.save(service);
@@ -188,7 +190,7 @@ public class ServiceService {
 		res.setName(serviceForm.getName());
 		res.setDescription(serviceForm.getDescription());
 		res.setPicture(serviceForm.getPicture());
-		res.setCategory(serviceForm.getCategory());
+		res.setCategory(this.categoryService.findOne(serviceForm.getCategoryId()));
 
 		if (binding != null)
 			this.validator.validate(res, binding);

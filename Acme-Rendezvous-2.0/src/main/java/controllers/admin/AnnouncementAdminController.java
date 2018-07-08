@@ -1,3 +1,4 @@
+
 package controllers.admin;
 
 import java.util.Collection;
@@ -9,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AnnouncementService;
-
 import controllers.AbstractController;
-
 import domain.Announcement;
 
 @Controller
@@ -20,39 +19,39 @@ public class AnnouncementAdminController extends AbstractController {
 
 	// Services ---------------
 	@Autowired
-	private AnnouncementService announcementService;
-	
+	private AnnouncementService	announcementService;
+
+
 	//Constructors -------------
-	public AnnouncementAdminController(){
+	public AnnouncementAdminController() {
 		super();
 	}
-	
+
 	// List -----------
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public ModelAndView list(){
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
 		ModelAndView res;
 		Collection<Announcement> announcements;
-	
+
 		announcements = this.announcementService.findAll();
-		
+
 		res = new ModelAndView("announcement/list");
-		res.addObject("announcement",announcements);
-		res.addObject("requestURI","announcement/list.do");
-		
+		res.addObject("announcements", announcements);
+		res.addObject("requestURI", "announcement/admin/list.do");
+
 		return res;
 	}
-	
+
 	// Delete ------------
-	
+
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(int announcementId){
-		
-		Announcement announcement = announcementService.findOne(announcementId);
-		
-		announcementService.delete(announcement);
-		
+	public ModelAndView delete(final int announcementId) {
+
+		final Announcement announcement = this.announcementService.findOne(announcementId);
+
+		this.announcementService.delete(announcement);
+
 		return new ModelAndView("redirect:list.do");
 	}
 
-	
 }

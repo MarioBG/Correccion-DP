@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
- * security.xml
- *
- * Copyright (C) 2017 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
+<!-- * security.xml * * Copyright (C) 2017 Universidad de Sevilla * * The 
+	use of this project is hereby constrained to the conditions of the * TDG 
+	Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd		
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
@@ -27,91 +21,165 @@
 	<!-- Access control -->
 
 	<security:http auto-config="true" use-expressions="true">
-		<security:intercept-url pattern="/" access="permitAll" /> 
+		<security:intercept-url pattern="/" access="permitAll" />
 
-		<security:intercept-url pattern="/favicon.ico" access="permitAll" /> 
-		<security:intercept-url pattern="/images/**" access="permitAll" /> 
-		<security:intercept-url pattern="/scripts/**" access="permitAll" /> 
-		<security:intercept-url pattern="/styles/**" access="permitAll" /> 
-		
+		<security:intercept-url pattern="/favicon.ico"
+			access="permitAll" />
+		<security:intercept-url pattern="/images/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/scripts/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/styles/**"
+			access="permitAll" />
 
-		<security:intercept-url pattern="/views/misc/index.jsp" access="permitAll" /> 
-		
-		<security:intercept-url pattern="/security/login.do" access="permitAll" /> 
-		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" /> 
 
-		<security:intercept-url pattern="/welcome/index.do" access="permitAll" />
-		
-		<security:intercept-url pattern="/terms/**" access="permitAll" />
-		
-		<security:intercept-url pattern="/administrator/action-1.do" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/administrator/action-2.do" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/administrator/display.do" access="hasRole('ADMIN')" /> 
-		
-		
-		<security:intercept-url pattern="/category/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/category/list.do" access="permitAll" />
-		<security:intercept-url pattern="/category/**" access="permitAll" />
-		
-		<security:intercept-url pattern="/comment/rendezvous/create.do" access="hasRole('USER')" /> 
-		<security:intercept-url pattern="/comment/rendezvous/edit.do" access="hasRole('USER')" /> 
-		<security:intercept-url pattern="/comment/rendezvous/**" access="permitAll" /> 
-		<security:intercept-url pattern="/comment/edit.do" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/comment/display.do" access="permitAll" /> 
-		<security:intercept-url pattern="/comment/admin/**" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/comment/user/**" access="hasAnyRole('USER')" />
-		<security:intercept-url pattern="/comment/listReplies.do" access="permitAll" />
-		<security:intercept-url pattern="/comment/**" access="hasAnyRole('USER', 'ADMIN')" />
-		
-		
-		<security:intercept-url pattern="/question/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/answer/**" access="hasRole('USER')" />   
-		
-		<security:intercept-url pattern="/announcements/user/list.do" access="hasRole('USER')" /> 
-		<security:intercept-url pattern="/announcement/user/**" access="permitAll" /> 
-		<security:intercept-url pattern="/announcement/admin/list.do" access="hasRole('ADMIN')"/>
-		<security:intercept-url pattern="/announcement/admin/edit.do" access="hasRole('ADMIN')"/>
-		<security:intercept-url pattern="/announcement/list.do" access="permitAll"/>
-		<security:intercept-url pattern="/announcement/display.do" access="permitAll" /> 
-		<security:intercept-url pattern="/announcement/admin/**" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/announcement/**" access="hasRole('USER')" /> 
-		
-		<security:intercept-url pattern="/user/user/edit.do" access="permitAll" />
-		<security:intercept-url pattern="/user/list.do" access="permitAll" />
-		<security:intercept-url pattern="/user/creator/list.do" access="permitAll" />
-		<security:intercept-url pattern="/user/listRendezvousAttends.do" access="permitAll" />
-		<security:intercept-url pattern="/user/register.do" access="permitAll" />
-		<security:intercept-url pattern="/user/display.do" access="permitAll" />
+		<security:intercept-url pattern="/views/misc/index.jsp"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/security/login.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/security/loginFailure.do"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/welcome/index.do"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/terms/**"
+			access="permitAll" />
+
+		<!-- Administrator -->
+		<security:intercept-url pattern="/administrator/display.do"
+			access="hasRole('ADMIN')" />
+
+		<!-- Announcement -->
+		<security:intercept-url pattern="/announcement/admin/list.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/announcement/admin/delete.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/announcement/user/list.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/announcement/user/create.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/announcement/user/edit.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/announcement/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/announcement/display.do"
+			access="permitAll" />
+
+		<!-- Category -->
+		<security:intercept-url pattern="/category/admin/create.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/admin/edit.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/list.do"
+			access="permitAll" />
+
+		<!-- Comment -->
+		<security:intercept-url pattern="/comment/admin/list.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/comment/admin/delete.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/comment/user/edit.do"
+			access="hasAnyRole('USER')" />
+		<security:intercept-url pattern="/comment/user/editReplies.do"
+			access="hasAnyRole('USER')" />
+		<security:intercept-url pattern="/comment/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/comment/listReplies.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/comment/display.do"
+			access="permitAll" />
 
 		<!-- Manager -->
-		<security:intercept-url pattern="/manager/manager/**" access="hasRole('MANAGER')" />
-		<security:intercept-url pattern="/manager/**" access="permitAll" />
+		<security:intercept-url pattern="/manager/manager/edit.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/manager/register.do"
+			access="isAnonymous()" />
 
 		<!-- Rendezvous -->
-		<security:intercept-url pattern="/rendezvous/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/rendezvous/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/rendezvous/**" access="permitAll" />
+		<security:intercept-url pattern="/rendezvous/admin/list.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/rendezvous/admin/delete.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/rendezvous/user/list-organised.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/list-rspv.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/list-link.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/create.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/edit.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/assign.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/unassign"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/rspv.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/user/unrspv.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/rendezvous/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/rendezvous/list-organised.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/rendezvous/list-rspv.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/rendezvous/display.do"
+			access="permitAll" />
+
+		<!-- Request -->
+		<security:intercept-url pattern="/request/user/create.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/request/user/edit.do"
+			access="hasRole('USER')" />
 
 		<!-- Service -->
-		<security:intercept-url pattern="/service/manager/**" access="hasRole('MANAGER')" />
-		<security:intercept-url pattern="/service/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/service/**" access="isAuthenticated()" />
-		
-		<!-- Request -->
-		<security:intercept-url pattern="/request/**" access="hasRole('USER')" />
-	
-		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
+		<security:intercept-url pattern="/service/manager/list.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/service/manager/create.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/service/manager/edit.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/service/manager/delete.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/service/admin/cancel.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/service/list.do"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/service/display.do"
+			access="isAuthenticated()" />
 
-		<security:form-login 
-			login-page="/security/login.do"
-			password-parameter="password" 
-			username-parameter="username"
+		<!-- User -->
+		<security:intercept-url pattern="/user/user/list-followers.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/list-followed.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/follow.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/unfollow.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/edit.do"
+			access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/user/listRendezvousAttends.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/user/register.do"
+			access="isAnonymous()" />
+		<security:intercept-url pattern="/user/display.do"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/**"
+			access="hasRole('NONE')" />
+
+		<security:form-login login-page="/security/login.do"
+			password-parameter="password" username-parameter="username"
 			authentication-failure-url="/security/loginFailure.do" />
 
-		<security:logout 
-			delete-cookies="CREDITCARD"
-			logout-success-url="/" 
-			invalidate-session="true" />
+		<security:logout delete-cookies="CREDITCARD"
+			logout-success-url="/" invalidate-session="true" />
 	</security:http>
 
 </beans>

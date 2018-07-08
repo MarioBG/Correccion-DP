@@ -91,6 +91,7 @@ public class RendezvousService {
 	public Rendezvous findOne(final int rendezvousId) {
 
 		final Rendezvous result = this.rendezvousRepository.findOne(rendezvousId);
+		Assert.notNull(result);
 		return result;
 	}
 
@@ -106,9 +107,7 @@ public class RendezvousService {
 		Assert.notNull(rendezvous);
 		Assert.notNull(rendezvous.getName());
 		Assert.notNull(rendezvous.getDescription());
-		Assert.notNull(rendezvous.getMoment());
-		final Date actualDate = new Date();
-		Assert.isTrue(rendezvous.getMoment().after(actualDate));
+		Assert.isTrue(this.isFuture(rendezvous.getMoment()));
 		this.checkPrincipal(rendezvous);
 
 		final Rendezvous result;
@@ -130,25 +129,38 @@ public class RendezvousService {
 		Assert.isTrue(rendezvous.getId() != 0);
 		Assert.isTrue(this.adminService.findByPrincipal() != null);
 
+		final Collection<User> attendants = new ArrayList<User>(rendezvous.getAttendants());
+		final Collection<Announcement> announcements = new ArrayList<Announcement>(rendezvous.getAnnouncements());
+		final Collection<Rendezvous> linkedRendezvouses = new ArrayList<Rendezvous>(rendezvous.getLinkedRendezvouses());
+		final Collection<Rendezvous> parentRendezvouses = new ArrayList<Rendezvous>(this.findParentRendezvouses(rendezvous.getId()));
+
 		rendezvous.getOrganiser().getOrganisedRendezvouses().remove(rendezvous);
-		for (final User attendant : rendezvous.getAttendants())
+		for (final User attendant : attendants)
 			attendant.getRsvpdRendezvouses().remove(rendezvous);
-		for (final Announcement announcement : rendezvous.getAnnouncements())
+		for (final Announcement announcement : announcements)
 			this.announcementService.delete(announcement);
 		if (rendezvous.getComments().size() > 0)
 			this.commentService.deleteAll(rendezvous.getComments());
 		//		for (final Question question : rendezvous.getQuestions())
 		//			this.questionService.delete(question);
-		for (final Rendezvous linkedRendezvous : rendezvous.getLinkedRendezvouses())
+		for (final Rendezvous linkedRendezvous : linkedRendezvouses)
 			rendezvous.getLinkedRendezvouses().remove(linkedRendezvous);
-		for (final Rendezvous parentRendezvous : this.findParentRendezvouses(rendezvous.getId()))
+		for (final Rendezvous parentRendezvous : parentRendezvouses)
 			parentRendezvous.getLinkedRendezvouses().remove(rendezvous);
 
 		this.rendezvousRepository.delete(rendezvous);
 	}
-	
-
 	// Other business methods -------------------------------------------------
+
+	public boolean isFuture(final Date date) {
+
+		boolean result = false;
+		final Date actualDate = new Date();
+		if (actualDate.before(date))
+			result = true;
+
+		return result;
+	}
 
 	public RendezvousForm construct(final Rendezvous rendezvous) {
 
@@ -291,6 +303,19 @@ public class RendezvousService {
 		return result;
 	}
 
+	public Collection<Rendezvous> findByOrganiserIdFinal(final int organiserId) {
+
+		final Collection<Rendezvous> result = this.rendezvousRepository.findByOrganiserIdFinal(organiserId);
+		return result;
+	}
+
+	public Collection<Rendezvous> findOrganisedRendezvousesByPrincipalFinal() {
+
+		final User organiser = this.userService.findByPrincipal();
+		final Collection<Rendezvous> result = this.findByOrganiserIdFinal(organiser.getId());
+		return result;
+	}
+
 	public Collection<Rendezvous> findRspvdRendezvousesByPrincipal() {
 
 		final User attendant = this.userService.findByPrincipal();
@@ -303,16 +328,16 @@ public class RendezvousService {
 		final Collection<Rendezvous> result = this.rendezvousRepository.findParentRendezvouses(rendezvousId);
 		return result;
 	}
-	
-	public Collection<Rendezvous> rendezvousGroupedByCategory(int categoryId){
+
+	public Collection<Rendezvous> rendezvousGroupedByCategory(final int categoryId) {
 		final Collection<Rendezvous> result = this.rendezvousRepository.rendezvousGroupedByCategory(categoryId);
 		return result;
 	}
-	
+
 	public void flush() {
 		this.rendezvousRepository.flush();
 	}
-	
+
 	public void YesRSVP(final int rendezvousId) {
 		User usuario;
 		Rendezvous rendezvous;
@@ -338,7 +363,7 @@ public class RendezvousService {
 		this.rendezvousRepository.save(rendezvous);
 
 	}
-	
+
 	public int Age(final Date birthDay) {
 		Calendar today, fechan;
 		today = Calendar.getInstance();
@@ -354,23 +379,21 @@ public class RendezvousService {
 		return diffYear;
 
 	}
-	
-	public Rendezvous FakeDelete(Rendezvous rendezvous){
+
+	public Rendezvous FakeDelete(final Rendezvous rendezvous) {
 		User user;
 		Rendezvous res;
-		
+
 		Assert.notNull(rendezvous);
-		
-		user= this.userService.findByPrincipal();
+
+		user = this.userService.findByPrincipal();
 		Assert.isTrue(user.getOrganisedRendezvouses().contains(rendezvous));
-		boolean x= true;
-		Assert.isTrue(rendezvous.getFinalVersion()==true);
+		final boolean x = true;
+		Assert.isTrue(rendezvous.getFinalVersion() == true);
 		rendezvous.setDeleted(x);
-		res= this.rendezvousRepository.save(rendezvous);
-		
+		res = this.rendezvousRepository.save(rendezvous);
+
 		return res;
 	}
-	
-	
 
 }

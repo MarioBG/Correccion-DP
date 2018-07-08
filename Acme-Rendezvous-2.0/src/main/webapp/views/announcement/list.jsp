@@ -11,7 +11,7 @@
 
 
 <display:table pagesize="5" class="displaytag" keepStatus="true"
-	name="announcement" requestURI="${requestURI }" id="row" defaultsort="3" defaultorder="descending">	
+	name="announcements" requestURI="${requestURI }" id="row" defaultsort="3" defaultorder="descending">	
 	
 	
 	<display:column>
@@ -29,6 +29,14 @@
 	<display:column title="${rendezvousHeader}">
 		<a href="rendezvous/display.do?rendezvousId=${row.rendezvous.id}"><jstl:out value="${row.rendezvous.name}"/></a>
 	</display:column>
-	
 
 </display:table>
+
+<jstl:choose>
+	<jstl:when test="${requestURI == 'announcement/list.do' }">
+		<acme:cancel url="rendezvous/display.do?rendezvousId=${rendenzvous.id}" code="announcement.back"/>
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:cancel url="welcome/index.do" code="announcement.back"/>
+	</jstl:otherwise>
+</jstl:choose>

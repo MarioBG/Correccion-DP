@@ -2,6 +2,7 @@
 package controllers.admin;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,9 +42,11 @@ public class RendezvousAdminController extends AbstractController {
 
 		Assert.notNull(this.adminService.findByPrincipal());
 
+		final Date date = new Date();
 		final Collection<Rendezvous> rendezvouses = this.rendezvousService.findAll();
 
 		final ModelAndView result = new ModelAndView("rendezvous/list");
+		result.addObject("date", date);
 		result.addObject("rendezvouses", rendezvouses);
 		result.addObject("rendezvousSource", null);
 		result.addObject("requestURI", "rendezvous/admin/list.do");
