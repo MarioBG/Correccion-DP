@@ -17,7 +17,6 @@
 	modelAttribute="subscriptionVolumeForm">
 
 	<form:hidden path="id" />
-	<form:hidden path="customerId" />
 	<form:hidden path="volumeId" />
 
 	<b><label><spring:message code="subscriptionVolume.volume" />:&nbsp;</label></b>

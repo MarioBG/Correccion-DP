@@ -15,7 +15,6 @@
 
 	<form:hidden path="id"/>
 	<form:hidden path="articleId"/>
-	<form:hidden path="publicationMoment"/>
 	
 	<acme:textbox code="followUp.title" path="title"/>
 	<br/>

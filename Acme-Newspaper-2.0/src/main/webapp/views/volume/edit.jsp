@@ -14,7 +14,6 @@
 <form:form action="volume/user/edit.do" modelAttribute="volumeForm">
 
 	<form:hidden path="id"/>
-	<form:hidden path="userId"/>
 	
 	<acme:textbox code="volume.title" path="title"/>
 	<br/>
