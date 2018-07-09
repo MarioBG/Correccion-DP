@@ -34,15 +34,11 @@
 		</legend>
 		<br />
 
-		<acme:textbox code="advertisement.title" path="holder" />
+		<acme:textbox code="creditCard.holderName" path="holder" />
 		<br />
 
 
-		<acme:textbox code="creditCard.holderName" path="title" />
-		<br />
-
-
-		<acme:textbox code="creditCard.brand" path="brand" />
+		<acme:textbox code="creditCard.brandName" path="brand" />
 		<br />
 
 
