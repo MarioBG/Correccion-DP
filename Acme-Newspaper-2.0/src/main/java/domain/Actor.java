@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.util.Collection;
@@ -12,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -33,13 +33,15 @@ public abstract class Actor extends DomainEntity {
 		super();
 	}
 
+
 	// Attributes
 
-	private String name;
-	private String surname;
-	private String email;
-	private String phone;
-	private String address;
+	private String	name;
+	private String	surname;
+	private String	email;
+	private String	phone;
+	private String	address;
+
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
@@ -71,7 +73,6 @@ public abstract class Actor extends DomainEntity {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "^\\+?\\d+$")
 	public String getPhone() {
 		return this.phone;
 	}
@@ -89,10 +90,12 @@ public abstract class Actor extends DomainEntity {
 		this.address = address;
 	}
 
+
 	// Relationships
 
-	private UserAccount userAccount;
-	private Collection<Folder> folders;
+	private UserAccount			userAccount;
+	private Collection<Folder>	folders;
+
 
 	@Valid
 	@NotNull
@@ -109,7 +112,7 @@ public abstract class Actor extends DomainEntity {
 	@NotEmpty
 	@OneToMany
 	public Collection<Folder> getFolders() {
-		return folders;
+		return this.folders;
 	}
 
 	public void setFolders(Collection<Folder> folders) {
