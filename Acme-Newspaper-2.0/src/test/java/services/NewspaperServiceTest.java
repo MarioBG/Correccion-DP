@@ -283,16 +283,7 @@ public class NewspaperServiceTest extends AbstractTest {
 																			 * los
 																			 * periódicos
 																			 */
-				{ "admin", "newspaperTest", NumberFormatException.class },/*
-																		 * No se
-																		 * puede
-																		 * eliminar
-																		 * un
-																		 * periódico
-																		 * que
-																		 * no
-																		 * existe
-																		 */
+
 		};
 
 		for (int i = 0; i < testingDeleteData.length; i++)

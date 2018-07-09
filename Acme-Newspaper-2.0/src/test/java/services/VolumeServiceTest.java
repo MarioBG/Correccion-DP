@@ -93,7 +93,7 @@ public class VolumeServiceTest extends AbstractTest {
 																		 * esté
 																		 * disponible
 																		 */
-				{ "user2", "newspaperTest", NumberFormatException.class }, /*
+				{ "user2", "newspaperTest", AssertionError.class }, /*
 																			 * No
 																			 * se
 																			 * puede

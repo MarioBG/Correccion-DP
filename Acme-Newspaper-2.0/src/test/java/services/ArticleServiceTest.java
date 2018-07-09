@@ -74,7 +74,7 @@ public class ArticleServiceTest extends AbstractTest {
 																				 * periódico
 																				 * pasado
 																				 */
-				{ "user2", "newspaperTest", false, NumberFormatException.class }, /*
+				{ "user2", "newspaperTest", false, AssertionError.class }, /*
 																				 * No
 																				 * se
 																				 * puede
@@ -218,7 +218,7 @@ public class ArticleServiceTest extends AbstractTest {
 																		 * los
 																		 * artículos
 																		 */
-				{ "admin", "articleTest", NumberFormatException.class },/*
+				{ "admin", "articleTest", AssertionError.class },/*
 																		 * No se
 																		 * puede
 																		 * eliminar

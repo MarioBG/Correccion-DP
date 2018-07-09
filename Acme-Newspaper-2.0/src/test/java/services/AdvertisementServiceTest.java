@@ -47,7 +47,7 @@ public class AdvertisementServiceTest extends AbstractTest {
 																		 * un
 																		 * anuncio
 																		 */
-				{ "agent2", "newspaperTest", NumberFormatException.class }, /*
+				{ "agent2", "newspaperTest", AssertionError.class }, /*
 																			 * No
 																			 * se
 																			 * puede
@@ -180,7 +180,7 @@ public class AdvertisementServiceTest extends AbstractTest {
 																				 * los
 																				 * periódicos
 																				 */
-				{ "admin", "newspaperTest", NumberFormatException.class },/*
+				{ "admin", "newspaperTest", AssertionError.class },/*
 																		 * No se
 																		 * puede
 																		 * eliminar

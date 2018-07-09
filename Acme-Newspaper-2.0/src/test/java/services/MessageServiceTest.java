@@ -56,7 +56,7 @@ public class MessageServiceTest extends AbstractTest {
 						Priority.NEUTRAL, "folder45", null },
 				// Casos negativos
 				{ "user1", null, "Subject test", "Body test", Priority.HIGH,
-						"folder10", NullPointerException.class }, /*
+						"folder10", AssertionError.class }, /*
 																 * Se debe de
 																 * seleccionar
 																 * un
