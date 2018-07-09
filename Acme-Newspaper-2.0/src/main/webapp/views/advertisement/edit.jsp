@@ -10,98 +10,57 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="advertisement/agent/edit.do"
 	modelAttribute="advertisementForm">
 
 	<form:hidden path="id" />
-	<form:hidden path="newspaperId"/>
+	<form:hidden path="newspaperId" />
 
-	<form:label path="title">
-		<spring:message code="advertisement.title" />:
-	</form:label>
-	<form:input path="title" />
-	<form:errors cssClass="error" path="title" />
+	<acme:textbox code="advertisement.title" path="title" />
 	<br />
 
-	<form:label path="banner">
-		<spring:message code="advertisement.bannerURL" />:
-	</form:label>
-	<form:input path="banner" />
-	<form:errors cssClass="error" path="banner" />
+	<acme:textbox code="advertisement.bannerURL" path="banner" />
+	<br />
+
+	<acme:textbox code="advertisement.infoPageLink" path="page" />
 	<br />
 
 
-	<form:label path="page">
-		<spring:message code="advertisement.infoPageLink" />:
-	</form:label>
-	<form:input path="page" />
-	<form:errors cssClass="error" path="page" />
-	<br />
-
-	<%-- <form:label path="creditCard">
-		<spring:message code="advertisement.creditCard"/>:
-	</form:label>
-	<form:select path="creditCard">
-		<form:option value="0">----</form:option>
-		<form:options
-			items="${creditCards}"
-			itemLabel="number"
-			itemValue="id"
-		/>
-	</form:select>
-	<form:errors cssClass="error" path="creditCard"/>
-	Si la lista de tarjetas esta vacia, debemos crear una nueva
-	<jstl:if test="${empty creditCards}">
-		<a href="creditCard/manager/create.do"><spring:message code="advertisement.create"/></a>
-	</jstl:if> --%>
 	<fieldset>
 		<legend>
 			<spring:message code="advertisement.introduceCreditCard" />
 		</legend>
 		<br />
 
-		<form:label path="holder">
-			<spring:message code="creditCard.holderName" />:
-	</form:label>
-		<form:input path="holder" />
-		<form:errors cssClass="error" path="holder" />
+		<acme:textbox code="advertisement.title" path="holder" />
 		<br />
 
-		<form:label path="brand">
-			<spring:message code="creditCard.brandName" />:
-	</form:label>
-		<form:input path="brand" />
-		<form:errors cssClass="error" path="brand" />
+
+		<acme:textbox code="creditCard.holderName" path="title" />
 		<br />
 
-		<form:label path="number">
-			<spring:message code="creditCard.number" />:
-	</form:label>
-		<form:input path="number" />
-		<form:errors cssClass="error" path="number" />
+
+		<acme:textbox code="creditCard.brand" path="brand" />
 		<br />
 
-		<form:label path="expirationMonth">
-			<spring:message code="creditCard.expirationMonth" />:
-	</form:label>
-		<form:input path="expirationMonth" />
-		<form:errors cssClass="error" path="expirationMonth" />
+
+		<acme:textbox code="creditCard.number" path="number" />
 		<br />
 
-		<form:label path="expirationYear">
-			<spring:message code="creditCard.expirationYear" />:
-	</form:label>
-		<form:input path="expirationYear" />
-		<form:errors cssClass="error" path="expirationYear" />
+
+		<acme:textbox code="creditCard.expirationMonth" path="expirationMonth" />
 		<br />
 
-		<form:label path="cvv">
-			<spring:message code="creditCard.CVV" />:
-	</form:label>
-		<form:input path="cvv" />
-		<form:errors cssClass="error" path="cvv" />
+
+		<acme:textbox code="creditCard.expirationYear" path="expirationYear" />
 		<br />
+
+		<acme:textbox code="creditCard.CVV" path="cvv" />
+		<br />
+
+
 	</fieldset>
 
 	<br />
