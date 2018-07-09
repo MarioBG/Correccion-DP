@@ -111,6 +111,8 @@ public class RendezvousUserController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int rendezvousId) {
 
+		Assert.isTrue(!this.rendezvousService.findOne(rendezvousId).getFinalVersion());
+
 		final Rendezvous rendezvous = this.rendezvousService.findOneToEdit(rendezvousId);
 		final RendezvousForm rendezvousForm = this.rendezvousService.construct(rendezvous);
 
@@ -122,6 +124,7 @@ public class RendezvousUserController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final RendezvousForm rendezvousForm, final BindingResult binding) {
 
+		Assert.isTrue(!this.rendezvousService.findOne(rendezvousForm.getId()).getFinalVersion());
 		ModelAndView result;
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(rendezvousForm);

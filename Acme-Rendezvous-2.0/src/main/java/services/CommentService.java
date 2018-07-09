@@ -51,7 +51,8 @@ public class CommentService {
 	public Comment create(final int rendezvousId, final Integer commentId) {
 
 		Assert.isTrue(rendezvousId != 0);
-		Assert.isTrue(commentId != 0);
+		if (commentId != null)
+			Assert.isTrue(commentId != 0);
 
 		this.userService.checkAuthority();
 		final Comment res = new Comment();
@@ -124,8 +125,10 @@ public class CommentService {
 	public void deleteAll(final Collection<Comment> comments) {
 		//Assert.notNull(comments);
 		this.adminService.checkAuthority();
-		for (final Comment c : comments)
+		for (final Comment c : comments) {
+			this.deleteAll(c.getReplies());
 			this.commentRepository.delete(c);
+		}
 	}
 
 	public Collection<Comment> commentsOfThisRendezvouseWithCommentNull(final int rendezvouseId) {

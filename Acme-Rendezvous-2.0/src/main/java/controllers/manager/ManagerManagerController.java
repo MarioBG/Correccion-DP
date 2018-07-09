@@ -1,3 +1,4 @@
+
 package controllers.manager;
 
 import javax.validation.Valid;
@@ -22,7 +23,8 @@ public class ManagerManagerController extends AbstractController {
 	// Services ---------------
 
 	@Autowired
-	private ManagerService managerService;
+	private ManagerService	managerService;
+
 
 	// Constructors -----------
 
@@ -35,36 +37,35 @@ public class ManagerManagerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit() {
 
-		Assert.isTrue(managerService.checkAuthority());
+		Assert.isTrue(this.managerService.checkAuthority());
 
-		Manager manager = managerService.findByPrincipal();
-		ManagerForm managerForm = managerService.construct(manager);
+		Manager manager = this.managerService.findByPrincipal();
+		ManagerForm managerForm = this.managerService.construct(manager);
 
-		ModelAndView result = createEditModelAndView(managerForm);
+		ModelAndView result = this.createEditModelAndView(managerForm);
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid ManagerForm managerForm,
-			BindingResult binding) {
+	public ModelAndView save(@Valid ManagerForm managerForm, BindingResult binding) {
 
-		Assert.isTrue(managerService.checkAuthority());
+		Assert.isTrue(this.managerService.checkAuthority());
 
 		ModelAndView result;
-		Manager manager = managerService.reconstruct(managerForm, binding);
+		Manager manager = this.managerService.reconstruct(managerForm, binding);
 
 		if (binding.hasErrors()) {
-			result = createEditModelAndView(managerForm, "manager.params.error");
-		}else{
-			try{
-				managerService.save(manager);
+			result = this.createEditModelAndView(managerForm, "manager.params.error");
+		} else {
+			try {
+				this.managerService.save(manager);
 				result = new ModelAndView("redirect:/welcome/index.do");
-			}catch(Throwable oops){
-				result = createEditModelAndView(managerForm, "manager.commit.error");
+			} catch (Throwable oops) {
+				result = this.createEditModelAndView(managerForm, "manager.commit.error");
 			}
 		}
-		
+
 		return result;
 
 	}
@@ -80,15 +81,14 @@ public class ManagerManagerController extends AbstractController {
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			final ManagerForm managerForm, final String message) {
-		
+	protected ModelAndView createEditModelAndView(final ManagerForm managerForm, final String message) {
+
 		ModelAndView res;
 
 		res = new ModelAndView("manager/edit");
 		res.addObject("managerForm", managerForm);
 		res.addObject("message", message);
-		res.addObject("actionURI", "manager/manager/edit.do");
+		res.addObject("actionURI", "management/manager/edit.do");
 
 		return res;
 	}

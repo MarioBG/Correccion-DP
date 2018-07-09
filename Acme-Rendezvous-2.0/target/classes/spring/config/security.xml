@@ -92,9 +92,9 @@
 			access="permitAll" />
 
 		<!-- Manager -->
-		<security:intercept-url pattern="/manager/manager/edit.do"
+		<security:intercept-url pattern="/management/manager/edit.do"
 			access="hasRole('MANAGER')" />
-		<security:intercept-url pattern="/manager/register.do"
+		<security:intercept-url pattern="/management/register.do"
 			access="isAnonymous()" />
 
 		<!-- Rendezvous -->

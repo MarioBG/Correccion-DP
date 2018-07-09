@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -14,29 +15,30 @@ import domain.Manager;
 import forms.ManagerForm;
 
 @Controller
-@RequestMapping("/manager")
-public class ManagerController extends AbstractController{
+@RequestMapping("/management")
+public class ManagerController extends AbstractController {
 
 	// Services -----------------------
 	@Autowired
-	private ManagerService managerService;
-	
+	private ManagerService	managerService;
+
+
 	// Constructors --------------------
-	public ManagerController(){
+	public ManagerController() {
 		super();
 	}
-	
+
 	// Register ------------------------
-	@RequestMapping(value="/register", method = RequestMethod.GET)
-	public ModelAndView create(){
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public ModelAndView create() {
 		ModelAndView res;
-		
+
 		ManagerForm managerForm = new ManagerForm();
 		res = this.createEditModelAndView(managerForm);
-		
+
 		return res;
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final ManagerForm managerForm, final BindingResult binding) {
 		ModelAndView res;
@@ -50,7 +52,7 @@ public class ManagerController extends AbstractController{
 			res = this.createEditModelAndView(managerForm, "manager.params.errorTerms");
 		} else
 			try {
-				manager = managerService.reconstruct(managerForm, binding);
+				manager = this.managerService.reconstruct(managerForm, binding);
 				this.managerService.save(manager);
 				res = new ModelAndView("redirect:../");
 			} catch (final Throwable oops) {
@@ -62,27 +64,23 @@ public class ManagerController extends AbstractController{
 		return res;
 	}
 
-	
-	
 	protected ModelAndView createEditModelAndView(final ManagerForm managerForm) {
 		ModelAndView res;
-		
-		res = this.createEditModelAndView(managerForm,null);
-		
+
+		res = this.createEditModelAndView(managerForm, null);
+
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(final ManagerForm managerForm,
-			final String message) {
+	protected ModelAndView createEditModelAndView(final ManagerForm managerForm, final String message) {
 		ModelAndView res;
-		
+
 		res = new ModelAndView("manager/register");
-		res.addObject("managerForm",managerForm);
-		res.addObject("message",message);
+		res.addObject("managerForm", managerForm);
+		res.addObject("message", message);
 		res.addObject("actionURI", "manager/register.do");
-		
+
 		return res;
 	}
-	
-	
+
 }

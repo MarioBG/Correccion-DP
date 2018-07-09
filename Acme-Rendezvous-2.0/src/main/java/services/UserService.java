@@ -34,6 +34,9 @@ public class UserService {
 	@Autowired
 	private Validator		validator;
 
+	@Autowired
+	private AdminService	adminService;
+
 
 	// Constructors
 
@@ -89,10 +92,10 @@ public class UserService {
 
 			user.getUserAccount().setPassword(pass);
 		}
+
 		res = this.userRepository.save(user);
 		return res;
 	}
-
 	// public void delete(User user) {
 	// Assert.notNull(user);
 	// Assert.isTrue(user.getId() != 0);
@@ -122,7 +125,7 @@ public class UserService {
 		Assert.notNull(authority);
 		final Authority res = new Authority();
 		res.setAuthority("USER");
-		if(authority.contains(res)){
+		if (authority.contains(res)) {
 			result = true;
 		}
 		return result;
@@ -153,16 +156,16 @@ public class UserService {
 	}
 
 	public User reconstruct(final UserForm userForm, final BindingResult binding) {
-		
+
 		Assert.notNull(userForm);
-		
+
 		User res = new User();
 
 		if (userForm.getId() != 0)
 			res = this.findOne(userForm.getId());
 		else
 			res = this.create();
-		
+
 		res.setName(userForm.getName());
 		res.setSurname(userForm.getSurname());
 		res.setEmail(userForm.getEmail());
@@ -178,10 +181,10 @@ public class UserService {
 	}
 
 	public UserForm construct(User user) {
-			
+
 		Assert.notNull(user);
 		UserForm editUserForm = new UserForm();
-		
+
 		editUserForm.setId(user.getId());
 		editUserForm.setName(user.getName());
 		editUserForm.setSurname(user.getSurname());
@@ -193,7 +196,7 @@ public class UserService {
 		editUserForm.setPassword(user.getUserAccount().getPassword());
 		editUserForm.setRepeatPassword(user.getUserAccount().getPassword());
 		editUserForm.setTermsAndConditions(true);
-		
+
 		return editUserForm;
 	}
 

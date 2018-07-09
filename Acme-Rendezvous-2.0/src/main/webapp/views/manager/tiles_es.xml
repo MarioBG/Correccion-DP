@@ -16,12 +16,12 @@
       
 <tiles-definitions>
 
-	<definition name="manager/register" extends="master.page">	
+	<definition name="management/register" extends="master.page">	
 		<put-attribute name="title" value="Registrarse como un gestor" />
 		<put-attribute name="body" value="/views/manager/register.jsp" />
 	</definition>
 	
-	<definition name="manager/edit" extends="master.page">	
+	<definition name="management/edit" extends="master.page">	
 		<put-attribute name="title" value="Editar perfil" />
 		<put-attribute name="body" value="/views/manager/register.jsp" />
 	</definition>
