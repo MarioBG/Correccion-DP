@@ -7,36 +7,37 @@
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<form:form action="advertisement/agent/edit.do" modelAttribute="advertisementForm">
+<form:form action="advertisement/agent/edit.do"
+	modelAttribute="advertisementForm">
 
 	<form:hidden path="id" />
-	<form:hidden path="agentId" />
-	<form:hidden path="newspaperId" />
-	
+	<form:hidden path="newspaperId"/>
+
 	<form:label path="title">
 		<spring:message code="advertisement.title" />:
 	</form:label>
 	<form:input path="title" />
 	<form:errors cssClass="error" path="title" />
-	<br/>
+	<br />
 
 	<form:label path="banner">
 		<spring:message code="advertisement.bannerURL" />:
 	</form:label>
 	<form:input path="banner" />
 	<form:errors cssClass="error" path="banner" />
-	<br/>
-	
-	
+	<br />
+
+
 	<form:label path="page">
 		<spring:message code="advertisement.infoPageLink" />:
 	</form:label>
 	<form:input path="page" />
 	<form:errors cssClass="error" path="page" />
-	<br/>
+	<br />
 
 	<%-- <form:label path="creditCard">
 		<spring:message code="advertisement.creditCard"/>:
@@ -55,61 +56,64 @@
 		<a href="creditCard/manager/create.do"><spring:message code="advertisement.create"/></a>
 	</jstl:if> --%>
 	<fieldset>
-	<legend><spring:message code="advertisement.introduceCreditCard"/></legend><br/>
-	
-	<form:label path="holder">
-		<spring:message code="creditCard.holderName" />:
-	</form:label>
-	<form:input path="holder" />
-	<form:errors cssClass="error" path="holder" />
-	<br/>
-	
-	<form:label path="brand">
-		<spring:message code="creditCard.brandName" />:
-	</form:label>
-	<form:input path="brand" />
-	<form:errors cssClass="error" path="brand" />
-	<br/>
+		<legend>
+			<spring:message code="advertisement.introduceCreditCard" />
+		</legend>
+		<br />
 
-	<form:label path="number">
-		<spring:message code="creditCard.number"/>:
+		<form:label path="holder">
+			<spring:message code="creditCard.holderName" />:
 	</form:label>
-	<form:input path="number" />
-	<form:errors cssClass="error" path="number"/>
-	<br/>
+		<form:input path="holder" />
+		<form:errors cssClass="error" path="holder" />
+		<br />
 
-	<form:label path="expirationMonth">
-		<spring:message code="creditCard.expirationMonth" />:
+		<form:label path="brand">
+			<spring:message code="creditCard.brandName" />:
 	</form:label>
-	<form:input path="expirationMonth" />
-	<form:errors cssClass="error" path="expirationMonth" />
-	<br/>
+		<form:input path="brand" />
+		<form:errors cssClass="error" path="brand" />
+		<br />
 
-	<form:label path="expirationYear">
-		<spring:message code="creditCard.expirationYear" />:
+		<form:label path="number">
+			<spring:message code="creditCard.number" />:
 	</form:label>
-	<form:input path="expirationYear" />
-	<form:errors cssClass="error" path="expirationYear" />
-	<br/>
+		<form:input path="number" />
+		<form:errors cssClass="error" path="number" />
+		<br />
 
-	<form:label path="cvv">
-		<spring:message code="creditCard.CVV" />:
+		<form:label path="expirationMonth">
+			<spring:message code="creditCard.expirationMonth" />:
 	</form:label>
-	<form:input path="cvv" />
-	<form:errors cssClass="error" path="cvv" />
-	<br/>
+		<form:input path="expirationMonth" />
+		<form:errors cssClass="error" path="expirationMonth" />
+		<br />
+
+		<form:label path="expirationYear">
+			<spring:message code="creditCard.expirationYear" />:
+	</form:label>
+		<form:input path="expirationYear" />
+		<form:errors cssClass="error" path="expirationYear" />
+		<br />
+
+		<form:label path="cvv">
+			<spring:message code="creditCard.CVV" />:
+	</form:label>
+		<form:input path="cvv" />
+		<form:errors cssClass="error" path="cvv" />
+		<br />
 	</fieldset>
 
-	<br/>
-	
+	<br />
+
 	<input type="submit" name="save"
 		value="<spring:message code="advertisement.save" />" />&nbsp; 
 
 	<%-- SOLO SE PUEDE ELIMINAR SI ESTAMOS EDITANDO, NO SI ESTAMOS CREANDO --%>
-	<jstl:if test="${advertisement.id != 0}">
-	<input type="submit" name="delete"
-		value="<spring:message code="advertisement.delete" />"
-		onclick="return confirm('<spring:message code="advertisement.confirm.delete" />')" />&nbsp; 
+	<jstl:if test="${advertisementForm.id != 0}">
+		<input type="submit" name="delete"
+			value="<spring:message code="advertisement.delete" />"
+			onclick="return confirm('<spring:message code="advertisement.confirm.delete" />')" />&nbsp; 
 	</jstl:if>
 
 	<input type="button" name="cancel"

@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
-import repositories.ChirpRepository;
 import domain.Chirp;
 import domain.Configuration;
 import domain.User;
+import repositories.ChirpRepository;
 
 @Service
 @Transactional
@@ -23,19 +25,21 @@ public class ChirpService {
 	// Managed repository
 
 	@Autowired
-	private ChirpRepository	chirpRepository;
+	private ChirpRepository chirpRepository;
 
 	// Supporting services
 
 	@Autowired
-	private UserService		userService;
-	
+	private UserService userService;
+
 	@Autowired
 	private ConfigurationService configurationService;
 
 	@Autowired
 	private AdminService adminService;
 
+	@Autowired
+	private Validator validator;
 	// Constructors
 
 	public ChirpService() {
@@ -45,15 +49,13 @@ public class ChirpService {
 	// Simple CRUD methods
 
 	public Chirp create() {
-		
-		Assert.notNull(userService.findByPrincipal());
-		
-		final Chirp res = new Chirp();
 
-		final Date publicationMoment;
-		final User user;
+		Chirp res = new Chirp();
 
-		user = this.userService.findByPrincipal();
+		Date publicationMoment;
+		User user = userService.findByPrincipal();
+		Assert.notNull(user);
+
 		publicationMoment = new Date(System.currentTimeMillis() - 1);
 
 		res.setPublicationMoment(publicationMoment);
@@ -99,6 +101,7 @@ public class ChirpService {
 	}
 
 	public void delete(final Chirp chirp) {
+		Assert.isTrue(this.adminService.checkAuthority());
 		final User u = chirp.getUser();
 		final Collection<Chirp> chirps = u.getChirps();
 		chirps.remove(chirp);
@@ -116,29 +119,67 @@ public class ChirpService {
 	public Collection<Chirp> findChirpsByUser(final User u) {
 		return this.chirpRepository.findChirpsByUserId(u.getId());
 	}
-	
-	public Collection<Chirp> chirpContainTabooWord(){
+
+	public Collection<Chirp> chirpContainTabooWord() {
 		Assert.notNull(adminService.findByPrincipal());
 		Collection<Chirp> res = new ArrayList<>();
 		Configuration configuration;
 		Collection<String> tabooWords = new ArrayList<>();
 		Collection<Chirp> allChirp = new ArrayList<>();
-		
+
 		configuration = this.configurationService.findAll().iterator().next();
 		tabooWords = Arrays.asList(configuration.getTabooWords().split(","));
 		allChirp = this.findAll();
-		
-		for(Chirp chirp: allChirp){
-			for(String tabooWord: tabooWords){
+
+		for (Chirp chirp : allChirp) {
+			for (String tabooWord : tabooWords) {
 				String lowTabooWord = tabooWord.toLowerCase();
-				if(chirp.getTitle().toLowerCase().contains(lowTabooWord.trim()) || chirp.getDescription().toLowerCase().contains(lowTabooWord.trim())){
-					if(!res.contains(chirp)){
+				if (chirp.getTitle().toLowerCase().contains(lowTabooWord.trim())
+						|| chirp.getDescription().toLowerCase().contains(lowTabooWord.trim())) {
+					if (!res.contains(chirp)) {
 						res.add(chirp);
 					}
 				}
 			}
 		}
 		return res;
+	}
+
+	public Chirp construct(final Chirp chirp) {
+
+		Assert.notNull(chirp);
+
+		Chirp chirpForm;
+
+		chirpForm = new Chirp();
+
+		chirpForm.setTitle(chirp.getTitle());
+		chirpForm.setUser(chirp.getUser());
+		chirpForm.setPublicationMoment(new Date(System.currentTimeMillis() - 10));
+		chirpForm.setDescription(chirp.getDescription());
+
+		return chirpForm;
+	}
+
+	public Chirp reconstruct(final Chirp chirpForm, final BindingResult binding) {
+
+		Assert.notNull(chirpForm);
+
+		Chirp chirp;
+
+		if (chirpForm.getId() != 0) {
+			chirp = this.findOne(chirpForm.getId());
+		} else {
+			chirp = this.create();
+		}
+
+		chirp.setDescription(chirpForm.getDescription());
+		chirp.setTitle(chirpForm.getTitle());
+
+		if (binding != null)
+			this.validator.validate(chirp, binding);
+
+		return chirp;
 	}
 
 	public void flush() {

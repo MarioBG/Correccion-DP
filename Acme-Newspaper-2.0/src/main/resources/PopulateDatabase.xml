@@ -128,7 +128,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userAccount11" class="security.UserAccount">
 		<property name="username" value="agent3" />
 		<property name="password"
@@ -483,7 +483,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- Agent 3 -->
 	<bean id="agent3" class="domain.Agent">
 		<property name="name" value="Pepón" />
@@ -513,7 +513,7 @@
 	<bean id="advertisement1" class="domain.Advertisement">
 		<property name="title" value="viagra advertisement 1" />
 		<property name="banner"
-			value="http://www.pngall.com/wp-content/uploads/2016/07/Advertising-Free-Download-PNG.png" />
+			value="https://i.signazon.com/i/splashs6/retail-banners-flash.jpg?v=4" />
 		<property name="page"
 			value="http://www.pngall.com/advertising-png" />
 		<property name="creditCard" ref="creditCard4" />
@@ -525,7 +525,7 @@
 	<bean id="advertisement2" class="domain.Advertisement">
 		<property name="title" value="Title advertisement 2" />
 		<property name="banner"
-			value="http://www.pngall.com/wp-content/uploads/2016/07/Advertising-Free-Download-PNG.png" />
+			value="https://i.signazon.com/i/splashs6/retail-banners-flash.jpg?v=4" />
 		<property name="page"
 			value="http://www.pngall.com/advertising-png" />
 		<property name="creditCard" ref="creditCard5" />
@@ -537,7 +537,7 @@
 	<bean id="advertisement3" class="domain.Advertisement">
 		<property name="title" value="Title advertisement 3" />
 		<property name="banner"
-			value="http://www.pngall.com/wp-content/uploads/2016/07/Advertising-Free-Download-PNG.png" />
+			value="http://eastpointsports.net/images/virtuemart/product/printed-banners.jpg" />
 		<property name="page"
 			value="http://www.pngall.com/advertising-png" />
 		<property name="creditCard" ref="creditCard6" />
@@ -549,7 +549,7 @@
 	<bean id="advertisement4" class="domain.Advertisement">
 		<property name="title" value="Title advertisement 4" />
 		<property name="banner"
-			value="http://www.pngall.com/wp-content/uploads/2016/07/Advertising-Free-Download-PNG.png" />
+			value="http://eastpointsports.net/images/virtuemart/product/printed-banners.jpg" />
 		<property name="page"
 			value="http://www.pngall.com/advertising-png" />
 		<property name="creditCard" ref="creditCard7" />
@@ -561,7 +561,7 @@
 	<bean id="advertisement5" class="domain.Advertisement">
 		<property name="title" value="Title advertisement 5" />
 		<property name="banner"
-			value="http://www.pngall.com/wp-content/uploads/2016/07/Advertising-Free-Download-PNG.png" />
+			value="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBONy1QTr95iNx7VnZtsbPOW5a20uO-LmmgAScXom8fbrKCSIt" />
 		<property name="page"
 			value="http://www.pngall.com/advertising-png" />
 		<property name="creditCard" ref="creditCard8" />
@@ -1397,8 +1397,8 @@
 			</list>
 		</property>
 	</bean>
-	
-		<!-- Agent3 folders -->
+
+	<!-- Agent3 folders -->
 	<bean id="folder46" class="domain.Folder">
 		<property name="name" value="in box" />
 		<property name="predefined" value="true" />
@@ -1448,7 +1448,7 @@
 		</property>
 		<property name="children">
 			<list>
-				<null/>
+				<null />
 			</list>
 		</property>
 	</bean>
@@ -1499,7 +1499,7 @@
 		<property name="priority" value="LOW" />
 		<property name="sender" ref="user1" />
 		<property name="recipient" ref="user2" />
-		<property name="folder" ref="folder7"/>
+		<property name="folder" ref="folder7" />
 	</bean>
 
 	<!-- Message 2 -->
@@ -1511,7 +1511,7 @@
 		<property name="priority" value="LOW" />
 		<property name="sender" ref="user1" />
 		<property name="recipient" ref="user2" />
-		<property name="folder" ref="folder11"/>
+		<property name="folder" ref="folder11" />
 	</bean>
 
 	<!-- Message 3 -->
@@ -1523,7 +1523,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user1" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 4 -->
@@ -1535,7 +1535,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user2" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 5 -->
@@ -1547,7 +1547,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user3" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 6 -->
@@ -1559,7 +1559,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user4" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 7 -->
@@ -1571,7 +1571,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="customer1" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 8 -->
@@ -1583,7 +1583,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="customer2" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 9 -->
@@ -1595,7 +1595,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent1" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 10 -->
@@ -1607,7 +1607,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent2" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
 
 	<!-- Message 11 -->
@@ -1619,7 +1619,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user1" />
-		<property name="folder" ref="folder8"/>
+		<property name="folder" ref="folder8" />
 	</bean>
 
 	<!-- Message 12 -->
@@ -1631,7 +1631,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user2" />
-		<property name="folder" ref="folder13"/>
+		<property name="folder" ref="folder13" />
 	</bean>
 
 	<!-- Message 13 -->
@@ -1643,7 +1643,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user3" />
-		<property name="folder" ref="folder18"/>
+		<property name="folder" ref="folder18" />
 	</bean>
 
 	<!-- Message 14 -->
@@ -1655,7 +1655,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="user4" />
-		<property name="folder" ref="folder23"/>
+		<property name="folder" ref="folder23" />
 	</bean>
 
 	<!-- Message 15 -->
@@ -1667,7 +1667,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="customer1" />
-		<property name="folder" ref="folder28"/>
+		<property name="folder" ref="folder28" />
 	</bean>
 
 	<!-- Message 16 -->
@@ -1679,7 +1679,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="customer2" />
-		<property name="folder" ref="folder33"/>
+		<property name="folder" ref="folder33" />
 	</bean>
 
 	<!-- Message 17 -->
@@ -1691,7 +1691,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent1" />
-		<property name="folder" ref="folder38"/>
+		<property name="folder" ref="folder38" />
 	</bean>
 
 	<!-- Message 18 -->
@@ -1703,9 +1703,9 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent2" />
-		<property name="folder" ref="folder43"/>
+		<property name="folder" ref="folder43" />
 	</bean>
-	
+
 	<!-- Message 19 -->
 	<bean id="message19" class="domain.Message">
 		<property name="moment" value="2018/04/01 12:00" />
@@ -1715,9 +1715,9 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent3" />
-		<property name="folder" ref="folder2"/>
+		<property name="folder" ref="folder2" />
 	</bean>
-	
+
 	<!-- Message 20 -->
 	<bean id="message20" class="domain.Message">
 		<property name="moment" value="2018/04/01 12:00" />
@@ -1727,7 +1727,7 @@
 		<property name="priority" value="HIGH" />
 		<property name="sender" ref="admin" />
 		<property name="recipient" ref="agent3" />
-		<property name="folder" ref="folder48"/>
+		<property name="folder" ref="folder48" />
 	</bean>
 
 	<!-- SubscriptionNewspaper -->
@@ -1953,7 +1953,7 @@
 		</property>
 		<property name="subscriptionsNewspaper">
 			<list>
-				<null/>
+				<null />
 			</list>
 		</property>
 		<property name="advertisements">

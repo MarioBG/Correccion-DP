@@ -48,54 +48,111 @@
 		<security:intercept-url pattern="/admin/display.do" access="hasRole('ADMIN')" />
 		
 		<!-- Article -->
-		<security:intercept-url pattern="/article/admin/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/article/admin/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/article/admin/delete.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/article/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/article/**" access="permitAll" />
+		<security:intercept-url pattern="/article/display.do" access="permitAll" />
 
 		<!-- FollowUp -->
 		<security:intercept-url pattern="/followUp/user/**" access="hasRole('USER')" />
 		
-		<!-- Newspaper -->
-		<security:intercept-url pattern="/newspaper/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/newspaper/agent/**" access="hasRole('AGENT')" />
-		<security:intercept-url pattern="/newspaper/customer/**" access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/newspaper/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/newspaper/**" access="permitAll" />
+		<!-- Newspaper Admin-->
+		<security:intercept-url pattern="/newspaper/admin/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/newspaper/admin/delete.do" access="hasRole('ADMIN')" />
 		
-		<!-- Chirp -->
-		<security:intercept-url pattern="/chirp/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/chirp/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/chirp/**" access="hasAnyRole('USER', 'ADMIN')" />
+		<!-- Newspaper Agent -->
+		<security:intercept-url pattern="/newspaper/agent/listAdvertised.do" access="hasRole('AGENT')" />
+		<security:intercept-url pattern="/newspaper/agent/listNotAdvertised.do" access="hasRole('AGENT')" />
+		
+		<!-- Newspaper Customer -->
+		<security:intercept-url pattern="/newspaper/customer/list.do" access="hasRole('CUSTOMER')" />
+		
+		<!-- Newspaper User -->
+		<security:intercept-url pattern="/newspaper/user/list.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/newspaper/user/list-nonPublished.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/newspaper/user/listAddNewspapers.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/newspaper/user/create.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/newspaper/user/edit.do" access="hasRole('USER')" />
+		
+		<!-- Newspaper All -->
+		<security:intercept-url pattern="/newspaper/list.do" access="permitAll" />
+		<security:intercept-url pattern="/newspaper/display.do" access="permitAll" />
+		
+		<!-- Chirp User-->
+		<security:intercept-url pattern="/chirp/user/list-timeline.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/chirp/user/create.do" access="hasRole('USER')" />
+		
+		<!-- Chirp Admin-->
+		<security:intercept-url pattern="/chirp/admin/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/chirp/admin/delete.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/chirp/admin/edit.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/chirp/list.do" access="hasAnyRole('USER', 'ADMIN')" />
+		
+		<!-- User User-->
+		<security:intercept-url pattern="/user/user/list-followers.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/list-followed.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/follow.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/user/user/unfollow.do" access="hasRole('USER')" />
 		
 		<!-- User -->
-		<security:intercept-url pattern="/user/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/user/**" access="permitAll" />
+		<security:intercept-url pattern="/user/list.do" access="permitAll" />
+		<security:intercept-url pattern="/user/register.do" access="permitAll" />
+		<security:intercept-url pattern="/user/display.do" access="permitAll" />
+		
 		
 		<!-- Agent -->
-		<security:intercept-url pattern="/agent/agent/**" access="hasRole('AGENT')" />
-		<security:intercept-url pattern="/agent/**" access="permitAll" />
+		<security:intercept-url pattern="/agent/register.do" access="permitAll" />
 		
-		<!-- Advertisement -->
-		<security:intercept-url pattern="/advertisement/agent/**" access="hasRole('AGENT')" />
-		<security:intercept-url pattern="/advertisement/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/advertisement/**" access="permitAll" />
+		<!-- Advertisement Agent-->
+		<security:intercept-url pattern="/advertisement/agent/list.do" access="hasRole('AGENT')" />
+		<security:intercept-url pattern="/advertisement/agent/create.do" access="hasRole('AGENT')" />
+		<security:intercept-url pattern="/advertisement/agent/edit.do" access="hasRole('AGENT')" />
+		<security:intercept-url pattern="/advertisement/agent/display.do" access="hasRole('AGENT')" />
+		
+		<!-- Advertisement Admin -->
+		<security:intercept-url pattern="/advertisement/admin/display.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/advertisement/admin/delete.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/advertisement/admin/listTaboo.do" access="hasRole('ADMIN')" />
+		
 		
 		<!-- Configuration -->
-		<security:intercept-url pattern="/configuration/admin/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/configuration/admin/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/configuration/admin/edit.do" access="hasRole('ADMIN')" />
 		
-		<!-- Volume -->
-		<security:intercept-url pattern="/volume/customer/**" access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/volume/user/**" access="hasRole('USER')" />
-		<security:intercept-url pattern="/volume/**" access="permitAll" />
+		<!-- Volume Customer -->
+		<security:intercept-url pattern="/volume/customer/list.do" access="hasRole('CUSTOMER')" />
+		
+		<!-- Volume User -->
+		<security:intercept-url pattern="/volume/user/list.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/volume/user/create.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/volume/user/edit.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/volume/user/addNewspaper.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/volume/user/removeNewspaper.do" access="hasRole('USER')" />
+		
+		
+		<!-- Volume All -->
+		<security:intercept-url pattern="/volume/list.do" access="permitAll" />
 		
 		<!-- SubscriptionVolume -->
-		<security:intercept-url pattern="/subscriptionVolume/customer/**" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/subscriptionVolume/customer/create.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/subscriptionVolume/customer/edit.do" access="hasRole('CUSTOMER')" />
 		
 		<!-- Folders y messages -->
 		
-		<security:intercept-url pattern="/folder/**" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
-		<security:intercept-url pattern="/message/**" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
-		<security:intercept-url pattern="/notification/admin/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/folder/list.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		<security:intercept-url pattern="/folder/create.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		<security:intercept-url pattern="/folder/edit.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+				
+		<security:intercept-url pattern="/message/list.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		<security:intercept-url pattern="/message/create.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		<security:intercept-url pattern="/message/display.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		<security:intercept-url pattern="/message/edit.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
+		
+		
+		<security:intercept-url pattern="/message/admin/create.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/admin/create-notification.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/admin/notification.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/admin/edit.do" access="hasRole('ADMIN')" />
 		
 		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />

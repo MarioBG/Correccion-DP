@@ -57,6 +57,13 @@
 </a>
 <br />
 
+<jstl:if test="${advertisement != null}">
+	<a href="${advertisement.page}"> <img
+		src="<jstl:out value="${advertisement.banner}"/>" width="450"
+		height="174" /></a>
+</jstl:if>
+
+
 <security:authorize access="hasRole('USER')">
 	<security:authentication property="principal" var="loggedactor" />
 	<jstl:if
@@ -66,10 +73,8 @@
 	</jstl:if>
 </security:authorize>
 
-<jstl:if test="${advertisement!=null}">
-	<a href="${advertisement.page}"> <img src="${advertisement.banner}" /></a>
-</jstl:if>
 
+<br />
 <input type="button" value="<spring:message code="newspaper.back"/>"
 	onclick="javascript:window.history.back();" />
 &nbsp;

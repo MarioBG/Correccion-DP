@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ChirpService;
 import services.UserService;
 import controllers.AbstractController;
+import domain.Article;
 import domain.Chirp;
 
 @Controller
@@ -42,9 +43,12 @@ public class ChirpUserController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result;
 		Chirp chirp;
+		Chirp chirpForm;
 
 		chirp = this.chirpService.create();
-		result = this.createEditModelAndView(chirp);
+		chirpForm = this.chirpService.construct(chirp);
+		result = this.createEditModelAndView(chirpForm);
+		
 
 		return result;
 	}
@@ -64,17 +68,19 @@ public class ChirpUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Chirp chirp, final BindingResult binding) {
+	public ModelAndView save(Chirp chirpF, final BindingResult binding) {
 		ModelAndView res;
 
 		if (binding.hasErrors())
-			res = this.createEditModelAndView(chirp, "user.params.error");
+			res = this.createEditModelAndView(chirpF, "user.params.error");
 		else
 			try {
+				Chirp chirp = this.chirpService.reconstruct(chirpF,
+						binding);
 				this.chirpService.save(chirp);
 				res = new ModelAndView("redirect:/chirp/list.do");
 			} catch (final Throwable oops) {
-				res = this.createEditModelAndView(chirp, "user.commit.error");
+				res = this.createEditModelAndView(chirpF, "user.commit.error");
 			}
 
 		return res;

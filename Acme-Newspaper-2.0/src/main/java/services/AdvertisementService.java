@@ -16,12 +16,12 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.AdvertisementRepository;
 import domain.Advertisement;
 import domain.Agent;
 import domain.CreditCard;
 import domain.Newspaper;
 import forms.AdvertisementForm;
+import repositories.AdvertisementRepository;
 
 @Service
 @Transactional
@@ -29,24 +29,23 @@ public class AdvertisementService {
 
 	// Managed repository
 	@Autowired
-	private AdvertisementRepository	advertisementRepository;
+	private AdvertisementRepository advertisementRepository;
 
 	// Supporting services
 	@Autowired
-	private NewspaperService		newspaperService;
+	private NewspaperService newspaperService;
 
 	@Autowired
-	private AgentService			agentService;
+	private AgentService agentService;
 
 	@Autowired
-	private AdminService			adminService;
+	private AdminService adminService;
 
 	@Autowired
-	private ConfigurationService	configService;
+	private ConfigurationService configService;
 
 	@Autowired
-	private Validator				validator;
-
+	private Validator validator;
 
 	// Constructors
 	public AdvertisementService() {
@@ -90,7 +89,7 @@ public class AdvertisementService {
 		ads.remove(ad);
 		newspaper.setAdvertisements(ads);
 
-		//this.newspaperService.save(newspaper);
+		// this.newspaperService.save(newspaper);
 		this.advertisementRepository.delete(ad);
 
 	}
@@ -139,31 +138,36 @@ public class AdvertisementService {
 		return new HashSet<Advertisement>(ans);
 	}
 
-	//TODO Arreglar query de Lucene
-	//	public Collection<Advertisement> getAdvertisementsTabooWords() {
-	//		EntityManagerFactory factory = Persistence.createEntityManagerFactory("Acme-Newspaper-2.0");
-	//		EntityManager mgr = factory.createEntityManager();
-	//		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(mgr);
-	//		mgr.getTransaction().begin();
-	//		String pattern = "";
+	// TODO Arreglar query de Lucene
+	// public Collection<Advertisement> getAdvertisementsTabooWords() {
+	// EntityManagerFactory factory =
+	// Persistence.createEntityManagerFactory("Acme-Newspaper-2.0");
+	// EntityManager mgr = factory.createEntityManager();
+	// FullTextEntityManager fullTextEntityManager =
+	// org.hibernate.search.jpa.Search.getFullTextEntityManager(mgr);
+	// mgr.getTransaction().begin();
+	// String pattern = "";
 	//
-	//		for (String tabooWord : this.configService.getTabooWordsFromConfiguration())
-	//			pattern += tabooWord + "|";
+	// for (String tabooWord : this.configService.getTabooWordsFromConfiguration())
+	// pattern += tabooWord + "|";
 	//
-	//		QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Advertisement.class).get();
-	//		org.apache.lucene.search.Query luceneQuery = qb.keyword().onFields("title").ignoreFieldBridge().matching(pattern).createQuery();
-	//		javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Advertisement.class);
-	//		@SuppressWarnings("unchecked")
-	//		List<Advertisement> res = jpaQuery.getResultList();
-	//		Set<Advertisement> cc = new HashSet<>(res);
-	//		mgr.getTransaction().commit();
+	// QueryBuilder qb =
+	// fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Advertisement.class).get();
+	// org.apache.lucene.search.Query luceneQuery =
+	// qb.keyword().onFields("title").ignoreFieldBridge().matching(pattern).createQuery();
+	// javax.persistence.Query jpaQuery =
+	// fullTextEntityManager.createFullTextQuery(luceneQuery, Advertisement.class);
+	// @SuppressWarnings("unchecked")
+	// List<Advertisement> res = jpaQuery.getResultList();
+	// Set<Advertisement> cc = new HashSet<>(res);
+	// mgr.getTransaction().commit();
 	//
-	//		mgr.close();
+	// mgr.close();
 	//
-	//		System.out.println(cc);
+	// System.out.println(cc);
 	//
-	//		return cc;
-	//	}
+	// return cc;
+	// }
 
 	public Advertisement findOneToEdit(final int sponsorshipId) {
 		Advertisement result;
@@ -183,7 +187,10 @@ public class AdvertisementService {
 	public boolean checkExpiration(final CreditCard c) {
 		Boolean res = true;
 
-		if ((c.getExpirationYear() == LocalDate.now().getYear() && (c.getExpirationMonth() == LocalDate.now().getMonthOfYear() || c.getExpirationMonth() < LocalDate.now().getMonthOfYear())) || c.getExpirationYear() < LocalDate.now().getYear())
+		if ((c.getExpirationYear() == LocalDate.now().getYear()
+				&& (c.getExpirationMonth() == LocalDate.now().getMonthOfYear()
+						|| c.getExpirationMonth() < LocalDate.now().getMonthOfYear()))
+				|| c.getExpirationYear() < LocalDate.now().getYear())
 			res = false;
 
 		return res;
@@ -229,11 +236,11 @@ public class AdvertisementService {
 
 		Advertisement advertisement;
 
-		if (advertisementForm.getId() != 0)
+		if (advertisementForm.getId() != 0) {
 			advertisement = this.findOne(advertisementForm.getId());
-		else
+		} else {
 			advertisement = this.create(advertisementForm.getNewspaperId());
-
+		}
 		advertisement.setTitle(advertisementForm.getTitle());
 		advertisement.setBanner(advertisementForm.getBanner());
 		advertisement.setPage(advertisementForm.getPage());
