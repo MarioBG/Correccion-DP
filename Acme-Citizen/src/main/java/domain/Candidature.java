@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.URL;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(indexes = {
-	@Index(columnList = "election_id")
+	@Index(columnList = "election_id, voteNumber")
 })
 public class Candidature extends Commentable {
 
