@@ -68,7 +68,7 @@ public class ChirpUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Chirp chirpF, final BindingResult binding) {
+	public ModelAndView save(Chirp chirpF, final BindingResult binding) {
 		ModelAndView res;
 
 		if (binding.hasErrors())

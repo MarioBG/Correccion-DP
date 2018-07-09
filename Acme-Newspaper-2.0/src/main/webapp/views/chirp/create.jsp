@@ -14,13 +14,16 @@
 <form:form action="chirp/user/create.do" modelAttribute="chirp">
 	
 	<form:hidden path="id" />
-	<form:hidden path="user" />
-	<form:hidden path="publicationMoment" />
 	
 	<acme:textbox code="chirp.title" path="title"/>
 	<br/>
 	<acme:textbox code="chirp.description" path="description"/>
 	<br/>
+	
+	<p>
+	
+	
+	</p>
 	
 	<acme:submit name="save" code="user.save"/>
 	<acme:submit name="cancel" code="user.cancel"/>

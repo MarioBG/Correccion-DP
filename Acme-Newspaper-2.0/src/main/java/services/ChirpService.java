@@ -50,14 +50,12 @@ public class ChirpService {
 
 	public Chirp create() {
 
-		Assert.notNull(userService.findByPrincipal());
+		Chirp res = new Chirp();
 
-		final Chirp res = new Chirp();
+		Date publicationMoment;
+		User user = userService.findByPrincipal();
+		Assert.notNull(user);
 
-		final Date publicationMoment;
-		final User user;
-
-		user = this.userService.findByPrincipal();
 		publicationMoment = new Date(System.currentTimeMillis() - 1);
 
 		res.setPublicationMoment(publicationMoment);
@@ -157,7 +155,7 @@ public class ChirpService {
 
 		chirpForm.setTitle(chirp.getTitle());
 		chirpForm.setUser(chirp.getUser());
-		chirpForm.setPublicationMoment(chirp.getPublicationMoment());
+		chirpForm.setPublicationMoment(new Date(System.currentTimeMillis() - 10));
 		chirpForm.setDescription(chirp.getDescription());
 
 		return chirpForm;
@@ -169,15 +167,14 @@ public class ChirpService {
 
 		Chirp chirp;
 
-		if (chirpForm.getId() != 0)
+		if (chirpForm.getId() != 0) {
 			chirp = this.findOne(chirpForm.getId());
-		else
+		} else {
 			chirp = this.create();
+		}
 
 		chirp.setDescription(chirpForm.getDescription());
-		chirp.setPublicationMoment(chirpForm.getPublicationMoment());
 		chirp.setTitle(chirpForm.getTitle());
-		chirp.setUser(chirpForm.getUser());
 
 		if (binding != null)
 			this.validator.validate(chirp, binding);
