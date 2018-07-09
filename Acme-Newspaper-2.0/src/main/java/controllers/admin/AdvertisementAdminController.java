@@ -53,7 +53,8 @@ public class AdvertisementAdminController {
 
 		s = this.advertisementService.findOne(advertisementId);
 
-		result = new ModelAndView("advertisement/admin/display");
+		result = new ModelAndView("advertisement/display");
+		result.addObject("requestURI", "advertisement/admin/display.do");
 		result.addObject("advertisement", s);
 
 		return result;

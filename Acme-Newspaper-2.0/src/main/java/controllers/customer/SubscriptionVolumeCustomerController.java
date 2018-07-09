@@ -1,3 +1,4 @@
+
 package controllers.customer;
 
 import javax.validation.Valid;
@@ -24,10 +25,11 @@ public class SubscriptionVolumeCustomerController extends AbstractController {
 	// Services ------------------------------------------------------
 
 	@Autowired
-	private SubscriptionVolumeService subscriptionVolumeService;
+	private SubscriptionVolumeService	subscriptionVolumeService;
 
 	@Autowired
-	private VolumeService volumeService;
+	private VolumeService				volumeService;
+
 
 	// Constructors --------------------------------------------------
 
@@ -41,8 +43,7 @@ public class SubscriptionVolumeCustomerController extends AbstractController {
 	public ModelAndView create(@RequestParam int volumeId) {
 
 		final SubscriptionVolume subscriptionVolume = this.subscriptionVolumeService.create(volumeId);
-		final SubscriptionVolumeForm subscriptionVolumeForm = this.subscriptionVolumeService
-				.construct(subscriptionVolume);
+		final SubscriptionVolumeForm subscriptionVolumeForm = this.subscriptionVolumeService.construct(subscriptionVolume);
 
 		final ModelAndView result = this.createEditModelAndView(subscriptionVolumeForm);
 
@@ -57,12 +58,14 @@ public class SubscriptionVolumeCustomerController extends AbstractController {
 			result = this.createEditModelAndView(subscriptionVolumeForm);
 		else
 			try {
-				final SubscriptionVolume subscriptionVolume = this.subscriptionVolumeService
-						.reconstruct(subscriptionVolumeForm, binding);
+				final SubscriptionVolume subscriptionVolume = this.subscriptionVolumeService.reconstruct(subscriptionVolumeForm, binding);
 				this.subscriptionVolumeService.save(subscriptionVolume);
 				result = new ModelAndView("redirect:../../volume/customer/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(subscriptionVolumeForm, "subscriptionVolume.commit.error");
+				String msg = "subscriptionVolume.commit.error";
+				if (oops.getMessage() != null && oops.getMessage().contains("creditCard"))
+					msg = oops.getMessage();
+				result = this.createEditModelAndView(subscriptionVolumeForm, msg);
 			}
 		return result;
 	}
@@ -77,12 +80,11 @@ public class SubscriptionVolumeCustomerController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final SubscriptionVolumeForm subscriptionVolumeForm,
-			final String messageCode) {
+	protected ModelAndView createEditModelAndView(final SubscriptionVolumeForm subscriptionVolumeForm, final String messageCode) {
 
 		ModelAndView result;
 
-		Volume volume = volumeService.findOne(subscriptionVolumeForm.getVolumeId());
+		Volume volume = this.volumeService.findOne(subscriptionVolumeForm.getVolumeId());
 
 		result = new ModelAndView("subscriptionVolume/create");
 		result.addObject("subscriptionVolumeForm", subscriptionVolumeForm);

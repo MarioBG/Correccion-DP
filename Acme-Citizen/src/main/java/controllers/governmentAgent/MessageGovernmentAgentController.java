@@ -74,10 +74,8 @@ public class MessageGovernmentAgentController extends AbstractController {
 				final Message saved = this.messageService.notify(message2);
 				result = new ModelAndView("redirect:../list.do?folderId=" + saved.getFolder().getId());
 			} catch (final Throwable oops) {
-				String msg = oops.getMessage();
-				if (msg == null)
-					msg = "message.commit.error";
-				result = this.createEditModelAndView(messagePruned, msg);
+				String msg = "message.commit.error";
+				result = this.createNotificationModelAndView(messagePruned, msg);
 			}
 
 		return result;

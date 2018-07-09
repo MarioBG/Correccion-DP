@@ -149,10 +149,8 @@
 		<security:intercept-url pattern="/message/edit.do" access="hasAnyRole('CUSTOMER', 'AGENT','USER', 'ADMIN')" />
 		
 		
-		<security:intercept-url pattern="/message/admin/create.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/admin/create-notification.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/admin/notification.do" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/message/admin/edit.do" access="hasRole('ADMIN')" />
 		
 		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />

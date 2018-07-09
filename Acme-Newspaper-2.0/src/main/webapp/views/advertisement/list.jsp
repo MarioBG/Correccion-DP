@@ -52,7 +52,14 @@
 		sortable="false" />
 		
 	<display:column>
-			<a href="advertisement/agent/display.do?advertisementId=<jstl:out value="${row.getId()}"/>"><spring:message code="newspaper.display" /></a><br/>
+		<jstl:choose>
+			<jstl:when test="${ requestURI=='advertisement/admin/listTaboo.do' }">
+				<a href="advertisement/admin/display.do?advertisementId=<jstl:out value="${row.getId()}"/>"><spring:message code="newspaper.display" /></a><br/>
+			</jstl:when>
+			<jstl:otherwise>
+				<a href="advertisement/agent/display.do?advertisementId=<jstl:out value="${row.getId()}"/>"><spring:message code="newspaper.display" /></a><br/>
+			</jstl:otherwise>
+		</jstl:choose>
 	</display:column>
 </display:table>
 

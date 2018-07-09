@@ -169,11 +169,11 @@ public class CandidatureService {
 			candidature = this.findOne(candidatureForm.getId());
 		else {
 			candidature = this.create(candidatureForm.getElectionId());
+			candidature.setVoteNumber(0);
 		}
 		candidature.setElectoralProgram(candidatureForm.getElectoralProgram());
 		candidature.setDescription(candidatureForm.getDescription());
 		candidature.setPartyLogo(candidatureForm.getPartyLogo());
-		candidature.setVoteNumber(candidatureForm.getVoteNumber());
 
 		if (binding != null)
 			this.validator.validate(candidature, binding);

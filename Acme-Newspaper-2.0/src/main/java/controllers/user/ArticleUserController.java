@@ -1,3 +1,4 @@
+
 package controllers.user;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,13 +29,14 @@ public class ArticleUserController extends AbstractController {
 
 	// Services --------------------------------
 	@Autowired
-	private ArticleService articleService;
+	private ArticleService		articleService;
 
 	@Autowired
-	private NewspaperService newspaperService;
+	private NewspaperService	newspaperService;
 
 	@Autowired
-	private UserService userService;
+	private UserService			userService;
+
 
 	// Constructors ----------------------------
 	public ArticleUserController() {
@@ -78,6 +81,8 @@ public class ArticleUserController extends AbstractController {
 		Article article;
 		ArticleForm articleForm;
 
+		if (articleId != 0 && this.articleService.findOne(articleId) != null)
+			Assert.isTrue(!this.articleService.findOne(articleId).getIsFinal());
 		article = this.articleService.findOne(articleId);
 		articleForm = this.articleService.construct(article);
 
@@ -88,25 +93,21 @@ public class ArticleUserController extends AbstractController {
 	// Save ----------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid ArticleForm articleForm,
-			final BindingResult binding) {
+	public ModelAndView save(@Valid ArticleForm articleForm, final BindingResult binding) {
 		ModelAndView res;
-
+		if (articleForm.getId() != 0 && this.articleService.findOne(articleForm.getId()) != null)
+			Assert.isTrue(!this.articleService.findOne(articleForm.getId()).getIsFinal());
 		if (binding.hasErrors()) {
-			res = this.createEditModelAndView(articleForm,
-					"article.params.error");
+			res = this.createEditModelAndView(articleForm, "article.params.error");
 		} else
 			try {
-				Article article = this.articleService.reconstruct(articleForm,
-						binding);
+				Article article = this.articleService.reconstruct(articleForm, binding);
 				this.articleService.save(article);
 
-				res = new ModelAndView(
-						"redirect:/article/user/list.do");
+				res = new ModelAndView("redirect:/article/user/list.do");
 
 			} catch (final Throwable oops) {
-				res = this.createEditModelAndView(articleForm,
-						"article.commit.error");
+				res = this.createEditModelAndView(articleForm, "article.commit.error");
 			}
 
 		return res;
@@ -122,8 +123,7 @@ public class ArticleUserController extends AbstractController {
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			final ArticleForm articleForm, final String message) {
+	protected ModelAndView createEditModelAndView(final ArticleForm articleForm, final String message) {
 		ModelAndView res;
 		res = new ModelAndView("article/edit");
 		int newspaperId = articleForm.getNewspaperId();

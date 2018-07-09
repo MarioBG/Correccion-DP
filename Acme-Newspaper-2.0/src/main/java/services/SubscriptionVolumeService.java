@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Calendar;
@@ -23,18 +24,19 @@ public class SubscriptionVolumeService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	private SubscriptionVolumeRepository subscriptionVolumeRepository;
+	private SubscriptionVolumeRepository	subscriptionVolumeRepository;
 
 	// Supporting services ----------------------------------------------------
 
 	@Autowired
-	private CustomerService customerService;
+	private CustomerService					customerService;
 
 	@Autowired
-	private VolumeService volumeService;
+	private VolumeService					volumeService;
 
 	@Autowired
-	private Validator validator;
+	private Validator						validator;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -46,7 +48,7 @@ public class SubscriptionVolumeService {
 
 	public SubscriptionVolume create(int volumeId) {
 
-		Assert.notNull(customerService.findByPrincipal());
+		Assert.notNull(this.customerService.findByPrincipal());
 
 		SubscriptionVolume result = new SubscriptionVolume();
 		result.setCreditCard(new CreditCard());
@@ -58,29 +60,24 @@ public class SubscriptionVolumeService {
 
 	public Collection<SubscriptionVolume> findAll() {
 
-		Collection<SubscriptionVolume> result = subscriptionVolumeRepository.findAll();
+		Collection<SubscriptionVolume> result = this.subscriptionVolumeRepository.findAll();
 		return result;
 	}
 
 	public SubscriptionVolume findOne(int subscriptionVolumeId) {
 
-		SubscriptionVolume result = subscriptionVolumeRepository.findOne(subscriptionVolumeId);
+		SubscriptionVolume result = this.subscriptionVolumeRepository.findOne(subscriptionVolumeId);
 		Assert.notNull(result);
 		return result;
 	}
 
 	public SubscriptionVolume save(SubscriptionVolume subscriptionVolume) {
 
-		Assert.notNull(customerService.findByPrincipal());
-		Assert.isTrue(
-				subscriptionVolume.getCreditCard().getExpirationYear() >= Calendar.getInstance().get(Calendar.YEAR));
+		Assert.notNull(this.customerService.findByPrincipal());
+		Assert.isTrue(subscriptionVolume.getCreditCard().getExpirationYear() >= Calendar.getInstance().get(Calendar.YEAR) && subscriptionVolume.getCreditCard().getExpirationMonth() > Calendar.getInstance().get(Calendar.MONTH),
+			"creditCard.expiration.error");
 
-		if (subscriptionVolume.getCreditCard().getExpirationYear() == Calendar.getInstance().get(Calendar.YEAR)) {
-			Assert.isTrue(subscriptionVolume.getCreditCard().getExpirationMonth() > Calendar.getInstance()
-					.get(Calendar.MONTH));
-		}
-
-		SubscriptionVolume result = subscriptionVolumeRepository.save(subscriptionVolume);
+		SubscriptionVolume result = this.subscriptionVolumeRepository.save(subscriptionVolume);
 		result.getCustomer().getSubscriptionsVolume().add(result);
 		result.getVolume().getSubscriptionsVolume().add(result);
 		return result;
@@ -121,8 +118,7 @@ public class SubscriptionVolumeService {
 		return subscriptionVolumeForm;
 	}
 
-	public SubscriptionVolume reconstruct(final SubscriptionVolumeForm subscriptionVolumeForm,
-			final BindingResult binding) {
+	public SubscriptionVolume reconstruct(final SubscriptionVolumeForm subscriptionVolumeForm, final BindingResult binding) {
 
 		Assert.notNull(subscriptionVolumeForm);
 
@@ -145,9 +141,9 @@ public class SubscriptionVolumeService {
 
 		return subscriptionVolume;
 	}
-	
-	public void flush(){
-		subscriptionVolumeRepository.flush();
+
+	public void flush() {
+		this.subscriptionVolumeRepository.flush();
 	}
 
 }

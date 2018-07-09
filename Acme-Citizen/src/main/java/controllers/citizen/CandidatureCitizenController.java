@@ -1,7 +1,6 @@
 
 package controllers.citizen;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -69,10 +68,12 @@ public class CandidatureCitizenController extends AbstractController {
 		try {
 			date = sdf.parse(sdf.format(new Date()));
 			Assert.isTrue((candidature.getElection().getCandidatureDate().before(date) || candidature.getElection().getCandidatureDate().equals(date)) && (candidature.getElection().getCelebrationDate().after(date)));
+			if (candidature.getId() != 0)
+				Assert.isTrue(candidature.getCandidates().contains(this.citizenService.findByPrincipal()));
 			final CandidatureForm candidatureForm = this.candidatureService.construct(candidature);
 			result = this.createEditModelAndView(candidatureForm);
-		} catch (final ParseException e) {
-			result = new ModelAndView("redirect:../../election/display.do?electionId=" + candidature.getElection().getId());
+		} catch (final Throwable e) {
+			result = new ModelAndView("redirect:election/display.do?electionId=" + candidature.getElection().getId());
 		}
 
 		return result;
@@ -87,6 +88,8 @@ public class CandidatureCitizenController extends AbstractController {
 		else
 			try {
 				final Candidature candidature = this.candidatureService.reconstruct(candidatureForm, binding);
+				if (candidature.getId() != 0)
+					Assert.isTrue(candidature.getCandidates().contains(this.candidateService.findByPrincipalAndCandidatureId(candidature.getId())));
 				this.candidatureService.save(candidature);
 				result = new ModelAndView("redirect:../../election/display.do?electionId=" + candidature.getElection().getId());
 			} catch (final Throwable oops) {

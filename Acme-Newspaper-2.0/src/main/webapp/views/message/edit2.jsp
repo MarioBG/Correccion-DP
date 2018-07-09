@@ -13,76 +13,68 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="message/edit.do" modelAttribute="messageForm">
+<form:form action="message/edit.do" modelAttribute="patata">
 
 	<form:hidden path="id" />
-	<form:hidden path="senderId" />
-	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
-			<form:hidden path="folderId" />
-		</jstl:when>
-		<jstl:otherwise>
-			<form:hidden path="recipientId"/>
-			<form:hidden path="subject"/>
-			<form:hidden path="body"/>
-			<form:hidden path="priority" />
-		</jstl:otherwise>
-	</jstl:choose>
-	<form:hidden path="moment" />
 
 	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
+		<jstl:when test="${ patata.recipient!=null }">
+			<form:hidden path="recipient" />
+			<b><label> <spring:message code="message.recipient" />:&nbsp;
+			</label></b>
+			<jstl:out value="${patata.recipient.name}" />
+			<br />
+		</jstl:when>
+		<jstl:when test="${patata.id == 0}">
 			<acme:select items="${actors}" itemLabel="name"
-				code="message.recipient" path="recipientId" />
+				code="message.recipient" path="recipient" />
 		</jstl:when>
 		<jstl:otherwise>
 			<b><label> <spring:message code="message.recipient" />:&nbsp;
 			</label></b>
-			<input value="${recipientName}" readonly="readonly" />
+			<jstl:out value="${recipientName}" />
 			<br />
 
 			<b><label> <spring:message code="message.sender" />:&nbsp;
 			</label></b>
-			<input value="${senderName}" readonly="readonly" />
+			<jstl:out value="${senderName}"/>
 			<br />
 
 			<b><label> <spring:message code="message.moment" />:&nbsp;
 			</label></b>
 			<spring:message code="message.pattern.date" var="patternDate" />
-			<fmt:formatDate value="${messageForm.moment}"
+			<fmt:formatDate value="${patata.moment}"
 				pattern="${patternDate}" />
 			<br />
 		</jstl:otherwise>
 	</jstl:choose>
 
 	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
+		<jstl:when test="${patata.id == 0}">
 			<acme:textbox code="message.subject" path="subject" />
 		</jstl:when>
 		<jstl:otherwise>
 			<b><label> <spring:message code="message.subject" />:&nbsp;
 			</label></b>
-			<input value="${messageForm.subject}" readonly="readonly" />
+			<jstl:out value="${patata.subject}" />
 			<br />
 		</jstl:otherwise>
 	</jstl:choose>
 
 	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
+		<jstl:when test="${patata.id == 0}">
 			<acme:textarea code="message.body" path="body" />
 		</jstl:when>
 		<jstl:otherwise>
 			<b><label> <spring:message code="message.body" />:&nbsp;
 			</label></b>
-			<textarea readonly="readonly">
-				<jstl:out value="${messageForm.body}" />
-			</textarea>
+				<jstl:out value="${patata.body}" />
 			<br />
 		</jstl:otherwise>
 	</jstl:choose>
 
 	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
+		<jstl:when test="${patata.id == 0}">
 			<b><form:label path="priority">
 					<spring:message code="message.priority" />:&nbsp;</form:label></b>
 			<form:select path="priority">
@@ -93,27 +85,27 @@
 		<jstl:otherwise>
 			<b><label> <spring:message code="message.priority" />:&nbsp;
 			</label></b>
-			<input value="${messageForm.priority}" readonly="readonly" />
+			<jstl:out value="${patata.priority}" />
 			<br />
 		</jstl:otherwise>
 	</jstl:choose>
 
-	<jstl:if test="${messageForm.id != 0}">
+	<jstl:if test="${patata.id != 0}">
 		<acme:selectObligatory items="${folders}" itemLabel="name"
-			code="message.folder" path="folderId" />
+			code="message.folder" path="folder" />
 	</jstl:if>
 
 	<jstl:choose>
-		<jstl:when test="${messageForm.id == 0}">
+		<jstl:when test="${patata.id == 0}">
 			<acme:submit name="save" code="message.send" />
 			&nbsp;
 		</jstl:when>
-		<jstl:when test="${messageForm.id != 0}">
+		<jstl:when test="${patata.id != 0}">
 			<acme:submit name="save" code="message.save" />
 			&nbsp;
 		</jstl:when>
 	</jstl:choose>
-	<jstl:if test="${messageForm.id != 0}">
+	<jstl:if test="${patata.id != 0}">
 		<acme:submit name="delete" code="message.delete" />
 		&nbsp;
 	</jstl:if>

@@ -42,7 +42,15 @@
 	</li>
 	
 </ul>
-
-<input type="button" name="back"
-	value="<spring:message code="ms.back" />"
-	onclick="javascript: relativeRedir('advertisement/agent/list.do')" />
+<jstl:choose>
+	<jstl:when test="${ requestURI=='advertisement/admin/display.do' }">
+		<input type="button" name="back"
+			value="<spring:message code="ms.back" />"
+			onclick="javascript: relativeRedir('advertisement/admin/listTaboo.do')" />
+	</jstl:when>
+	<jstl:otherwise>
+		<input type="button" name="back"
+			value="<spring:message code="ms.back" />"
+			onclick="javascript: relativeRedir('advertisement/agent/list.do')" />
+	</jstl:otherwise>
+</jstl:choose>

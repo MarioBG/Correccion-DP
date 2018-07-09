@@ -70,13 +70,12 @@ public class ChirpUserController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Chirp chirpF, final BindingResult binding) {
 		ModelAndView res;
-
+		Chirp chirp = this.chirpService.reconstruct(chirpF,
+			binding);
 		if (binding.hasErrors())
 			res = this.createEditModelAndView(chirpF, "user.params.error");
 		else
 			try {
-				Chirp chirp = this.chirpService.reconstruct(chirpF,
-						binding);
 				this.chirpService.save(chirp);
 				res = new ModelAndView("redirect:/chirp/list.do");
 			} catch (final Throwable oops) {
