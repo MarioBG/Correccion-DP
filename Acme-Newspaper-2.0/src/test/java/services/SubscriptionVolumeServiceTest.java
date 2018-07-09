@@ -59,7 +59,7 @@ public class SubscriptionVolumeServiceTest extends AbstractTest {
 																	 * subscripción
 																	 * a volumen
 																	 */
-				{ "customer2", "volumeTest", NumberFormatException.class }, /*
+				{ "customer2", "volumeTest", AssertionError.class }, /*
 																			 * No
 																			 * se
 																			 * puede

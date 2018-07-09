@@ -139,7 +139,7 @@ public class UserServiceTest extends AbstractTest {
 				// Caso positivo
 				{"user1", "user4", null},
 				// Caso negativo
-				{"user1", "user3316", NumberFormatException.class}, // No se puede seguir un usuario que no existe.
+				{"user1", "user3316", AssertionError.class}, // No se puede seguir un usuario que no existe.
 				{"user1", "user1", IllegalArgumentException.class}, // Un usuario no se puede seguir a sí mismo.
 		};
 		for (int i=0;i<testingFollow.length;i++){
@@ -175,7 +175,7 @@ public class UserServiceTest extends AbstractTest {
 				{"user1", "user2", null},
 				// Caso negativo
 				{"user1", "user4", IllegalArgumentException.class}, // No se puede dejar de seguir a un usuario que no sigue.
-				{"user1", "user3316", NumberFormatException.class}, // No se puede dejar de seguir a un usuario que no existe.
+				{"user1", "user3316", AssertionError.class}, // No se puede dejar de seguir a un usuario que no existe.
 		};
 		for (int i=0;i<testingFollow.length;i++){
 			this.templateUnfollow((String)testingFollow[i][0],
