@@ -30,14 +30,6 @@ public class CandidatureForm {
 		this.id = id;
 	}
 
-	public int getElectionId() {
-		return this.electionId;
-	}
-
-	public void setElectionId(final int electionId) {
-		this.electionId = electionId;
-	}
-
 	@URL
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
@@ -77,6 +69,14 @@ public class CandidatureForm {
 
 	public void setVoteNumber(final int voteNumber) {
 		this.voteNumber = voteNumber;
+	}
+
+	public int getElectionId() {
+		return this.electionId;
+	}
+
+	public void setElectionId(int electionId) {
+		this.electionId = electionId;
 	}
 
 }

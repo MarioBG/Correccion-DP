@@ -47,7 +47,7 @@
 			<jstl:if test="${principal.bankAccount == null}">
 				<input type="button"
 					value="<spring:message code="agent.createBankAccount" />"
-					onclick="javascript: window.location.assign('message/create.do')" />
+					onclick="javascript: window.location.assign('message/create.do?recipientId=${row.id}')" />
 			</jstl:if>
 		</jstl:if>
 	</display:column>

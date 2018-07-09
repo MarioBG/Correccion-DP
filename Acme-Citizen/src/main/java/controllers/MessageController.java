@@ -4,11 +4,10 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +20,6 @@ import domain.Actor;
 import domain.Folder;
 import domain.Message;
 import domain.Priority;
-import forms.MessageForm;
 
 @Controller
 @RequestMapping("/message")
@@ -67,15 +65,18 @@ public class MessageController extends AbstractController {
 	// Creation ------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam(required = false) Integer recipientId) {
 
 		ModelAndView result;
 		Message message;
 
 		message = this.messageService.create();
-		final MessageForm messageForm = this.messageService.construct(message);
+		result = this.createEditModelAndView(message);
 
-		result = this.createEditModelAndView(messageForm);
+		if (recipientId != null) {
+			Actor a = this.actorService.findOne(recipientId);
+			result.addObject("recipient", a);
+		}
 
 		return result;
 	}
@@ -90,13 +91,12 @@ public class MessageController extends AbstractController {
 		Actor actor;
 
 		message = this.messageService.findOneToEdit(messageId);
-		final MessageForm messageForm = this.messageService.construct(message);
 		actor = this.actorService.findByPrincipal();
 
 		result = new ModelAndView("message/edit2");
-		result.addObject("messageForm", messageForm);
-		result.addObject("recipientName", this.actorService.findOne(messageForm.getRecipientId()).getName());
-		result.addObject("senderName", this.actorService.findOne(messageForm.getSenderId()).getName());
+		result.addObject("patata", message);
+		result.addObject("recipientName", message.getRecipient().getName());
+		result.addObject("senderName", message.getSender().getName());
 		result.addObject("folders", actor.getFolders());
 		result.addObject("actionURI", "message/edit.do");
 
@@ -104,39 +104,41 @@ public class MessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final MessageForm messageForm, final BindingResult binding) {
+	public ModelAndView save(@ModelAttribute("patata") final Message message0, final BindingResult binding) {
 
 		ModelAndView result;
+		this.messageService.reconstruct(message0, binding);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(messageForm);
+			result = this.createEditModelAndView(message0);
 		else
 			try {
-				final Message message = this.messageService.reconstruct(messageForm, binding);
+				final Message message = this.messageService.reconstruct(message0, binding);
 				final Message saved = this.messageService.save(message);
 				result = new ModelAndView("redirect:list.do?folderId=" + saved.getFolder().getId());
 			} catch (final Throwable oops) {
 				String msg = oops.getMessage();
 				if (msg == null)
 					msg = "message.commit.error";
-				result = this.createEditModelAndView(messageForm, msg);
+				result = this.createEditModelAndView(message0, msg);
 			}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final MessageForm messageForm, final BindingResult binding) {
+	public ModelAndView delete(final Message message0, final BindingResult binding) {
 
 		ModelAndView result;
 		int folderid;
-		folderid = messageForm.getFolderId();
+
 		try {
-			final Message message = this.messageService.reconstruct(messageForm, binding);
+			Message message = this.messageService.reconstruct(message0, binding);
+			folderid = message.getFolder().getId();
 			this.messageService.delete(message);
 			result = new ModelAndView("redirect:list.do?folderId=" + folderid);
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(messageForm, "message.commit.error");
+			result = this.createEditModelAndView(message0, "message.commit.error");
 		}
 
 		return result;
@@ -165,16 +167,16 @@ public class MessageController extends AbstractController {
 
 	// Ancillary methods ---------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final MessageForm messageForm) {
+	protected ModelAndView createEditModelAndView(final Message message) {
 
 		ModelAndView result;
 
-		result = this.createEditModelAndView(messageForm, null);
+		result = this.createEditModelAndView(message, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final MessageForm messageForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Message message0, final String messageCode) {
 
 		ModelAndView result;
 		Collection<Actor> actors;
@@ -192,10 +194,11 @@ public class MessageController extends AbstractController {
 		folders = this.folderService.findByPrincipal();
 
 		result = new ModelAndView("message/edit");
-		result.addObject("messageForm", messageForm);
-		if (messageForm.getId() != 0) {
-			result.addObject("recipientName", this.actorService.findOne(messageForm.getRecipientId()).getName());
-			result.addObject("senderName", this.actorService.findOne(messageForm.getSenderId()).getName());
+		result.addObject("patata", message0);
+		if (message0.getId() != 0) {
+			Message message = this.messageService.findOne(message0.getId());
+			result.addObject("recipientName", message.getRecipient().getName());
+			result.addObject("senderName", message.getSender().getName());
 		}
 		result.addObject("actors", actors);
 		result.addObject("priorities", priorities);

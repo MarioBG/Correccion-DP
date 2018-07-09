@@ -13,12 +13,9 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${actionURI}" modelAttribute="messageForm">
+<form:form action="${actionURI}" modelAttribute="messageNotification">
 
 	<form:hidden path="id" />
-	<form:hidden path="senderId" />
-	<form:hidden path="recipientId" />
-	<form:hidden path="moment" />
 
 	<acme:textbox code="message.subject" path="subject" />
 

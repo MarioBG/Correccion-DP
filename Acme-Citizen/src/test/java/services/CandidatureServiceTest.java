@@ -106,7 +106,7 @@ public class CandidatureServiceTest extends AbstractTest {
 			},
 			// Casos negativos
 			{
-				"bank1", null, NullPointerException.class
+				"bank1", null, AssertionError.class
 			/*
 			 * Solo los agentes gubernamentales y los ciudadanos pueden eliminar candidaturas.
 			 */

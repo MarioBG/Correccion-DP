@@ -88,7 +88,7 @@ public class CandidatureCitizenController extends AbstractController {
 			try {
 				final Candidature candidature = this.candidatureService.reconstruct(candidatureForm, binding);
 				this.candidatureService.save(candidature);
-				result = new ModelAndView("redirect:../../election/display.do?electionId=" + candidatureForm.getElectionId());
+				result = new ModelAndView("redirect:../../election/display.do?electionId=" + candidature.getElection().getId());
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(candidatureForm, "candidature.commit.error");
 			}

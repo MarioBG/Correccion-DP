@@ -17,6 +17,7 @@ import domain.Candidature;
 import domain.Citizen;
 import domain.Comment;
 import domain.Election;
+import domain.GovernmentAgent;
 import forms.ElectionForm;
 
 @Service
@@ -136,15 +137,18 @@ public class ElectionService {
 
 		Election election;
 
-		if (electionForm.getId() != 0)
+		if (electionForm.getId() != 0) {
 			election = this.findOne(electionForm.getId());
-		else
+		} else {
+			GovernmentAgent electionHandler = this.governmentAgentService.findByPrincipal();
+			Assert.notNull(electionHandler);
 			election = this.create();
+			election.setGovernmentAgent(electionHandler);
+		}
 
 		election.setCandidatureDate(electionForm.getCandidatureDate());
 		election.setCelebrationDate(electionForm.getCelebrationDate());
 		election.setDescription(electionForm.getDescription());
-		election.setGovernmentAgent(this.governmentAgentService.findOne(electionForm.getGovernmentAgentId()));
 
 		if (binding != null)
 			this.validator.validate(election, binding);

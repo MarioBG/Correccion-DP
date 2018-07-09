@@ -1,9 +1,8 @@
+
 package controllers.governmentAgent;
 
 import java.util.Collection;
 import java.util.Date;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.GovernmentAgentService;
+import services.LotteryService;
 import controllers.AbstractController;
 import domain.GovernmentAgent;
 import domain.Lottery;
 import domain.LotteryTicket;
-import services.GovernmentAgentService;
-import services.LotteryService;
 
 @Controller
 @RequestMapping("/lottery/governmentAgent")
@@ -26,10 +25,11 @@ public class LotteryGovernmentAgentController extends AbstractController {
 
 	// Services ---------------------------------------
 	@Autowired
-	private LotteryService lotteryService;
+	private LotteryService			lotteryService;
 
 	@Autowired
-	private GovernmentAgentService governmentAgentService;
+	private GovernmentAgentService	governmentAgentService;
+
 
 	// Creation ---------------------------------------------------------------
 
@@ -38,8 +38,8 @@ public class LotteryGovernmentAgentController extends AbstractController {
 		ModelAndView result;
 		Lottery lottery;
 
-		lottery = lotteryService.create();
-		result = createEditModelAndView(lottery);
+		lottery = this.lotteryService.create();
+		result = this.createEditModelAndView(lottery);
 
 		return result;
 	}
@@ -51,7 +51,7 @@ public class LotteryGovernmentAgentController extends AbstractController {
 		ModelAndView result;
 		Lottery lottery;
 
-		lottery = lotteryService.findOne(lotteryId);
+		lottery = this.lotteryService.findOne(lotteryId);
 
 		result = this.createEditModelAndView(lottery);
 		result.addObject("lottery", lottery);
@@ -60,8 +60,9 @@ public class LotteryGovernmentAgentController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Lottery lottery, final BindingResult binding) {
+	public ModelAndView save(Lottery lottery, final BindingResult binding) {
 		ModelAndView result;
+		this.lotteryService.reconstruct(lottery, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(lottery);
@@ -72,7 +73,7 @@ public class LotteryGovernmentAgentController extends AbstractController {
 			} catch (final Throwable oops) {
 				String errorMessage = "lottery.commit.error";
 
-				if (oops.getMessage().contains("message.error")) {
+				if (oops.getMessage() != null) {
 					errorMessage = oops.getMessage();
 				}
 				result = this.createEditModelAndView(lottery, errorMessage);
@@ -86,11 +87,11 @@ public class LotteryGovernmentAgentController extends AbstractController {
 	@RequestMapping(value = "/MyLotterys", method = RequestMethod.GET)
 	public ModelAndView display() {
 		ModelAndView result;
-		GovernmentAgent ga = governmentAgentService.findByPrincipal();
+		GovernmentAgent ga = this.governmentAgentService.findByPrincipal();
 		Collection<Lottery> lotterys;
 		Date date = new Date();
 
-		lotterys = lotteryService.getLotteryByGovernmentAgentId(ga.getId());
+		lotterys = this.lotteryService.getLotteryByGovernmentAgentId(ga.getId());
 		result = new ModelAndView("lottery/MyLotterys");
 		result.addObject("lotterys", lotterys);
 		result.addObject("date", date);
@@ -107,7 +108,7 @@ public class LotteryGovernmentAgentController extends AbstractController {
 		Lottery lottery = this.lotteryService.findOne(lotteryId);
 		Collection<LotteryTicket> lotteryTickets = lottery.getLotteryTickets();
 		Integer tam = lotteryTickets.size();
-		lotteryService.lotteryWinner(lotteryId);
+		this.lotteryService.lotteryWinner(lotteryId);
 
 		result = new ModelAndView("redirect:MyLotterys.do");
 		result.addObject("lotteryTickets", lotteryTickets);
@@ -122,7 +123,7 @@ public class LotteryGovernmentAgentController extends AbstractController {
 	protected ModelAndView createEditModelAndView(Lottery lottery) {
 		ModelAndView result;
 
-		result = createEditModelAndView(lottery, null);
+		result = this.createEditModelAndView(lottery, null);
 
 		return result;
 	}

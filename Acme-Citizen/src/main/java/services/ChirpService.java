@@ -15,6 +15,7 @@ import org.springframework.validation.Validator;
 
 import repositories.ChirpRepository;
 import domain.Chirp;
+import domain.GovernmentAgent;
 import forms.ChirpForm;
 
 @Service
@@ -138,12 +139,16 @@ public class ChirpService {
 
 		if (chirpForm.getId() != 0)
 			chirp = this.findOne(chirpForm.getId());
-		else
+		else {
+			GovernmentAgent chirpCreator = this.governmentAgentService.findByPrincipal();
+			Assert.notNull(chirpCreator);
 			chirp = this.create();
+			chirp.setGovernmentAgent(chirpCreator);
+			chirp.setPublicationMoment(new Date(System.currentTimeMillis() - 1000));
+		}
 
 		chirp.setTitle(chirpForm.getTitle());
 		chirp.setContent(chirpForm.getContent());
-		chirp.setPublicationMoment(chirpForm.getPublicationMoment());
 		chirp.setImage(chirpForm.getImage());
 		chirp.setLink(chirpForm.getLink());
 

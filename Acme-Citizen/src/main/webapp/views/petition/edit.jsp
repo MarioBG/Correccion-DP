@@ -17,8 +17,6 @@
 	modelAttribute="petitionForm">
 
 	<form:hidden path="id" />
-	<form:hidden path="citizenId" />
-	<form:hidden path="creationMoment" />
 
 	<acme:textbox code="petition.name" path="name" />
 	<br />

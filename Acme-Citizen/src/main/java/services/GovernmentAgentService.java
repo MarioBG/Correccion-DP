@@ -62,7 +62,6 @@ public class GovernmentAgentService {
 	// Simple CRUD methods
 
 	public GovernmentAgent create() {
-		final String nif = this.actorService.generateNif(this.findByPrincipal());
 		final GovernmentAgent res = new GovernmentAgent();
 		final Collection<Folder> folders = new ArrayList<Folder>();
 		final Collection<Comment> comments = new ArrayList<Comment>();
@@ -74,7 +73,6 @@ public class GovernmentAgentService {
 		final UserAccount userAccount = new UserAccount();
 		final Authority authority = new Authority();
 
-		res.setNif(nif);
 		res.setFolders(folders);
 		res.setComments(comments);
 		res.setChirps(chirps);
@@ -110,6 +108,7 @@ public class GovernmentAgentService {
 		GovernmentAgent res;
 
 		if (admin.getId() == 0) {
+			Assert.notNull(this.findByPrincipal());
 			String pass = admin.getUserAccount().getPassword();
 
 			final Md5PasswordEncoder code = new Md5PasswordEncoder();
@@ -167,8 +166,10 @@ public class GovernmentAgentService {
 
 		if (governmentAgentForm.getId() != 0)
 			res = this.findOne(governmentAgentForm.getId());
-		else
+		else {
 			res = this.create();
+			res.setNif(this.actorService.generateNif(this.findByPrincipal()));
+		}
 
 		res.setName(governmentAgentForm.getName());
 		res.setSurname(governmentAgentForm.getSurname());

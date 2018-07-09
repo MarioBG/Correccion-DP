@@ -16,7 +16,6 @@ public class BankAgentForm {
 	private String	email;
 	private String	phone;
 	private String	address;
-	private String	nif;
 	private String	nickname;
 	private String	username;
 	private String	password;
@@ -85,15 +84,6 @@ public class BankAgentForm {
 
 	public void setAddress(final String address) {
 		this.address = address;
-	}
-
-	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getNif() {
-		return this.nif;
-	}
-
-	public void setNif(final String nif) {
-		this.nif = nif;
 	}
 
 	@SafeHtml(whitelistType = WhiteListType.NONE)

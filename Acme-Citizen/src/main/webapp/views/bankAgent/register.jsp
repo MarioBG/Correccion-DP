@@ -35,8 +35,6 @@ $(document).ready(function() {
 </script>
 
 <form:form action="bankAgent/governmentAgent/register.do" modelAttribute="bankAgentForm">
-
-	<form:hidden path="nif"/>
 	
 	<acme:textbox code="agent.name" path="name"/>
 	<br/>

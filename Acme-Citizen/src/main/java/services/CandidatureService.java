@@ -167,9 +167,9 @@ public class CandidatureService {
 
 		if (candidatureForm.getId() != 0)
 			candidature = this.findOne(candidatureForm.getId());
-		else
+		else {
 			candidature = this.create(candidatureForm.getElectionId());
-
+		}
 		candidature.setElectoralProgram(candidatureForm.getElectoralProgram());
 		candidature.setDescription(candidatureForm.getDescription());
 		candidature.setPartyLogo(candidatureForm.getPartyLogo());

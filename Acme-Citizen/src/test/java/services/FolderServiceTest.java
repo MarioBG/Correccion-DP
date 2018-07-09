@@ -61,7 +61,7 @@ public class FolderServiceTest extends AbstractTest {
 			 * usuario
 			 */
 			{
-				"agent2", "", "folder41", NumberFormatException.class
+				"agent2", "", "folder41", AssertionError.class
 			}
 		/**
 		 * El campo nombre no puede ser vacio

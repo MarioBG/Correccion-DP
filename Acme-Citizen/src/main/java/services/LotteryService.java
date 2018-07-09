@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LotteryRepository;
 import domain.Actor;
@@ -26,12 +28,18 @@ public class LotteryService {
 	// Managed repository
 
 	@Autowired
-	private LotteryRepository	lotteryRepository;
+	private LotteryRepository		lotteryRepository;
 
 	// Supporting services
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
+
+	@Autowired
+	private GovernmentAgentService	governmentAgentService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	// Constructors
@@ -98,6 +106,32 @@ public class LotteryService {
 		Assert.notNull(lottery);
 		this.delete(lottery);
 
+	}
+
+	public Lottery reconstruct(Lottery lotto, BindingResult binding) {
+		Assert.notNull(lotto);
+
+		Lottery ans;
+
+		if (lotto.getId() != 0)
+			ans = this.findOne(lotto.getId());
+		else {
+			GovernmentAgent principal = this.governmentAgentService.findByPrincipal();
+			Assert.notNull(principal);
+			ans = this.create();
+			ans.setGovernmentAgent(principal);
+			ans.setLotteryTickets(new ArrayList<LotteryTicket>());
+			ans.setQuantity(0);
+		}
+
+		ans.setCelebrationDate(lotto.getCelebrationDate());
+		ans.setLotteryName(lotto.getLotteryName());
+		ans.setPercentageForPrizes(lotto.getPercentageForPrizes());
+		ans.setTicketCost(lotto.getTicketCost());
+
+		this.validator.validate(ans, binding);
+
+		return ans;
 	}
 
 	public void lotteryWinner(final int lotteryId) {

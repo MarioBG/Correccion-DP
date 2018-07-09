@@ -284,7 +284,7 @@ public class PetitionServiceTest extends AbstractTest {
 			},
 			// Casos negativos
 			{
-				"citizen1", null, NullPointerException.class
+				"citizen1", null, AssertionError.class
 			/*
 			 * Solo los agentes gubernamentales pueden eliminar peticiones
 			 */

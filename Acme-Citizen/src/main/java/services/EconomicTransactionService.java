@@ -4,11 +4,12 @@ package services;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.EconomicTransactionRepository;
 import domain.Actor;
@@ -30,6 +31,15 @@ public class EconomicTransactionService {
 
 	@Autowired
 	private ActorService					actorService;
+
+	@Autowired
+	private BankAgentService				bankAgentService;
+
+	@Autowired
+	private GovernmentAgentService			governmentAgentService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	// Constructors
@@ -72,7 +82,11 @@ public class EconomicTransactionService {
 
 	public EconomicTransaction save(final EconomicTransaction economicTransaction) {
 
+		Actor principal = this.actorService.findByPrincipal();
+		Assert.isTrue(economicTransaction.getDebtor().equals(principal.getBankAccount()));
+		Assert.isTrue(this.checkMoney(economicTransaction), "economicTransaction.error.notEnoughMoney");
 		Assert.notNull(economicTransaction);
+		Assert.isTrue(this.governmentAgentService.findByPrincipal() != null || !(economicTransaction.getDoMoney() && economicTransaction.getDebtor().equals(this.governmentAgentService.findByPrincipal())));		//Checks if a money creation operation is legitimate
 
 		EconomicTransaction result;
 
@@ -84,16 +98,16 @@ public class EconomicTransactionService {
 
 		return result;
 	}
-
 	public EconomicTransaction save2(final EconomicTransaction economicTransaction) {
 
 		Assert.notNull(economicTransaction);
+		Assert.notNull(economicTransaction.getCreditor(), "economicTransaction.creditor.error");
 
 		EconomicTransaction result;
 
 		result = this.economicTransactionRepository.save(economicTransaction);
 
-		this.doMoney(result);
+		this.createMoney(result);
 
 		return result;
 	}
@@ -122,6 +136,24 @@ public class EconomicTransactionService {
 
 	}
 
+	public EconomicTransaction reconstruct(EconomicTransaction transaction, final BindingResult binding) {
+
+		Assert.notNull(transaction);
+
+		EconomicTransaction ans = this.create();
+
+		ans.setConcept(transaction.getConcept());
+		ans.setCreditor(transaction.getCreditor());
+		ans.setDebtor(this.actorService.findByPrincipal().getBankAccount());
+		ans.setDoMoney(transaction.getDoMoney());
+		ans.setQuantity(transaction.getQuantity());
+		ans.setTransactionMoment(new Date(System.currentTimeMillis() - 1000));
+
+		this.validator.validate(ans, binding);
+
+		return ans;
+	}
+
 	private void doTransaction(final EconomicTransaction result) {
 		final Double transfer = result.getQuantity();
 		final Actor creditor = result.getCreditor().getActor();
@@ -137,34 +169,21 @@ public class EconomicTransactionService {
 
 	}
 
-	private void doMoney(final EconomicTransaction result) {
+	private void createMoney(final EconomicTransaction result) {
 		final Double transfer = result.getQuantity();
 		final BankAccount creditor = result.getCreditor();
-		BankAgent bankAgent = null;
-		GovernmentAgent ga = null;
-		try {
-			bankAgent = (BankAgent) this.actorService.findByPrincipal();
-
-		} catch (final Exception e) {
-		}
-
-		try {
-			ga = (GovernmentAgent) this.actorService.findByPrincipal();
-		} catch (final Exception e) {
-		}
+		BankAgent bankAgent = this.bankAgentService.findByPrincipal();
+		GovernmentAgent ga = this.governmentAgentService.findByPrincipal();
+		Assert.isTrue((ga != null && ga.getCanCreateMoney()) || (bankAgent != null && bankAgent.getCanCreateMoney()));
 
 		final Double moneyReceived = creditor.getMoney() + transfer;
 		if (bankAgent != null) {
-			if (bankAgent.getCanCreateMoney())
-				creditor.setMoney(moneyReceived);
-		} else if (ga != null) {
-			if (ga.getCanCreateMoney())
-				creditor.setMoney(moneyReceived);
-		} else
-			this.economicTransactionRepository.delete(result);
+			creditor.setMoney(moneyReceived);
+		} else {
+			creditor.setMoney(moneyReceived);
+		}
 
 	}
-
 	public boolean checkMoney(final EconomicTransaction economicTransaction) {
 		if (economicTransaction.getDebtor().getMoney() >= economicTransaction.getQuantity())
 			return true;

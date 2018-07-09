@@ -109,6 +109,7 @@ public class CitizenService {
 		Citizen res;
 
 		if (citizen.getId() == 0) {
+			Assert.notNull(this.governmentAgentService.findByPrincipal());
 			String pass = citizen.getUserAccount().getPassword();
 
 			final Md5PasswordEncoder code = new Md5PasswordEncoder();
@@ -169,17 +170,18 @@ public class CitizenService {
 
 		Citizen res = new Citizen();
 
-		if (citizenForm.getId() != 0)
+		if (citizenForm.getId() != 0) {
 			res = this.findOne(citizenForm.getId());
-		else
+		} else {
 			res = this.create();
+			res.setNif(this.actorService.generateNif(this.governmentAgentService.findByPrincipal()));
+		}
 
 		res.setName(citizenForm.getName());
 		res.setSurname(citizenForm.getSurname());
 		res.setEmail(citizenForm.getEmail());
 		res.setPhone(citizenForm.getPhone());
 		res.setAddress(citizenForm.getAddress());
-		res.setNif(citizenForm.getNif());
 		res.setNickname(citizenForm.getNickname());
 		res.getUserAccount().setUsername(citizenForm.getUsername());
 		res.getUserAccount().setPassword(citizenForm.getPassword());
@@ -200,7 +202,6 @@ public class CitizenService {
 		editCitizenForm.setEmail(citizen.getEmail());
 		editCitizenForm.setPhone(citizen.getPhone());
 		editCitizenForm.setAddress(citizen.getAddress());
-		editCitizenForm.setNif(citizen.getNif());
 		editCitizenForm.setNickname(citizen.getNickname());
 		editCitizenForm.setUsername(citizen.getUserAccount().getUsername());
 		editCitizenForm.setPassword(citizen.getUserAccount().getPassword());

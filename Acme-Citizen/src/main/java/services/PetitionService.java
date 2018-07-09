@@ -176,7 +176,7 @@ public class PetitionService {
 		petition.setName(petitionForm.getName());
 		petition.setDescription(petitionForm.getDescription());
 		petition.setPicture(petitionForm.getPicture());
-		petition.setCreationMoment(petitionForm.getCreationMoment());
+		Assert.isTrue(!petitionForm.getFinalVersion() || petition.getGovernmentAgents().size() > 0, "petition.error.needsGovernmentAgents");
 		petition.setFinalVersion(petitionForm.getFinalVersion());
 		petition.setResolved(petitionForm.getResolved());
 		petition.setDeleted(petitionForm.getDeleted());

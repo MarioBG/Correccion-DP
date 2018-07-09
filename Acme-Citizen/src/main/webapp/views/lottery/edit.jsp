@@ -17,10 +17,6 @@
 	modelAttribute="lottery">
 
 	<form:hidden path="id" />
-	<form:hidden path="governmentAgent" />
-	<form:hidden path="lotteryTickets" />
-	<form:hidden path="winnerTicket" />
-	<form:hidden path="quantity" />
 
 	<acme:textbox code="lottery.lotteryName" path="lotteryName" />
 	<br />

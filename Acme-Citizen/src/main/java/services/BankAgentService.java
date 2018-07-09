@@ -13,16 +13,16 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.BankAgentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.BankAccount;
 import domain.BankAgent;
 import domain.Comment;
 import domain.Folder;
 import domain.GovernmentAgent;
 import forms.BankAgentForm;
-import repositories.BankAgentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -31,25 +31,26 @@ public class BankAgentService {
 	// Managed repository
 
 	@Autowired
-	private BankAgentRepository bankAgentRepository;
+	private BankAgentRepository			bankAgentRepository;
 
 	// Supporting services
 
 	@Autowired
-	private security.UserAccountService userAccountService;
+	private security.UserAccountService	userAccountService;
 	@Autowired
-	private ActorService actorService;
+	private ActorService				actorService;
 	@Autowired
-	private GovernmentAgentService governmentAgentService;
+	private GovernmentAgentService		governmentAgentService;
 
 	@Autowired
-	private FolderService folderService;
+	private FolderService				folderService;
 
 	@Autowired
-	private ConfigurationService configurationService;
+	private ConfigurationService		configurationService;
 
 	@Autowired
-	private Validator validator;
+	private Validator					validator;
+
 
 	// Constructors
 
@@ -60,8 +61,6 @@ public class BankAgentService {
 	// Simple CRUD methods
 
 	public BankAgent create() {
-
-		final GovernmentAgent principal = this.governmentAgentService.findByPrincipal();
 
 		final BankAgent res = new BankAgent();
 
@@ -77,7 +76,6 @@ public class BankAgentService {
 		res.setFolders(folders);
 		res.setComments(comments);
 		res.setCarriedBankAccounts(bankAccounts);
-		res.setNif(this.actorService.generateNif(principal));
 
 		return res;
 	}
@@ -100,14 +98,13 @@ public class BankAgentService {
 	public BankAgent save(final BankAgent agent) {
 		BankAgent res;
 		if (agent.getId() == 0) {
+			Assert.notNull(this.governmentAgentService.findByPrincipal());
 			if (agent.getPhone().matches("^\\d+$"))
 				agent.setPhone(this.configurationService.findActive().getDefaultCountryCode() + agent.getPhone());
 			final Collection<Folder> folders = this.folderService.save(this.folderService.defaultFolders());
 			agent.setFolders(folders);
-			agent.getUserAccount()
-					.setPassword(new Md5PasswordEncoder().encodePassword(agent.getUserAccount().getPassword(), null));
-			Assert.isTrue(this.userAccountService.findByUsername(agent.getUserAccount().getUsername()) == null,
-					"message.error.duplicatedUser");
+			agent.getUserAccount().setPassword(new Md5PasswordEncoder().encodePassword(agent.getUserAccount().getPassword(), null));
+			Assert.isTrue(this.userAccountService.findByUsername(agent.getUserAccount().getUsername()) == null, "message.error.duplicatedUser");
 		}
 		res = this.bankAgentRepository.save(agent);
 
@@ -134,7 +131,7 @@ public class BankAgentService {
 	public BankAgent reconstruct(final BankAgentForm bankAgentForm, final BindingResult binding) {
 
 		Assert.notNull(bankAgentForm);
-		Assert.isTrue(bankAgentForm.getTermsAndConditions() == true);
+		Assert.isTrue(bankAgentForm.getTermsAndConditions(), "user.params.errorTerms");
 
 		BankAgent res = new BankAgent();
 
@@ -152,6 +149,10 @@ public class BankAgentService {
 		res.setCanCreateMoney(bankAgentForm.getCanCreateMoney());
 		res.getUserAccount().setUsername(bankAgentForm.getUsername());
 		res.getUserAccount().setPassword(bankAgentForm.getPassword());
+		if (bankAgentForm.getId() != 0)
+			res.setNif(this.findOne(bankAgentForm.getId()).getNif());
+		else
+			res.setNif(this.actorService.generateNif(this.governmentAgentService.findByPrincipal()));
 
 		if (binding != null)
 			this.validator.validate(res, binding);
@@ -185,7 +186,7 @@ public class BankAgentService {
 	}
 
 	public void stopCreateMoney(int agentId) {
-		GovernmentAgent governmentAgent = (GovernmentAgent) actorService.findByPrincipal();
+		GovernmentAgent governmentAgent = (GovernmentAgent) this.actorService.findByPrincipal();
 		Assert.notNull(governmentAgent);
 		BankAgent agent = this.bankAgentRepository.findOne(agentId);
 		if (agent.getCanCreateMoney()) {

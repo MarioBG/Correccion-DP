@@ -49,7 +49,7 @@ public class CandidateServiceTest extends AbstractTest {
 			},
 			// Casos negativos
 			{
-				null, "candidatureTest", NumberFormatException.class
+				null, "candidatureTest", AssertionError.class
 			/*
 			 * No se puede acceder a una candidatura que no existe
 			 */

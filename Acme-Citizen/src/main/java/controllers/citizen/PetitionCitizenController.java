@@ -73,6 +73,7 @@ public class PetitionCitizenController extends AbstractController {
 
 		final Petition petition = this.petitionService.findOne(petitionId);
 		Assert.isTrue(petition.getCitizen() == this.citizenService.findByPrincipal());
+		Assert.isTrue(!petition.getFinalVersion());
 		final PetitionForm petitionForm = this.petitionService.construct(petition);
 
 		final ModelAndView result = this.createEditModelAndView(petitionForm);
@@ -88,7 +89,7 @@ public class PetitionCitizenController extends AbstractController {
 			result = this.createEditModelAndView(petitionForm);
 		else
 			try {
-				final Petition petition = this.petitionService.reconstruct(petitionForm, binding);
+				Petition petition = this.petitionService.reconstruct(petitionForm, binding);
 				this.petitionService.save(petition);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {

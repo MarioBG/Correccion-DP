@@ -17,8 +17,6 @@
 	modelAttribute="chirpForm">
 
 	<form:hidden path="id" />
-	<form:hidden path="governmentAgentId" />
-	<form:hidden path="publicationMoment" />
 
 	<acme:textbox code="chirp.title" path="title" />
 	<br />

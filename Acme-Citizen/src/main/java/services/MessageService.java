@@ -17,7 +17,6 @@ import repositories.MessageRepository;
 import domain.Actor;
 import domain.Folder;
 import domain.Message;
-import forms.MessageForm;
 
 @Service
 @Transactional
@@ -121,6 +120,7 @@ public class MessageService {
 		Folder outboxSender, inboxRecipient;
 
 		if (message.getId() == 0) {
+			Assert.isTrue(!(message.getRecipient() == null || message.getRecipient().getId() == 0), "message.error.needsRecipient");
 			final Date newMoment = new Date(System.currentTimeMillis() - 1000);
 			copy = this.copy(message);
 
@@ -174,55 +174,34 @@ public class MessageService {
 
 	// Other business methods -------------------------------------------------
 
-	public MessageForm construct(final Message message) {
+	public Message reconstruct(final Message messagePruned, final BindingResult binding) {
 
-		Assert.notNull(message);
-
-		MessageForm messageForm;
-
-		messageForm = new MessageForm();
-
-		messageForm.setId(message.getId());
-		messageForm.setSenderId(message.getSender().getId());
-		if (message.getRecipient() == null)
-			messageForm.setRecipientId(null);
-		else
-			messageForm.setRecipientId(message.getRecipient().getId());
-		messageForm.setFolderId(message.getFolder().getId());
-		messageForm.setMoment(message.getMoment());
-		messageForm.setSubject(message.getSubject());
-		messageForm.setBody(message.getBody());
-		messageForm.setPriority(message.getPriority());
-
-		return messageForm;
-	}
-
-	public Message reconstruct(final MessageForm messageForm, final BindingResult binding) {
-
-		Assert.notNull(messageForm);
+		Assert.notNull(messagePruned);
+		Actor principal = this.actorService.findByPrincipal();
 
 		Message message;
 
-		if (messageForm.getId() != 0)
-			message = this.findOne(messageForm.getId());
-		else
+		if (messagePruned.getId() != 0) {
+			Folder destinationFolder = messagePruned.getFolder();
+			message = this.findOne(messagePruned.getId());
+			this.folderService.checkPrincipal(destinationFolder);
+			message.setFolder(destinationFolder);
+		} else {
 			message = this.create();
-
-		message.setMoment(messageForm.getMoment());
-		message.setSubject(messageForm.getSubject());
-		message.setBody(messageForm.getBody());
-		message.setPriority(messageForm.getPriority());
-		message.setSender(this.actorService.findOne(messageForm.getSenderId()));
-		Assert.isTrue(!(messageForm.getRecipientId() == null || messageForm.getRecipientId() == 0), "message.error.needsRecipient");
-		message.setRecipient(this.actorService.findOne(messageForm.getRecipientId()));
-		message.setFolder(this.folderService.findOne(messageForm.getFolderId()));
+			message.setMoment(new Date(System.currentTimeMillis() - 1000));
+			message.setSender(principal);
+			message.setFolder(this.folderService.findByFolderName(principal.getUserAccount().getId(), "out box"));
+			message.setSubject(messagePruned.getSubject());
+			message.setBody(messagePruned.getBody());
+			message.setPriority(messagePruned.getPriority());
+			message.setRecipient(messagePruned.getRecipient());
+		}
 
 		if (binding != null)
 			this.validator.validate(message, binding);
 
 		return message;
 	}
-
 	public Message copy(final Message message) {
 
 		Assert.notNull(message);

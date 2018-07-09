@@ -1,8 +1,7 @@
+
 package controllers;
 
 import java.util.Collection;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Actor;
-import domain.BankAccount;
-import domain.BankAgent;
-import domain.EconomicTransaction;
-import domain.GovernmentAgent;
 import services.ActorService;
 import services.BankAccountService;
 import services.BankAgentService;
 import services.EconomicTransactionService;
 import services.GovernmentAgentService;
+import domain.Actor;
+import domain.BankAccount;
+import domain.BankAgent;
+import domain.EconomicTransaction;
+import domain.GovernmentAgent;
 
 @Controller
 @RequestMapping("/transaction")
@@ -29,19 +28,20 @@ public class EconomicTransactionCreateMoneyController extends AbstractController
 	// Services -------------------------------------------------------------
 
 	@Autowired
-	private BankAccountService bankAccountService;
+	private BankAccountService			bankAccountService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService				actorService;
 
 	@Autowired
-	private BankAgentService bankAgentService;
+	private BankAgentService			bankAgentService;
 
 	@Autowired
-	private GovernmentAgentService governmentAgentService;
+	private GovernmentAgentService		governmentAgentService;
 
 	@Autowired
-	private EconomicTransactionService economicTransactionService;
+	private EconomicTransactionService	economicTransactionService;
+
 
 	// Create Money --------------------------------
 
@@ -53,7 +53,7 @@ public class EconomicTransactionCreateMoneyController extends AbstractController
 		economicTransaction = this.economicTransactionService.createMoney();
 
 		Collection<BankAccount> bankAccounts = this.bankAccountService.findAll();
-		result = createEditModelAndView(economicTransaction);
+		result = this.createEditModelAndView(economicTransaction);
 		result.addObject("bankAccounts", bankAccounts);
 
 		try {
@@ -73,21 +73,27 @@ public class EconomicTransactionCreateMoneyController extends AbstractController
 	}
 
 	@RequestMapping(value = "/createMoney", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final EconomicTransaction economicTransaction, final BindingResult binding) {
+	public ModelAndView save(EconomicTransaction economicTransaction, final BindingResult binding) {
 		ModelAndView result;
-		if (binding.hasErrors())
+		this.economicTransactionService.reconstruct(economicTransaction, binding);
+
+		if (binding.hasErrors()) {
+			Collection<BankAccount> bankAccounts = this.bankAccountService.findAll();
 			result = this.createEditModelAndView(economicTransaction);
-		else
+			result.addObject("bankAccounts", bankAccounts);
+		} else
 			try {
 				this.economicTransactionService.save2(economicTransaction);
 				result = new ModelAndView("redirect:../welcome/index.do");
 			} catch (final Throwable oops) {
+				Collection<BankAccount> bankAccounts = this.bankAccountService.findAll();
 				String errorMessage = "economicTransaction.commit.error";
 
-				if (oops.getMessage().contains("message.error")) {
+				if (oops.getMessage() != null && oops.getMessage().contains("economicTransaction")) {
 					errorMessage = oops.getMessage();
 				}
 				result = this.createEditModelAndView(economicTransaction, errorMessage);
+				result.addObject("bankAccounts", bankAccounts);
 			}
 
 		return result;
@@ -100,8 +106,8 @@ public class EconomicTransactionCreateMoneyController extends AbstractController
 	public ModelAndView list() {
 		ModelAndView result;
 		Actor principal = this.actorService.findByPrincipal();
-		Collection<EconomicTransaction> bankAgentMoney = economicTransactionService.findBankAgentDoMoney();
-		Collection<EconomicTransaction> governmentAgentMoney = economicTransactionService.findGovernmentAgentDoMoney();
+		Collection<EconomicTransaction> bankAgentMoney = this.economicTransactionService.findBankAgentDoMoney();
+		Collection<EconomicTransaction> governmentAgentMoney = this.economicTransactionService.findGovernmentAgentDoMoney();
 
 		result = new ModelAndView("transaction/listMoneyCreate");
 

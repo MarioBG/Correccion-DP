@@ -96,7 +96,7 @@ public class ChirpServiceTest extends AbstractTest {
 			 * Solo los agentes gubernamentales poseen chirps
 			 */
 			}, {
-				"government", "governmentTest", NumberFormatException.class
+				"government", "governmentTest", AssertionError.class
 			/*
 			 * El agente gubernamental no exite
 			 */
@@ -146,7 +146,7 @@ public class ChirpServiceTest extends AbstractTest {
 				"government", "", "chirp description", "http://localhost/Acme-Citizen/images/logo.png", "http://localhost/Acme-Citizen/images/logo.png", IllegalArgumentException.class
 			}, // Usuario no se puede guardar un chirp sin titulo
 			{
-				"bank1", "chirp title", "chirp description", "http://localhost/Acme-Citizen/images/logo.png", "http://localhost/Acme-Citizen/images/logo.png", NumberFormatException.class
+				"bank1", "chirp title", "chirp description", "http://localhost/Acme-Citizen/images/logo.png", "http://localhost/Acme-Citizen/images/logo.png", AssertionError.class
 			}, // Usuario inexistente
 		};
 

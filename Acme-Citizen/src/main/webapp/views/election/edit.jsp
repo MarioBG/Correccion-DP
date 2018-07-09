@@ -14,7 +14,6 @@
 <form:form action="election/governmentAgent/edit.do" modelAttribute="electionForm">
 
 	<form:hidden path="id"/>
-	<form:hidden path="governmentAgentId"/>
 	
 	<acme:textarea code="election.description" path="description"/>
 	<br/>

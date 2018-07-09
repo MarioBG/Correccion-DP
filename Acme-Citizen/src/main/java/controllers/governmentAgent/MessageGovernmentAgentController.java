@@ -4,8 +4,6 @@ package controllers.governmentAgent;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,6 @@ import domain.Actor;
 import domain.Folder;
 import domain.Message;
 import domain.Priority;
-import forms.MessageForm;
 
 @Controller
 @RequestMapping("/message/governmentAgent")
@@ -46,43 +43,6 @@ public class MessageGovernmentAgentController extends AbstractController {
 		super();
 	}
 
-	// Creation ------------------------------------------------------
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-
-		ModelAndView result;
-		Message message;
-
-		message = this.messageService.create();
-		final MessageForm messageForm = this.messageService.construct(message);
-
-		result = this.createEditModelAndView(messageForm);
-
-		return result;
-	}
-
-	// Edition -------------------------------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final MessageForm messageForm, final BindingResult binding) {
-
-		ModelAndView result;
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(messageForm);
-		else
-			try {
-				final Message message = this.messageService.reconstruct(messageForm, binding);
-				final Message saved = this.messageService.notify(message);
-				result = new ModelAndView("redirect:list.do?folderId=" + saved.getFolder().getId());
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(messageForm, "message.commit.error");
-			}
-
-		return result;
-	}
-
 	// Notification --------------------------------------------------
 
 	@RequestMapping(value = "/create-notification", method = RequestMethod.GET)
@@ -91,10 +51,9 @@ public class MessageGovernmentAgentController extends AbstractController {
 		Message message = null;
 
 		message = this.messageService.create();
-		final MessageForm messageForm = this.messageService.construct(message);
 		message.setRecipient(this.actorService.findByPrincipal());
 
-		result = this.createNotificationModelAndView(messageForm);
+		result = this.createNotificationModelAndView(message);
 
 		return result;
 	}
@@ -102,19 +61,23 @@ public class MessageGovernmentAgentController extends AbstractController {
 	// Notificate a  message -----------------------------------------
 
 	@RequestMapping(value = "/notification", method = RequestMethod.POST, params = "notify")
-	public ModelAndView notification(@Valid @ModelAttribute("messageNotification") final MessageForm messageForm, final BindingResult binding) {
+	public ModelAndView notification(@ModelAttribute("messageNotification") final Message messagePruned, final BindingResult binding) {
 
 		ModelAndView result;
+		this.messageService.reconstruct(messagePruned, binding);
 
 		if (binding.hasErrors())
-			result = this.createNotificationModelAndView(messageForm);
+			result = this.createNotificationModelAndView(messagePruned);
 		else
 			try {
-				final Message message = this.messageService.reconstruct(messageForm, binding);
-				final Message saved = this.messageService.notify(message);
+				final Message message2 = this.messageService.reconstruct(messagePruned, binding);
+				final Message saved = this.messageService.notify(message2);
 				result = new ModelAndView("redirect:../list.do?folderId=" + saved.getFolder().getId());
 			} catch (final Throwable oops) {
-				result = this.createNotificationModelAndView(messageForm, "message.commit.error");
+				String msg = oops.getMessage();
+				if (msg == null)
+					msg = "message.commit.error";
+				result = this.createEditModelAndView(messagePruned, msg);
 			}
 
 		return result;
@@ -122,16 +85,16 @@ public class MessageGovernmentAgentController extends AbstractController {
 
 	// Ancillary methods ---------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final MessageForm messageForm) {
+	protected ModelAndView createEditModelAndView(final Message message) {
 
 		ModelAndView result;
 
-		result = this.createEditModelAndView(messageForm, null);
+		result = this.createEditModelAndView(message, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final MessageForm messageForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Message message, final String messageCode) {
 
 		ModelAndView result;
 		Collection<Actor> actors;
@@ -149,7 +112,7 @@ public class MessageGovernmentAgentController extends AbstractController {
 		folders = this.folderService.findByPrincipal();
 
 		result = new ModelAndView("message/edit");
-		result.addObject("messageForm", messageForm);
+		result.addObject("messageForm", message);
 		result.addObject("actors", actors);
 		result.addObject("priorities", priorities);
 		result.addObject("folders", folders);
@@ -159,15 +122,15 @@ public class MessageGovernmentAgentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createNotificationModelAndView(final MessageForm messageForm) {
+	protected ModelAndView createNotificationModelAndView(final Message message) {
 		ModelAndView result;
 
-		result = this.createNotificationModelAndView(messageForm, null);
+		result = this.createNotificationModelAndView(message, null);
 
 		return result;
 	}
 
-	protected ModelAndView createNotificationModelAndView(final MessageForm messageForm, final String messageCode) {
+	protected ModelAndView createNotificationModelAndView(final Message message, final String messageCode) {
 
 		ModelAndView result = null;
 		Collection<Actor> actors = null;
@@ -182,8 +145,9 @@ public class MessageGovernmentAgentController extends AbstractController {
 		priorities.add(Priority.HIGH);
 
 		result = new ModelAndView("message/notify");
-		result.addObject("messageForm", messageForm);
+		result.addObject("messageNotification", message);
 		result.addObject("priorities", priorities);
+		result.addObject("message", messageCode);
 		result.addObject("actionURI", "message/governmentAgent/notification.do");
 
 		return result;

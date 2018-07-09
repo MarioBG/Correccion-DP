@@ -3,8 +3,6 @@ package controllers;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -67,13 +65,14 @@ public class EconomicTransactionController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final EconomicTransaction economicTransaction, final BindingResult binding) {
+	public ModelAndView save(final EconomicTransaction economicTransaction, final BindingResult binding) {
 		ModelAndView result;
 		final Collection<BankAccount> bankAccounts = this.bankAccountService.findAll();
 		final Actor principal = this.actorService.findByPrincipal();
 		bankAccounts.remove(principal.getBankAccount());
+		this.economicTransactionService.reconstruct(economicTransaction, binding);
 
-		if (binding.hasErrors() || !(this.economicTransactionService.checkMoney(economicTransaction)))
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(economicTransaction, "economicTransaction.commit.error");
 		else
 			try {
@@ -82,7 +81,7 @@ public class EconomicTransactionController extends AbstractController {
 			} catch (final Throwable oops) {
 				String errorMessage = "economicTransaction.commit.error";
 
-				if (oops.getMessage() != null)
+				if (oops.getMessage().contains("economicTransaction"))
 					errorMessage = oops.getMessage();
 				result = this.createEditModelAndView(economicTransaction, errorMessage);
 			}
@@ -113,8 +112,8 @@ public class EconomicTransactionController extends AbstractController {
 				result.addObject("bankAgent", bankAgent);
 			else if (ga != null)
 				result.addObject("ga", ga);
-		} catch (final Exception e) {
-			// TODO: handle exception
+		} catch (final Exception oops) {
+
 		}
 
 		return result;
