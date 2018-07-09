@@ -57,6 +57,7 @@ public class SubscriptionNewspaperService {
 	public SubscriptionNewspaper findOne(int subscriptionNewspaperId) {
 
 		SubscriptionNewspaper result = subscriptionNewspaperRepository.findOne(subscriptionNewspaperId);
+		Assert.notNull(result);
 		return result;
 	}
 

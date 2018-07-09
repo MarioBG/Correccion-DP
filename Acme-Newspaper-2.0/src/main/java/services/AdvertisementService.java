@@ -106,9 +106,10 @@ public class AdvertisementService {
 	public Advertisement findOne(final int advertisementId) {
 		Assert.isTrue(advertisementId != 0);
 		Advertisement res;
+	
 
 		res = this.advertisementRepository.findOne(advertisementId);
-
+		Assert.notNull(res);
 		return res;
 	}
 

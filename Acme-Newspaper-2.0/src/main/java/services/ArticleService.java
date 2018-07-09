@@ -112,7 +112,7 @@ public class ArticleService {
 		Article res;
 
 		res = this.articleRepository.findOne(articleId);
-
+		Assert.notNull(res);
 		return res;
 	}
 

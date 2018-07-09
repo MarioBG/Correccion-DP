@@ -82,6 +82,7 @@ public class AgentService {
 		Assert.isTrue(agentId != 0);
 		Agent res;
 		res = this.agentRepository.findOne(agentId);
+		Assert.notNull(res);
 		return res;
 	}
 

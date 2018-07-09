@@ -65,6 +65,7 @@ public class SubscriptionVolumeService {
 	public SubscriptionVolume findOne(int subscriptionVolumeId) {
 
 		SubscriptionVolume result = subscriptionVolumeRepository.findOne(subscriptionVolumeId);
+		Assert.notNull(result);
 		return result;
 	}
 
