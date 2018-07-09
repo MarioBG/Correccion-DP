@@ -89,6 +89,7 @@ public class VolumeService {
 		Volume res;
 
 		res = this.volumeRepository.findOne(volumeId);
+		Assert.notNull(res);
 
 		return res;
 	}

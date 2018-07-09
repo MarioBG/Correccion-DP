@@ -95,6 +95,7 @@ public class UserService {
 		Assert.isTrue(userId != 0);
 		User res;
 		res = this.userRepository.findOne(userId);
+		Assert.notNull(res);
 		return res;
 	}
 
