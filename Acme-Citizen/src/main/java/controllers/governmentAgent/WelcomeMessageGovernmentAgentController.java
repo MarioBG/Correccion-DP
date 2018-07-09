@@ -82,7 +82,10 @@ public class WelcomeMessageGovernmentAgentController extends AbstractController 
 				this.welcomeMessageService.save(welcomeMessage);
 				result = new ModelAndView("redirect:/configuration/governmentAgent/edit.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(welcomeMessageForm, "folder.commit.error");
+				String msg = "folder.commit.error";
+				if (oops.getMessage() != null && oops.getMessage().contains("welcomeMessage.error"))
+					msg = oops.getMessage();
+				result = this.createEditModelAndView(welcomeMessageForm, msg);
 			}
 
 		return result;

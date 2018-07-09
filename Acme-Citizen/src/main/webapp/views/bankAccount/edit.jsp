@@ -30,13 +30,13 @@
 
 
 
-	<input type="button" name="cancel"
-		value="<spring:message code="bankAccount.cancel"/>"
-		onclick="javascript: relativeRedir('/');" />
+	<acme:cancel
+		code="bankAccount.cancel"
+		url="welcome/index.do" />
 
 	<security:authorize access="hasRole('BANKAGENT')">
-		<input type="submit" name="save"
-			value="<spring:message code="bankAccount.save"/>" />&nbsp;
+		<acme:submit name="save"
+			code="bankAccount.save" />&nbsp;
 	</security:authorize>
 
 

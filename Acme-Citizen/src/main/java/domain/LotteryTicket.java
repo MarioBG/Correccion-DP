@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -14,8 +15,12 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-@Table(indexes = {
-	@Index(columnList = "number")
+@Table(uniqueConstraints = {
+	@UniqueConstraint(columnNames = {
+		"lottery_id", "number"
+	})
+}, indexes = {
+	@Index(columnList = "number, citizen_id, lottery_id")
 })
 @Entity
 @Access(AccessType.PROPERTY)

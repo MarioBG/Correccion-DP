@@ -69,7 +69,7 @@ public class WelcomeMessageService {
 
 		Assert.notNull(this.governmentAgentService.findByPrincipal());
 		if (welcomeMessage.getId() == 0)
-			Assert.isTrue(this.welcomeMessageRepository.getWelcomeMessageByLocale(welcomeMessage.getLanguageCode()) == null);
+			Assert.isNull(this.welcomeMessageRepository.getWelcomeMessageByLocale(welcomeMessage.getLanguageCode()), "welcomeMessage.error.localeTaken");
 		final WelcomeMessage result = this.welcomeMessageRepository.save(welcomeMessage);
 
 		if (welcomeMessage.getId() == 0) {

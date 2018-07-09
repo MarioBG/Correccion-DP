@@ -7,9 +7,11 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -25,17 +27,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@Index(columnList = "governmentAgent_id, celebrationDate")
+})
 public class Lottery extends DomainEntity {
 
 	public Lottery() {
 
 	}
 
-	private double quantity;
-	private double percentageForPrizes;
-	private Date celebrationDate;
-	private double ticketCost;
-	private String lotteryName;
+
+	private double	quantity;
+	private double	percentageForPrizes;
+	private Date	celebrationDate;
+	private double	ticketCost;
+	private String	lotteryName;
+
 
 	@Digits(fraction = 2, integer = 12)
 	@Min(0)
@@ -88,11 +95,13 @@ public class Lottery extends DomainEntity {
 		this.lotteryName = lotteryName;
 	}
 
+
 	// Relationships
 
-	private Collection<LotteryTicket> lotteryTickets;
-	private GovernmentAgent governmentAgent;
-	private LotteryTicket winnerTicket;
+	private Collection<LotteryTicket>	lotteryTickets;
+	private GovernmentAgent				governmentAgent;
+	private LotteryTicket				winnerTicket;
+
 
 	@Valid
 	@NotNull
