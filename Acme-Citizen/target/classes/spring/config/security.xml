@@ -46,6 +46,8 @@
 			pattern="/bankAgent/governmentAgent/register.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
+			pattern="/bankAgent/governmentAgent/denied.do" access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
 			pattern="/citizen/governmentAgent/register.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
@@ -79,6 +81,9 @@
 			pattern="/lottery/list.do" access="permitAll" />
 		<security:intercept-url
 			pattern="/lottery/governmentAgent/create.do"
+			access="hasRole('GOVERNMENTAGENT')" />
+		<security:intercept-url
+			pattern="/lottery/governmentAgent/makeWinner.do"
 			access="hasRole('GOVERNMENTAGENT')" />
 		<security:intercept-url
 			pattern="/lottery/governmentAgent/edit.do"
@@ -117,7 +122,7 @@
 		<security:intercept-url
 			pattern="/bankaccount/bankAgent/create.do" access="hasRole('BANKAGENT')" />
 		<security:intercept-url
-			pattern="/bankAccount/display.do" access="permitAll" />
+			pattern="/bankAccount/display.do" access="hasAnyRole('BANKAGENT', 'GOVERNMENTAGENT', 'CITIZEN')" />
 		<security:intercept-url
 			pattern="/transactions/list.do" access="permitAll" />
 		<security:intercept-url

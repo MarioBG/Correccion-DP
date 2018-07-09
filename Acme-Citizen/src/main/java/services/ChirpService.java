@@ -121,7 +121,7 @@ public class ChirpService {
 		chirpForm = new ChirpForm();
 
 		chirpForm.setId(chirp.getId());
-		chirpForm.setGovernmentAgentId(chirp.getGovernmentAgent().getId());
+		chirpForm.setGovernmentAgentId(this.governmentAgentService.findByPrincipal().getId());
 		chirpForm.setTitle(chirp.getTitle());
 		chirpForm.setContent(chirp.getContent());
 		chirpForm.setPublicationMoment(chirp.getPublicationMoment());

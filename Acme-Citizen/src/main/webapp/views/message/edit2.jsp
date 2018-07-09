@@ -18,11 +18,11 @@
 	<form:hidden path="id" />
 
 	<jstl:choose>
-		<jstl:when test="${ recipient!=null }">
-			<form:hidden path="recipient"/>
+		<jstl:when test="${ patata.recipient!=null }">
+			<form:hidden path="recipient" />
 			<b><label> <spring:message code="message.recipient" />:&nbsp;
 			</label></b>
-			<jstl:out value="${recipient.name}" />
+			<jstl:out value="${patata.recipient.name}" />
 			<br />
 		</jstl:when>
 		<jstl:when test="${patata.id == 0}">

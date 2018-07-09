@@ -6,10 +6,10 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.GovernmentAgentService;
@@ -46,23 +46,24 @@ public class LotteryGovernmentAgentController extends AbstractController {
 
 	// Edition ----------------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int lotteryId) {
-		ModelAndView result;
-		Lottery lottery;
-
-		lottery = this.lotteryService.findOne(lotteryId);
-
-		result = this.createEditModelAndView(lottery);
-		result.addObject("lottery", lottery);
-
-		return result;
-	}
+	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	//	public ModelAndView edit(@RequestParam final int lotteryId) {
+	//		ModelAndView result;
+	//		Lottery lottery;
+	//
+	//		lottery = this.lotteryService.findOne(lotteryId);
+	//
+	//		result = this.createEditModelAndView(lottery);
+	//		result.addObject("lottery", lottery);
+	//
+	//		return result;
+	//	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Lottery lottery, final BindingResult binding) {
 		ModelAndView result;
-		this.lotteryService.reconstruct(lottery, binding);
+		lottery = this.lotteryService.reconstruct(lottery, binding);
+		Assert.isNull(this.lotteryService.findOne(lottery.getId()));
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(lottery);
@@ -73,7 +74,7 @@ public class LotteryGovernmentAgentController extends AbstractController {
 			} catch (final Throwable oops) {
 				String errorMessage = "lottery.commit.error";
 
-				if (oops.getMessage() != null) {
+				if (oops.getMessage() != null && oops.getMessage().contains("commit.error")) {
 					errorMessage = oops.getMessage();
 				}
 				result = this.createEditModelAndView(lottery, errorMessage);

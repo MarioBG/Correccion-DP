@@ -50,7 +50,7 @@
 </jstl:if>
 
 <jstl:if test="${ citizen.nickname!=null }">
-	<b><spring:message code="user.email" />:&nbsp;</b>
+	<b><spring:message code="user.nickname" />:&nbsp;</b>
 	<jstl:out value="${citizen.nickname}" />
 	<br />
 </jstl:if>

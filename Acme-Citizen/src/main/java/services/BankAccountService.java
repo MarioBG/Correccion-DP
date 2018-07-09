@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
+import repositories.BankAccountRepository;
 import domain.Actor;
 import domain.BankAccount;
 import domain.BankAgent;
 import domain.EconomicTransaction;
-import repositories.BankAccountRepository;
 
 @Service
 @Transactional
@@ -23,12 +25,16 @@ public class BankAccountService {
 	// Managed repository
 
 	@Autowired
-	private BankAccountRepository bankAccountRepository;
+	private BankAccountRepository	bankAccountRepository;
 
 	// Supporting services
 
 	@Autowired
-	private BankAgentService bankAgentService;
+	private Validator				validator;
+
+	@Autowired
+	private BankAgentService		bankAgentService;
+
 
 	// Constructors
 
@@ -51,7 +57,7 @@ public class BankAccountService {
 		result.setCredits(credits);
 		result.setDebts(debts);
 		result.setMoney(0.0);
-		result.setAccountNumber(getAccountNumber());
+		result.setAccountNumber(this.getAccountNumber());
 		result.setBankAgent(principal);
 
 		return result;
@@ -86,18 +92,45 @@ public class BankAccountService {
 		return result;
 	}
 
+	private BankAccount findOneNoAssert(final int bankAccountId) {
+
+		final BankAccount result = this.bankAccountRepository.findOne(bankAccountId);
+		return result;
+	}
+
 	public void delete(BankAccount bankAccount) {
 		Assert.notNull(bankAccount);
-		delete(bankAccount);
+		this.delete(bankAccount);
 
 	}
 
+	public BankAccount reconstruct(BankAccount bankAccount, BindingResult binding) {
+		Assert.notNull(bankAccount);
+
+		BankAccount ans;
+
+		Assert.isNull(this.findOneNoAssert(bankAccount.getId()));
+		BankAgent principal = this.bankAgentService.findByPrincipal();
+		Assert.notNull(principal);
+		ans = this.create();
+		ans.setBankAgent(principal);
+		ans.setAccountNumber(this.getAccountNumber());
+		ans.setCredits(new ArrayList<EconomicTransaction>());
+		ans.setDebts(new ArrayList<EconomicTransaction>());
+		ans.setMoney(0);
+		ans.setActor(bankAccount.getActor());
+
+		this.validator.validate(ans, binding);
+
+		return ans;
+	}
+
 	private String getAccountNumber() {
-		String numberAccount = asignNumber();
+		String numberAccount = this.asignNumber();
 
 		for (BankAccount bk : this.bankAccountRepository.findAll()) {
 			while (bk.getAccountNumber().equals(numberAccount)) {
-				numberAccount = asignNumber();
+				numberAccount = this.asignNumber();
 			}
 
 		}

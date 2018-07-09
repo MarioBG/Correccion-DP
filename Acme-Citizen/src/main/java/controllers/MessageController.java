@@ -71,12 +71,11 @@ public class MessageController extends AbstractController {
 		Message message;
 
 		message = this.messageService.create();
-		result = this.createEditModelAndView(message);
-
 		if (recipientId != null) {
 			Actor a = this.actorService.findOne(recipientId);
-			result.addObject("recipient", a);
+			message.setRecipient(a);
 		}
+		result = this.createEditModelAndView(message);
 
 		return result;
 	}

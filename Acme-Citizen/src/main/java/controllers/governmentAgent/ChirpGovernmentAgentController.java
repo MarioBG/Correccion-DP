@@ -94,14 +94,16 @@ public class ChirpGovernmentAgentController extends AbstractController {
 	public ModelAndView save(@Valid final ChirpForm chirpForm, final BindingResult binding) {
 
 		ModelAndView result;
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
+			chirpForm.setGovernmentAgentId(this.governmentAgentService.findByPrincipal().getId());
 			result = this.createEditModelAndView(chirpForm);
-		else
+		} else
 			try {
 				final Chirp chirp = this.chirpService.reconstruct(chirpForm, binding);
 				this.chirpService.save(chirp);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
+				chirpForm.setGovernmentAgentId(this.governmentAgentService.findByPrincipal().getId());
 				result = this.createEditModelAndView(chirpForm, "chirp.commit.error");
 			}
 		return result;

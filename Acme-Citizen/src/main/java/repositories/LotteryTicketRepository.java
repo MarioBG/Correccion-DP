@@ -12,7 +12,10 @@ import domain.LotteryTicket;
 @Repository
 public interface LotteryTicketRepository extends JpaRepository<LotteryTicket, Integer> {
 
-	@Query("Select l from LotteryTicket l where l.citizen.id = ?1")
+	@Query("select l from LotteryTicket l where l.citizen.id = ?1")
 	Collection<LotteryTicket> findAllByCitizenId(int id);
+
+	@Query("select l from LotteryTicket l where l.lottery.id = ?2 and l.number = ?1")
+	LotteryTicket findByNumberAndLotteryId(int number, int lotteryId);
 
 }
