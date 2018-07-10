@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Calendar;
@@ -25,21 +26,25 @@ public class RequestService {
 	// Managed repository
 
 	@Autowired
-	private RequestRepository requestRepository;
+	private RequestRepository	requestRepository;
 
 	// Supported services
 
 	@Autowired
-	private RendezvousService rendezvousService;
+	private RendezvousService	rendezvousService;
 
 	@Autowired
-	private UserService userService;
+	private UserService			userService;
 
 	@Autowired
-	private ServiceService serviceService;
-	
+	private ServiceService		serviceService;
+
 	@Autowired
-	private Validator				validator;
+	private AdminService		adminService;
+
+	@Autowired
+	private Validator			validator;
+
 
 	// Constructors
 
@@ -53,8 +58,7 @@ public class RequestService {
 
 		final Request result = new Request();
 		if (rendezvousId != null) {
-			final Rendezvous rendezvous = this.rendezvousService
-					.findOneToEdit(rendezvousId);
+			final Rendezvous rendezvous = this.rendezvousService.findOneToEdit(rendezvousId);
 			result.setRendezvous(rendezvous);
 		}
 
@@ -78,18 +82,17 @@ public class RequestService {
 
 	public Request save(final Request request) {
 
-		Assert.isTrue(this.userService.findByPrincipal()
-				.getOrganisedRendezvouses().contains(request.getRendezvous()));
+		Assert.isTrue(this.userService.findByPrincipal().getOrganisedRendezvouses().contains(request.getRendezvous()));
 		Assert.notNull(request.getRendezvous());
 		Assert.notNull(request.getService());
-		Assert.isTrue(checkCreditCard(request.getCreditCard()));
+		Assert.isTrue(this.checkCreditCard(request.getCreditCard()));
 
 		final Request result = this.requestRepository.save(request);
 		if (request.getId() == 0) {
 			request.getRendezvous().getRequests().add(result);
-//			this.rendezvousService.save(request.getRendezvous());
+			//			this.rendezvousService.save(request.getRendezvous());
 			request.getService().getRequests().add(result);
-//			this.serviceService.save(request.getService());
+			//			this.serviceService.save(request.getService());
 		}
 
 		return result;
@@ -97,19 +100,16 @@ public class RequestService {
 
 	public void delete(final Request request) {
 
-		Assert.isTrue(this.userService.findByPrincipal()
-				.getOrganisedRendezvouses().contains(request.getRendezvous()));
+		Assert.isTrue(this.adminService.findByPrincipal() != null || this.userService.findByPrincipal().getOrganisedRendezvouses().contains(request.getRendezvous()));
 
 		request.getRendezvous().getRequests().remove(request);
-		this.rendezvousService.save(request.getRendezvous());
 		request.getService().getRequests().remove(request);
-		this.serviceService.save(request.getService());
 
 		this.requestRepository.delete(request);
 	}
 
 	// Other business methods
-	
+
 	public void flush() {
 		this.requestRepository.flush();
 	}
@@ -123,7 +123,7 @@ public class RequestService {
 		requestForm = new RequestForm();
 
 		requestForm.setId(request.getId());
-		if(requestForm.getId() != 0){
+		if (requestForm.getId() != 0) {
 			requestForm.setHolder(request.getCreditCard().getHolder());
 			requestForm.setBrand(request.getCreditCard().getBrand());
 			requestForm.setNumber(request.getCreditCard().getNumber());
@@ -142,8 +142,7 @@ public class RequestService {
 		return requestForm;
 	}
 
-	public Request reconstruct(final RequestForm requestForm,
-			final BindingResult binding) {
+	public Request reconstruct(final RequestForm requestForm, final BindingResult binding) {
 
 		Assert.notNull(requestForm);
 
@@ -164,15 +163,15 @@ public class RequestService {
 
 		request.setCreditCard(creditCard);
 		request.setComment(request.getComment());
-		request.setRendezvous(rendezvousService.findOne(requestForm.getRendezvousId()));
-		request.setService(serviceService.findOne(requestForm.getServiceId()));
+		request.setRendezvous(this.rendezvousService.findOne(requestForm.getRendezvousId()));
+		request.setService(this.serviceService.findOne(requestForm.getServiceId()));
 
 		if (binding != null)
 			this.validator.validate(request, binding);
 
 		return request;
 	}
-	
+
 	private boolean checkCreditCard(final CreditCard creditCard) {
 		Assert.notNull(creditCard);
 		Assert.notNull(creditCard.getHolder());

@@ -60,12 +60,14 @@
 	</display:column>
 
 	<security:authorize access="hasRole('USER')">
-		<spring:message code="comment.createReply" var="createReplyHeader" />
-		<display:column title="${createReplyHeader}">
-			<a href="comment/user/editReplies.do?commentId=${row.id}"> <spring:message
-					code="comment.create" />
-			</a>
-		</display:column>
+		<jstl:if test="${canComment}">
+			<spring:message code="comment.createReply" var="createReplyHeader" />
+			<display:column title="${createReplyHeader}">
+				<a href="comment/user/editReplies.do?commentId=${row.id}"> <spring:message
+						code="comment.create" />
+				</a>
+			</display:column>
+		</jstl:if>
 	</security:authorize>
 
 
@@ -74,16 +76,16 @@
 <security:authorize access="hasRole('USER')">
 	<div>
 		<jstl:choose>
-			<jstl:when test="${comment != null}">
+			<jstl:when test="${comment != null && canComment == true}">
 				<a href="comment/user/editReplies.do?commentId=${comment.id}"> <spring:message
 					code="comment.create" />
 				</a>
 			</jstl:when>
-			<jstl:otherwise>
+			<jstl:when test="${canComment}">
 				<a href="comment/user/edit.do?rendezvousId=${rendezvous.id}"> <spring:message
 					code="comment.create" />
 				</a>
-			</jstl:otherwise>
+			</jstl:when>
 		</jstl:choose>
 	</div>
 </security:authorize>

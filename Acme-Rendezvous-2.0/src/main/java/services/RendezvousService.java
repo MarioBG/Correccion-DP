@@ -46,8 +46,8 @@ public class RendezvousService {
 	@Autowired
 	private CommentService			commentService;
 
-	//	@Autowired
-	//	private QuestionService			questionService;
+	@Autowired
+	private RequestService			requestService;
 
 	@Autowired
 	private Validator				validator;
@@ -133,19 +133,29 @@ public class RendezvousService {
 		final Collection<Announcement> announcements = new ArrayList<Announcement>(rendezvous.getAnnouncements());
 		final Collection<Rendezvous> linkedRendezvouses = new ArrayList<Rendezvous>(rendezvous.getLinkedRendezvouses());
 		final Collection<Rendezvous> parentRendezvouses = new ArrayList<Rendezvous>(this.findParentRendezvouses(rendezvous.getId()));
+		final Collection<Request> requests = new ArrayList<Request>(rendezvous.getRequests());
 
 		rendezvous.getOrganiser().getOrganisedRendezvouses().remove(rendezvous);
-		for (final User attendant : attendants)
+		for (User attendant : attendants) {
 			attendant.getRsvpdRendezvouses().remove(rendezvous);
-		for (final Announcement announcement : announcements)
+			rendezvous.getAttendants().remove(attendant);
+		}
+		for (Announcement announcement : announcements) {
 			this.announcementService.delete(announcement);
-		if (rendezvous.getComments().size() > 0)
-			this.commentService.deleteAll(rendezvous.getComments());
-		//		for (final Question question : rendezvous.getQuestions())
-		//			this.questionService.delete(question);
-		for (final Rendezvous linkedRendezvous : linkedRendezvouses)
+			rendezvous.getAnnouncements().remove(announcement);
+		}
+		for (Comment comment : rendezvous.getComments()) {
+			this.commentService.delete(comment);
+			rendezvous.setComments(new ArrayList<Comment>());
+		}
+		for (Request request : requests) {
+			this.requestService.delete(request);
+			rendezvous.setRequests(new ArrayList<Request>());
+		}
+		for (Rendezvous linkedRendezvous : linkedRendezvouses) {
 			rendezvous.getLinkedRendezvouses().remove(linkedRendezvous);
-		for (final Rendezvous parentRendezvous : parentRendezvouses)
+		}
+		for (Rendezvous parentRendezvous : parentRendezvouses)
 			parentRendezvous.getLinkedRendezvouses().remove(rendezvous);
 
 		this.rendezvousRepository.delete(rendezvous);
@@ -224,7 +234,7 @@ public class RendezvousService {
 		Assert.notNull(rendezvous);
 
 		final User principal = this.userService.findByPrincipal();
-		Assert.isTrue(rendezvous.getOrganiser().equals(principal));
+		Assert.isTrue(this.adminService.findByPrincipal() != null || rendezvous.getOrganiser().equals(principal));
 	}
 
 	public void checkPrincipalForm(final RendezvousForm rendezvousForm) {

@@ -111,7 +111,8 @@ public class CommentService {
 	public void delete(final Comment comment) {
 		Assert.notNull(comment);
 		Assert.isTrue(comment.getId() != 0);
-		Assert.isTrue(this.commentRepository.findOne(comment.getId()) != null);
+		if (this.commentRepository.findOne(comment.getId()) == null)
+			return;
 		this.adminService.checkAuthority();
 
 		if (comment.getReplies().size() != 0)

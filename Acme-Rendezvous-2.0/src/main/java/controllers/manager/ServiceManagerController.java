@@ -100,12 +100,11 @@ public class ServiceManagerController extends AbstractController {
 	public ModelAndView save(final ServiceForm serviceForm, final BindingResult binding) {
 
 		ModelAndView res;
-
+		Service service = this.serviceService.reconstruct(serviceForm, binding);
 		if (binding.hasErrors())
 			res = this.createEditModelAndView(serviceForm, "service.params.error");
 		else
 			try {
-				final Service service = this.serviceService.reconstruct(serviceForm, binding);
 				this.serviceService.save(service);
 				res = new ModelAndView("redirect:/service/manager/list.do");
 			} catch (final Throwable oops) {
